@@ -19,3 +19,5 @@ There currently is no save character feature.
 
 Now for how you can use this: Go to Main.cpp, scroll down until you find a section called "Pathfinding Code in Main Here", implementation is 
 described there along with a simple example of creating a path.
+
+For a guide to setting up SFML (on visual studio) https://www.youtube.com/watch?v=YfMQyOw1zik&t=152s
