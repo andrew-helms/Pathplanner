@@ -1,0 +1,74 @@
+﻿  Main.cpp
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(239,16): warning C4018: '<': signed/unsigned mismatch
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(276,18): warning C4018: '<': signed/unsigned mismatch
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(279,24): warning C4018: '<': signed/unsigned mismatch
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(304,19): warning C4018: '<': signed/unsigned mismatch
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(307,25): warning C4018: '<': signed/unsigned mismatch
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(374,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(376,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(383,70): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(383,51): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(391,70): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(391,51): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(405,28): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(406,28): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(436,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(438,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(439,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(453,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(455,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(456,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(621,18): warning C4018: '<': signed/unsigned mismatch
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(626,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(627,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(633,19): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\elica\source\repos\SFML_CAP4621\SFML_CAP4621\Main.cpp(634,19): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+  SFML_CAP4621.vcxproj -> C:\Users\elica\source\repos\SFML_CAP4621\Debug\SFML_CAP4621.exe
