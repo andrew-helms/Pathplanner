@@ -1,0 +1,18 @@
+This is our ChangeLog so we can note what changes we did and if there's any issues can backtrack, this was started after the GUI was made and 
+A* was implemented.
+Format: Change (i, j): User - Changemade
+Where (i , j) = the j'th change made during the i'th change.
+
+Change (1, 1): Eli - Stopped Player.Move() from moving the player off the map.
+Change (1, 2): Eli - Fixxed actions not being drawn while the location they'd send the player too is still on the map.
+Change (1, 3): Eli - Fixxed PathCounter being set to 0 instead of -1 when finished pathing, not that it matters since currently
+		I don't know a way of pathing again unless I make a second Path function that does the EXACT same thing except
+		only runs when DonePathingTwo is false, and DonePathingTwo is tehn set to false when DonePathing is set to true so
+		it begins the next path, actually we could use the same function for that we just replace the DonePathing boolean
+		with an array so that when the path that is doing DonePathing[0] is done and it sets DonePathing[0] to true (the
+		rest are all true atm as they're not pathign yet, so maybe change the name of DonePathing to NotPathing) then it'll
+		set DonePathing[1] to false so that the next input starts pathing, I should be able to implement that.
+Change (1, 4): Eli - Added the ability to path multiple times in one run.
+Change (1, 5): Eli - Switched to map seven and created a small maze as map seven, switched target input.
+Change (1, 6): Eli - For AStar.cpp switched the overloaded operator < for coordinate to return lhs.x < rhs.x || (lhs.x == rhs.x && lhs.y < rhs.y); instead of
+		     return lhs.x + rhs.x < lhs.y + rhs.y.

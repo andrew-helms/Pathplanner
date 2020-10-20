@@ -18,16 +18,25 @@ void Character::Move(int xLoc, int yLoc, TileMap& Map)
 	std::vector<int> CurLocation = GetLocation();
 	int xNewLoc = xLoc + CurLocation[0];
 	int yNewLoc = yLoc + CurLocation[1];
-	//First we check if we're moving into an obstacle.
-	bool NoObstacle = true;
-	if (!(Map.TileTraits[xNewLoc][yNewLoc].size() == 0))
+	//First we'll check if we're moving onto a location on the map.
+	bool OnMap = true;
+	if((xNewLoc < 0)||(xNewLoc > 46)||(yNewLoc < 0)||(yNewLoc > 56))
 	{
-		if (Map.TileTraits[xNewLoc][yNewLoc][0])
+		OnMap = false;
+	}
+	//Then we check if we're moving into an obstacle.
+	bool NoObstacle = true;
+	if (OnMap)
+	{
+		if (!(Map.TileTraits[xNewLoc][yNewLoc].size() == 0))
 		{
-			NoObstacle = false;
+			if (Map.TileTraits[xNewLoc][yNewLoc][0])
+			{
+				NoObstacle = false;
+			}
 		}
 	}
-	if (NoObstacle)
+	if (NoObstacle&&OnMap)
 	{
 		//To move there we convert our location into pixel location.
 		float xPixelLoc = ((xNewLoc + 7) * 16) + 1;

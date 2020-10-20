@@ -15,7 +15,7 @@ std::vector<std::vector<int>> AStar::findPath(std::vector<int> start, std::vecto
 	stateSpace[*startCoord] = new Node(startCoord, nullptr, 0, start); //adds start as action from the parent just as a placeholder. Not used
 	std::vector<Node*> queue;
 	queue.push_back(stateSpace[*startCoord]);
-
+	 
 	while (!queue.empty())
 	{
 		int minNode = 0;
@@ -41,7 +41,6 @@ std::vector<std::vector<int>> AStar::findPath(std::vector<int> start, std::vecto
 		for (int i = 0; i < actionSpace.size(); i++)
 		{
 			Coordinate* newCoord = new Coordinate(curr->getPosition()->x + actionSpace[i][0], curr->getPosition()->y + actionSpace[i][1]);
-
 			if (newCoord->x >= obstacles.size() || newCoord->x < 0 || newCoord->y >= obstacles[0].size() || newCoord->y < 0 || obstacles[newCoord->x][newCoord->y].size() != 0 && obstacles[newCoord->x][newCoord->y][0])
 			{
 				delete newCoord;
@@ -71,7 +70,6 @@ std::vector<std::vector<int>> AStar::findPath(std::vector<int> start, std::vecto
 	}
 
 	std::vector<std::vector<int>> outputPath;
-
 	while (!path.empty())
 	{
 		outputPath.push_back(path.back());
@@ -112,5 +110,5 @@ bool operator==(const Coordinate& lhs, const Coordinate& rhs)
 
 bool operator<(const Coordinate& lhs, const Coordinate& rhs)
 {
-	return lhs.x + lhs.y < rhs.x + rhs.y;
+	return lhs.x < rhs.x || (lhs.x == rhs.x && lhs.y < rhs.y);
 }

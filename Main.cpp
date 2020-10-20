@@ -15,14 +15,26 @@ using namespace std::chrono_literals; //Namespace to not write it when using thi
 //while(window.isOpen()) calls it a ton of times it only moves once per call so we visually see each move.
 //**Note: Path is currently designed only to be called once per run of the program.**
 int PathCounter = -1;
-bool DonePathing = false;
-void Path(std::vector<std::vector<int> > PathActions, TileMap& Map, Character& Player, bool& DonePathing)
+std::vector<bool> Pathing(1, true); //Made a vector so we can path multiple times, set initial value to true and after that every
+//time we run Path it will (once the previous path is done) add a new element to the vector and set that to true and the current
+//one to false so that we can begin the next path. Added an integer to the Path function input to choose which path we're currently
+//running (so PathCount = 0 is for the first path, PathCount = 1 the second, etc.))
+//are added to it.
+
+void Path(std::vector<std::vector<int> > PathActions, TileMap& Map, Character& Player, std::vector<bool>& Pathing, int PathCount)
 {
+	//First we'll check if we're currently pathing (this is to avoid checking Pathing[PathCount] when the vector doesn't have an
+	//element at that point.
+	bool CurrentlyPathing = false;
+	if (Pathing.size() > PathCount)
+	{
+		CurrentlyPathing = Pathing[PathCount];
+	}
 	if (PathCounter == -1)
 	{
 		PathCounter++; //This is done so that we can see the map before any pathing is done.
 	}
-	else if (!(DonePathing))
+	else if ((CurrentlyPathing)&&(PathActions.size() > 0))
 	{
 		//We get our current action, which is PathActions for at PathCounter.
 		std::vector<int> CurrentAction = PathActions[PathCounter];
@@ -30,8 +42,16 @@ void Path(std::vector<std::vector<int> > PathActions, TileMap& Map, Character& P
 		PathCounter++;
 		if (!(PathCounter < PathActions.size()))
 		{
-			DonePathing = true;
-			PathCounter = 0;
+			Pathing[PathCount] = false; //Set the Pathing boolean for Path PathCount (so the first Path if PathCount == 0) to false as the path is done.
+			if (Pathing.size() == PathCount + 1) //If this is the case then we need to push_back into our next path (so we can add another later).
+			{
+				Pathing.push_back(true); //Push back a true as it is our next path adn it is the one we're on.
+			}
+			else
+			{
+				Pathing[PathCount + 1] = true; //Otherwise just set the next one equal to true.
+			}
+			PathCounter = -1;
 		}
 		std::this_thread::sleep_for(1s); //Sleeping so we visually see the change.
 	}
@@ -219,9 +239,9 @@ int main()
 	/*             Pathfinding Code in main here              */
 	//Sample code here is for you to understand how to use this.
 	//If you want to load a map you created using the User Interface, run the LoadMap(int MapIndex) function where your map
-	//is named EXACTLY "Map" + MapIndex in the SavedMaps folder. For example if you wanted Map3 you'd run
-	// Map.LoadMap(3), I'm going to load map three so when you run it you'll see map three.
-	Map.LoadMap(3);
+	//is named EXACTLY "Map" + MapIndex in the SavedMaps folder. For example if you wanted Map6 you'd run
+	// Map.LoadMap(6), I'm going to load map six so when you run it you'll see map six.
+	Map.LoadMap(7);
 	//To check if there's an obstacle use Map.IsObstacle(int xLoc, int yLoc), for example I know that at (21, 5) there's an obstacle.
 	//**Note: I count from 0 here for this, think of a 2 dimensional array for the grid**
 	std::cout << Map.IsObstacle(21, 5) << std::endl;
@@ -233,6 +253,7 @@ int main()
 	//Note that Move is used in the Path() function that paths for you, if it runs into an illegal move it just doesn't do the
 	//move and continues on (I think, haven't tested that for 100% certainty)
 	Player.Move(2, 2, Map);
+	Player.Move(14, 18, Map);
 	CurrentLoc = Player.GetLocation();
 	std::cout << CurrentLoc[0] << " " << CurrentLoc[1] << std::endl;
 	Player.AddAction(0, 1);
@@ -240,7 +261,10 @@ int main()
 	Player.AddAction(0, -1);
 	Player.AddAction(-1, 0);
 	AStar* pathPlanner = new AStar(Player.GetActions(), Map.TileTraits);
-	std::vector<std::vector<int>> Actions = pathPlanner->findPath(Player.GetLocation(), std::vector<int>(2, 0));
+	std::vector<int> TestVect;
+	TestVect.push_back(5);
+	TestVect.push_back(23);
+	std::vector<std::vector<int>> Actions = pathPlanner->findPath(Player.GetLocation(), TestVect);
 	int Parser = 0;
 	while (Parser < Actions.size())
 	{
@@ -257,9 +281,12 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1010, 1010), "CAP4621 Project", sf::Style::Titlebar | sf::Style::Close);
 	while (window.isOpen())
 	{
-		Path(Actions, Map, Player, DonePathing);
+		Path(Actions, Map, Player, Pathing, 0);
 		//The function above is called to start the pathfinding, nothing should be needed to be changed just what is contained
 		//in the Actions vector.
+		//This function will set Pathing[0] to false once it's done pathing then add a true to the end of the pathing vector
+		//making Pathing[1] true so that if we run Path(Actions, Map, Player, Pathing, 1) that function will start pathing once
+		//this function ends so that we can path multiple times.
 
 
 		sf::Event evnt;
@@ -632,12 +659,13 @@ int main()
 				float xLoc = Player.CurrentLocation.x + Player.Actions[Parser].x + 1.0;
 				float yLoc = Player.CurrentLocation.y + Player.Actions[Parser].y - 8.0;
 				ActionTile.setPosition(sf::Vector2f(xLoc, yLoc));
+				//Also get its tile location on the minimap.
+				int xTileLoc = (Player.CurrentLocation.x + Player.Actions[Parser].x) / 16 - 7;
+				int yTileLoc = (Player.CurrentLocation.y + Player.Actions[Parser].y) / 16;
 				//Test if the action sends us to a position on the map, if not don't draw it.
-				if (!((xLoc < 120) || (xLoc > 871) || (yLoc > 903)))
+				if (!((xTileLoc < 0) || (xTileLoc > 46) || (yTileLoc > 56) || (yTileLoc < 0)))
 				{
 					//If it's on the map, also test if the location is where an obstacle is.
-					int xTileLoc = (Player.CurrentLocation.x + Player.Actions[Parser].x) / 16 - 7;
-					int yTileLoc = (Player.CurrentLocation.y + Player.Actions[Parser].y) / 16;
 					bool NoObstacle = true;
 					if (!(Map.TileTraits[xTileLoc][yTileLoc].size() == 0))
 					{
