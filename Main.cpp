@@ -7,6 +7,7 @@
 
 #include "Character.h" //Used for characters.
 #include "TileMap.h" //The tile map.
+#include "AStar.h" //AStar algorithm and related includes
 using namespace std::chrono_literals; //Namespace to not write it when using this_thread and sleep_for
 
 //Pathing render-system: takes in a series of actions (std::vector<std::vector<int> >, each action being size 2) and moves the player along the
@@ -27,12 +28,12 @@ void Path(std::vector<std::vector<int> > PathActions, TileMap& Map, Character& P
 		std::vector<int> CurrentAction = PathActions[PathCounter];
 		Player.Move(CurrentAction[0], CurrentAction[1], Map);
 		PathCounter++;
-		if (PathCounter == PathActions.size())
+		if (!(PathCounter < PathActions.size()))
 		{
 			DonePathing = true;
 			PathCounter = 0;
 		}
-		std::this_thread::sleep_for(3s); //Sleeping so we visually see the change.
+		std::this_thread::sleep_for(1s); //Sleeping so we visually see the change.
 	}
 };
 
@@ -234,9 +235,12 @@ int main()
 	Player.Move(2, 2, Map);
 	CurrentLoc = Player.GetLocation();
 	std::cout << CurrentLoc[0] << " " << CurrentLoc[1] << std::endl;
-	Player.AddAction(0, 4);
-	Player.AddAction(4, 0);
-	std::vector<std::vector<int > > Actions = Player.GetActions();
+	Player.AddAction(0, 1);
+	Player.AddAction(1, 0);
+	Player.AddAction(0, -1);
+	Player.AddAction(-1, 0);
+	AStar* pathPlanner = new AStar(Player.GetActions(), Map.TileTraits);
+	std::vector<std::vector<int>> Actions = pathPlanner->findPath(Player.GetLocation(), std::vector<int>(2, 0));
 	int Parser = 0;
 	while (Parser < Actions.size())
 	{
