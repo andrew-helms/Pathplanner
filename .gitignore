@@ -35,3 +35,5 @@ x64/Debug/SFML_CAP4621.tlog/SFML_CAP4621.lastbuildstate
 x64/Debug/TileMap.obj
 x64/Debug/vc142.idb
 x64/Debug/vc142.pdb
+.vs/SFML_CAP4621/v16/Browse.VC.opendb
+.vs/SFML_CAP4621/v16/ipch/AutoPCH/500b6f41433fce3d/ASTAR.ipch

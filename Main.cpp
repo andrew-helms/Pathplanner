@@ -264,7 +264,8 @@ int main()
 	std::vector<int> TestVect;
 	TestVect.push_back(5);
 	TestVect.push_back(23);
-	std::vector<std::vector<int>> Actions = pathPlanner->findPath(Player.GetLocation(), TestVect);
+	PathReturn* path = pathPlanner->Update(Player.GetActions(), Map.TileTraits, Player.GetLocation(), TestVect);
+	std::vector<std::vector<int>> Actions = path->path;
 	int Parser = 0;
 	while (Parser < Actions.size())
 	{

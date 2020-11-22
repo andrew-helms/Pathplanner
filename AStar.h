@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <map>
+#include "time.h""
 
 class Coordinate {
 public:
@@ -26,14 +27,32 @@ private:
 	Coordinate* position;
 };
 
-class AStar {
+class PathReturn {
 public:
-	AStar(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles);
-	std::vector<std::vector<int>> findPath(std::vector<int> start, std::vector<int> goal);
+	PathReturn(std::vector<std::vector<int>> Path, int NodesExpanded, double ExeTime);
 
-private:
+	std::vector<std::vector<int>> path;
+	int nodesExpanded;
+	double exeTime;
+};
+
+class PathFinder {
+public:
+	PathFinder(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles);
+	virtual PathReturn* Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal) = 0;
+
+protected:
 	std::vector<std::vector<int>> actionSpace;
 	std::vector<std::vector<std::vector<bool>>> obstacles;
 	std::map<Coordinate, Node*> stateSpace;
+	int nodesExpanded;
+	double exeTime;
+
 	int Heuristic(Coordinate Start, Coordinate End);
+};
+
+class AStar : public PathFinder {
+public:
+	AStar(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles);
+	PathReturn* Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal);
 };
