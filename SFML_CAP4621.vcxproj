@@ -151,13 +151,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AStar.cpp" />
+    <ClCompile Include="PathFinder.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="TileMap.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AStar.h" />
+    <ClInclude Include="PathFinder.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="TileMap.h" />
   </ItemGroup>

@@ -1,76 +1,85 @@
-﻿  Main.cpp
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(29,21): warning C4018: '>': signed/unsigned mismatch
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(43,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(272,16): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(312,18): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(315,24): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(340,19): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(343,25): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(410,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(412,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(419,70): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+﻿  PathFinder.cpp
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.h(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(26,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(44,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(47,20): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(47,74): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(133,13): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+  Main.cpp
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.h(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(29,21): warning C4018: '>': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(43,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(270,16): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(310,18): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(313,24): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(338,19): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(341,25): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(408,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(410,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(417,70): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(419,51): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(417,51): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(427,70): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(425,70): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(427,51): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(425,51): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(441,28): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(439,28): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(442,28): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(440,28): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(472,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(474,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(470,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(472,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(475,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(473,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(489,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(491,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(487,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(489,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(492,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(490,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(657,18): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(662,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(663,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(666,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(655,18): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(660,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(661,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(664,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Main.cpp(667,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(665,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-  SFML_CAP4621.vcxproj -> C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Debug\SFML_CAP4621.exe
+  Generating Code...
+  SFML_CAP4621.vcxproj -> D:\Documents\College\AI & Heuristics\Project\Pathplanner\Debug\SFML_CAP4621.exe

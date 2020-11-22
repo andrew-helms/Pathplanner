@@ -1,1 +1,100 @@
-﻿sfml-graphics-d.lib(sfml-graphics-d-2.dll) : fatal error LNK1112: module machine type 'x86' conflicts with target machine type 'x64'
+﻿  AStar.cpp
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\AStar.cpp(84,13): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+  Character.cpp
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Character.cpp(42,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Character.cpp(43,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Character.cpp(56,12): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Character.cpp(57,12): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Character.cpp(69,11): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Character.cpp(70,11): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Character.cpp(78,16): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Character.cpp(79,16): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Character.cpp(85,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Character.cpp(86,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  Main.cpp
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(407,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(409,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(416,70): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(416,51): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(424,70): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(424,51): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(438,28): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(439,28): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(471,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(472,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(488,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(489,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(495,39): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(659,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(660,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(663,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(664,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+  TileMap.cpp
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\TileMap.cpp(154,20): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\TileMap.cpp(155,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  Generating Code...
+sfml-graphics-d.lib(sfml-graphics-d-2.dll) : fatal error LNK1112: module machine type 'x86' conflicts with target machine type 'x64'

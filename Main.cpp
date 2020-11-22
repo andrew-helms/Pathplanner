@@ -7,7 +7,7 @@
 
 #include "Character.h" //Used for characters.
 #include "TileMap.h" //The tile map.
-#include "AStar.h" //AStar algorithm and related includes
+#include "PathFinder.h" //AStar algorithm and related includes
 using namespace std::chrono_literals; //Namespace to not write it when using this_thread and sleep_for
 
 //Pathing render-system: takes in a series of actions (std::vector<std::vector<int> >, each action being size 2) and moves the player along the
