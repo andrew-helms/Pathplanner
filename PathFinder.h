@@ -72,4 +72,5 @@ public:
 
 private:
 	void UpdateVertex(LPANode* node, LPANode* start, std::vector<Node*>* queue);
+	double CalcKey(LPANode* node, Coordinate* goalCoord);
 };

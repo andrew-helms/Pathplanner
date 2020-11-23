@@ -37,3 +37,13 @@ x64/Debug/vc142.idb
 x64/Debug/vc142.pdb
 .vs/SFML_CAP4621/v16/Browse.VC.opendb
 .vs/SFML_CAP4621/v16/ipch/AutoPCH/500b6f41433fce3d/ASTAR.ipch
+.vs/SFML_CAP4621/v16/ipch/AutoPCH/a8ee9c4273befb37/PATHFINDER.ipch
+Debug/Main.obj
+Debug/PathFinder.obj
+Debug/SFML_CAP4621.exe
+Debug/SFML_CAP4621.ilk
+Debug/SFML_CAP4621.log
+Debug/SFML_CAP4621.pdb
+Debug/SFML_CAP4621.tlog/link.read.1.tlog
+Debug/vc142.idb
+Debug/vc142.pdb
