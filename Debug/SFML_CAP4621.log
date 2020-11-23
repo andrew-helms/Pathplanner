@@ -4,7 +4,13 @@ D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(26,21): 
 D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(44,21): warning C4018: '<': signed/unsigned mismatch
 D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(47,20): warning C4018: '>=': signed/unsigned mismatch
 D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(47,74): warning C4018: '>=': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(133,13): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(105,82): warning C4305: 'argument': truncation from '__int64' to 'int'
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(105,64): warning C4309: 'argument': truncation of constant value
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(114,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(132,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(135,20): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(135,74): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(226,13): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
   Main.cpp
 D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.h(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(29,21): warning C4018: '>': signed/unsigned mismatch

@@ -1,7 +1,8 @@
 #pragma once
 #include <vector>
 #include <map>
-#include "time.h""
+#include "time.h"
+#include <algorithm>
 
 class Coordinate {
 public:
@@ -23,7 +24,7 @@ public:
 	std::vector<int> actionFromParent;
 	Node* parent;
 
-private:
+protected:
 	Coordinate* position;
 };
 
@@ -55,4 +56,17 @@ class AStar : public PathFinder {
 public:
 	AStar(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles);
 	PathReturn* Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal);
+};
+
+class LPA : public PathFinder {
+public:
+	LPA(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles);
+	PathReturn* Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal);
+};
+
+class LPANode : public Node {
+public:
+	LPANode(Coordinate* Position, Node* Parent, int Cost, int RHS, std::vector<int> ActionFromParent);
+
+	int rhs;
 };
