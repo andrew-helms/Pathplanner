@@ -25,7 +25,7 @@ int PathingCount = 0;
 std::vector<std::vector<std::vector<int > > > ActionsPerAgent;
 std::vector<Character*> Agents;
 
-void PathFunc(std::vector<std::vector<std::vector<int> > > PathActions, TileMap& Map, std::vector<Character*> Agents, std::vector<bool>& Pathing, int PathCount)
+void PathFunc(std::vector<std::vector<std::vector<int> > > PathActions, TileMap& Map, std::vector<bool>& Pathing, int PathCount)
 {
 	//First we'll check if we're currently pathing (this is to avoid checking Pathing[PathCount] when the vector doesn't have an
 	//element at that point.
@@ -95,6 +95,7 @@ void PathFunc(std::vector<std::vector<std::vector<int> > > PathActions, TileMap&
 			PathCounter = -1;
 		}*/
 		std::this_thread::sleep_for(0.1s); //Sleeping so we visually see the change.
+		std::cout << Agents.size();
 	}
 };
 
@@ -389,7 +390,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1010, 1010), "CAP4621 Project", sf::Style::Titlebar | sf::Style::Close);
 	while (window.isOpen())
 	{
-		PathFunc(ActionsPerAgent, Map, Agents, Pathing, PathingCount);
+		PathFunc(ActionsPerAgent, Map, Pathing, PathingCount);
 		//The function above is called to start the pathfinding, nothing should be needed to be changed just what is contained
 		//in the Actions vector.
 		//This function will set Pathing[0] to false once it's done pathing then add a true to the end of the pathing vector
