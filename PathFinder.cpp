@@ -40,6 +40,7 @@ PathReturn AStar::Update(std::vector<std::vector<int>> actions, std::vector<std:
 	actionSpace = actions;
 	obstacles = Obstacles;
 
+	stateSpace.clear();
 	std::vector<std::vector<int>> path;
 	stateSpace[*startCoord] = new Node(startCoord, nullptr, 0, start); //adds start as action from the parent just as a placeholder. Not used
 	std::vector<Node*> queue;
@@ -174,11 +175,13 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 		return output;
 	}
 
-	firstRun = false;
+	if (firstRun)
+	{
+		stateSpace[*startCoord] = new LPANode(startCoord, nullptr, INTMAX_MAX, 0, start); //adds start as action from the parent just as a placeholder. Not used
+		queue.push_back(stateSpace[*startCoord]);
+	}
 
-	stateSpace[*startCoord] = new LPANode(startCoord, nullptr, INTMAX_MAX, 0, start); //adds start as action from the parent just as a placeholder. Not used
-	queue.push_back(stateSpace[*startCoord]);
-	nodesExpanded++;
+	firstRun = false;
 
 	actionSpace = actions;
 	obstacles = Obstacles;
@@ -241,12 +244,8 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 	
 	std::vector<std::vector<int>> path;
 
-	std::cout << "Done" << std::endl;
-
 	if (stateSpace.count(*goalCoord) != 0)
 	{
-		std::cout << "Goal Found" << std::endl;
-
 		Node* curr = stateSpace[*goalCoord];
 
 		path.push_back(curr->actionFromParent);
