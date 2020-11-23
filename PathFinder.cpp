@@ -195,31 +195,21 @@ void LPA::UpdateVertex(LPANode* node, LPANode* start)
 
 		for (int i = 0; i < actionSpace.size(); i++)
 		{
-			Coordinate* newCoord = new Coordinate(node->getPosition()->x + actionSpace[i][0] * -1, node->getPosition()->y + actionSpace[i][1] * -1);
-			if (newCoord->x >= obstacles.size() || newCoord->x < 0 || newCoord->y >= obstacles[0].size() || newCoord->y < 0 || obstacles[newCoord->x][newCoord->y].size() != 0 && obstacles[newCoord->x][newCoord->y][0])
-			{
-				delete newCoord;
+			Coordinate newCoord(node->getPosition()->x + actionSpace[i][0] * -1, node->getPosition()->y + actionSpace[i][1] * -1);// = new Coordinate(node->getPosition()->x + actionSpace[i][0] * -1, node->getPosition()->y + actionSpace[i][1] * -1);
+			if (newCoord.x >= obstacles.size() || newCoord.x < 0 || newCoord.y >= obstacles[0].size() || newCoord.y < 0 || obstacles[newCoord.x][newCoord.y].size() != 0 && obstacles[newCoord.x][newCoord.y][0])
 				continue;
-			}
 
-			LPANode* parent = new LPANode(newCoord, node, INTMAX_MAX, INTMAX_MAX, actionSpace[i]);
-
-			if (stateSpace.count(*newCoord) != 0)
+			if (stateSpace.count(newCoord) != 0)
 			{
-				LPANode* temp = parent;
-				parent = static_cast<LPANode*>(stateSpace[*newCoord]);
-				delete temp;
-			}
-			else
-				stateSpace[*newCoord] = parent;
+				LPANode* parent = static_cast<LPANode*>(stateSpace[newCoord]);
 
-			if (parent->cost + Heuristic(*parent->getPosition(), *node->getPosition()) < minRHS)
-			{
-				node->parent = parent;
-				minRHS = parent->cost + Heuristic(*parent->getPosition(), *node->getPosition());
-			}
-
-			minRHS = std::min(minRHS, parent->cost + Heuristic(*parent->getPosition(), *node->getPosition()));
+				if (parent->cost + Heuristic(*parent->getPosition(), *node->getPosition()) < minRHS)
+				{
+					node->parent = parent;
+					node->actionFromParent = actionSpace[i];
+					minRHS = parent->cost + Heuristic(*parent->getPosition(), *node->getPosition());
+				}
+			}			
 		}
 
 		node->rhs = minRHS;
