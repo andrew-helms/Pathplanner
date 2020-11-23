@@ -4,16 +4,43 @@
 AStar::AStar(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles) : PathFinder(actions, Obstacles)
 {}
 
-PathReturn* AStar::Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal)
+PathReturn AStar::Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal)
 {
 	time_t startTime = time(NULL);
+
+	Coordinate* startCoord = new Coordinate(start[0], start[1]);
+	Coordinate* goalCoord = new Coordinate(goal[0], goal[1]);
+
+	bool haveEdgesChanged = false;
+
+	for (int col = 0; col < Obstacles.size(); col++)
+	{
+		for (int row = 0; row < Obstacles[0].size(); row++)
+		{
+			if (Obstacles[col][row].size() != 0 && obstacles[col][row].size() != 0 && Obstacles[col][row][0] != obstacles[col][row][0])
+				haveEdgesChanged = true;
+			else if ((Obstacles[col][row].size() != 0) != (obstacles[col][row].size() != 0))
+				haveEdgesChanged = true;
+		}
+	}
+
+	if (!firstRun && !haveEdgesChanged)
+	{
+		time_t endTime = time(NULL);
+
+		exeTime += double(endTime - startTime);
+
+		output.exeTime = exeTime;
+
+		return output;
+	}
+
+	firstRun = false;
 
 	actionSpace = actions;
 	obstacles = Obstacles;
 
 	std::vector<std::vector<int>> path;
-	Coordinate* startCoord = new Coordinate(start[0], start[1]);
-	Coordinate* goalCoord = new Coordinate(goal[0], goal[1]);
 	stateSpace[*startCoord] = new Node(startCoord, nullptr, 0, start); //adds start as action from the parent just as a placeholder. Not used
 	std::vector<Node*> queue;
 	queue.push_back(stateSpace[*startCoord]);
@@ -84,7 +111,7 @@ PathReturn* AStar::Update(std::vector<std::vector<int>> actions, std::vector<std
 
 	exeTime += double(endTime - startTime);
 
-	PathReturn* output = new PathReturn(outputPath, nodesExpanded, exeTime);
+	output = PathReturn(outputPath, nodesExpanded, exeTime);
 
 	return output;
 }
@@ -92,18 +119,69 @@ PathReturn* AStar::Update(std::vector<std::vector<int>> actions, std::vector<std
 LPA::LPA(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles) : PathFinder(actions, Obstacles)
 {}
 
-PathReturn* LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal)
+PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal)
 {
 	time_t startTime = time(NULL);
 
-	actionSpace = actions;
-	obstacles = Obstacles;
-
 	Coordinate* startCoord = new Coordinate(start[0], start[1]);
 	Coordinate* goalCoord = new Coordinate(goal[0], goal[1]);
+
+	bool haveEdgesChanged = false;
+
+	for (int col = 0; col < Obstacles.size(); col++)
+	{
+		for (int row = 0; row < Obstacles[0].size(); row++)
+		{
+			if (Obstacles[col][row].size() != 0 && obstacles[col][row].size() != 0 && Obstacles[col][row][0] != obstacles[col][row][0])
+			{
+				for (int i = 0; i < actionSpace.size(); i++)
+				{
+					Coordinate newCoord(col + actionSpace[i][0] * -1, row + actionSpace[i][1] * -1);
+					if (newCoord.x >= obstacles.size() || newCoord.x < 0 || newCoord.y >= obstacles[0].size() || newCoord.y < 0 || obstacles[newCoord.x][newCoord.y].size() != 0 && obstacles[newCoord.x][newCoord.y][0])
+						continue;
+
+					if (stateSpace.count(newCoord) != 0)
+						UpdateVertex(static_cast<LPANode*>(stateSpace[newCoord]), static_cast<LPANode*>(stateSpace[*startCoord]));
+				}
+
+				haveEdgesChanged = true;
+			}
+			else if ((Obstacles[col][row].size() != 0) != (obstacles[col][row].size() != 0))
+			{
+				for (int i = 0; i < actionSpace.size(); i++)
+				{
+					Coordinate newCoord(col + actionSpace[i][0] * -1, row + actionSpace[i][1] * -1);
+					if (newCoord.x >= obstacles.size() || newCoord.x < 0 || newCoord.y >= obstacles[0].size() || newCoord.y < 0 || obstacles[newCoord.x][newCoord.y].size() != 0 && obstacles[newCoord.x][newCoord.y][0])
+						continue;
+
+					if (stateSpace.count(newCoord) != 0)
+						UpdateVertex(static_cast<LPANode*>(stateSpace[newCoord]), static_cast<LPANode*>(stateSpace[*startCoord]));
+				}
+
+				haveEdgesChanged = true;
+			}
+		}
+	}
+
+	if (!firstRun && !haveEdgesChanged)
+	{
+		time_t endTime = time(NULL);
+
+		exeTime += double(endTime - startTime);
+
+		output.exeTime = exeTime;
+
+		return output;
+	}
+
+	firstRun = false;
+
 	stateSpace[*startCoord] = new LPANode(startCoord, nullptr, INTMAX_MAX, 0, start); //adds start as action from the parent just as a placeholder. Not used
 	queue.push_back(stateSpace[*startCoord]);
 	nodesExpanded++;
+
+	actionSpace = actions;
+	obstacles = Obstacles;
 
 	while (!queue.empty())
 	{
@@ -124,17 +202,7 @@ PathReturn* LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::
 			|| (abs(std::min(curr->cost, curr->rhs) + Heuristic(*curr->getPosition(), *goalCoord) - std::min(stateSpace[*goalCoord]->cost, static_cast<LPANode*>(stateSpace[*goalCoord])->rhs)) < 0.01
 			&& std::min(curr->cost, curr->rhs) >= std::min(stateSpace[*goalCoord]->cost, static_cast<LPANode*>(stateSpace[*goalCoord])->rhs))
 			&& abs(stateSpace[*goalCoord]->cost - static_cast<LPANode*>(stateSpace[*goalCoord])->rhs) < 0.01)
-			{
-				path.push_back(curr->actionFromParent);
-
-				while (curr->parent != nullptr)
-				{
-					path.push_back(curr->actionFromParent);
-					curr = static_cast<LPANode*>(curr->parent);
-				}
-
 				break;
-			}
 		}
 
 		if (curr->cost > curr->rhs)
@@ -170,6 +238,25 @@ PathReturn* LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::
 			}
 		}
 	}
+	
+	std::vector<std::vector<int>> path;
+
+	std::cout << "Done" << std::endl;
+
+	if (stateSpace.count(*goalCoord) != 0)
+	{
+		std::cout << "Goal Found" << std::endl;
+
+		Node* curr = stateSpace[*goalCoord];
+
+		path.push_back(curr->actionFromParent);
+
+		while (curr->parent != nullptr)
+		{
+			path.push_back(curr->actionFromParent);
+			curr = curr->parent;
+		}
+	}
 
 	std::vector<std::vector<int>> outputPath;
 	while (!path.empty())
@@ -182,7 +269,7 @@ PathReturn* LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::
 
 	exeTime += double(endTime - startTime);
 
-	PathReturn* output = new PathReturn(outputPath, nodesExpanded, exeTime);
+	output = PathReturn(outputPath, nodesExpanded, exeTime);
 
 	return output;
 }
@@ -271,7 +358,13 @@ PathReturn::PathReturn(std::vector<std::vector<int>> Path, int NodesExpanded, do
 	exeTime = ExeTime;
 }
 
-PathFinder::PathFinder(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles) : obstacles(Obstacles), actionSpace(actions), nodesExpanded(0), exeTime(0)
+PathReturn::PathReturn()
+{
+	nodesExpanded = 0;
+	exeTime = 0;
+}
+
+PathFinder::PathFinder(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles) : obstacles(Obstacles), actionSpace(actions), nodesExpanded(0), exeTime(0), firstRun(true)
 {}
 
 double PathFinder::Heuristic(Coordinate Start, Coordinate End)

@@ -260,12 +260,12 @@ int main()
 	Player.AddAction(1, 0);
 	Player.AddAction(0, -1);
 	Player.AddAction(-1, 0);
-	PathFinder* pathPlanner = new LPA(Player.GetActions(), Map.TileTraits);
+	PathFinder* pathPlanner = new AStar(Player.GetActions(), Map.TileTraits);
 	std::vector<int> TestVect;
 	TestVect.push_back(5);
 	TestVect.push_back(23);
-	PathReturn* path = pathPlanner->Update(Player.GetActions(), Map.TileTraits, Player.GetLocation(), TestVect);
-	std::vector<std::vector<int>> Actions = path->path;
+	PathReturn path = pathPlanner->Update(Player.GetActions(), Map.TileTraits, Player.GetLocation(), TestVect);
+	std::vector<std::vector<int>> Actions = path.path;
 	int Parser = 0;
 	while (Parser < Actions.size())
 	{

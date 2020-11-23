@@ -31,6 +31,7 @@ protected:
 class PathReturn {
 public:
 	PathReturn(std::vector<std::vector<int>> Path, int NodesExpanded, double ExeTime);
+	PathReturn();
 
 	std::vector<std::vector<int>> path;
 	int nodesExpanded;
@@ -40,7 +41,7 @@ public:
 class PathFinder {
 public:
 	PathFinder(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles);
-	virtual PathReturn* Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal) = 0;
+	virtual PathReturn Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal) = 0;
 
 protected:
 	std::vector<std::vector<int>> actionSpace;
@@ -48,6 +49,8 @@ protected:
 	std::map<Coordinate, Node*> stateSpace;
 	int nodesExpanded;
 	double exeTime;
+	PathReturn output;
+	bool firstRun;
 
 	double Heuristic(Coordinate Start, Coordinate End);
 };
@@ -55,7 +58,7 @@ protected:
 class AStar : public PathFinder {
 public:
 	AStar(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles);
-	PathReturn* Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal);
+	PathReturn Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal);
 };
 
 class LPANode : public Node {
@@ -68,11 +71,10 @@ public:
 class LPA : public PathFinder {
 public:
 	LPA(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles);
-	PathReturn* Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal);
+	PathReturn Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal);
 
 private:
 	void UpdateVertex(LPANode* node, LPANode* start);
 	double CalcKey(LPANode* node, Coordinate* goalCoord);
 	std::vector<Node*> queue;
-	std::vector<std::vector<int>> path;
 };
