@@ -124,11 +124,19 @@ PathReturn* LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::
 		{
 			if (std::min(curr->cost, curr->rhs) + Heuristic(*curr->getPosition(), *goalCoord) < std::min(stateSpace[*goalCoord]->cost, static_cast<LPANode*>(stateSpace[*goalCoord])->rhs)
 			|| (abs(std::min(curr->cost, curr->rhs) + Heuristic(*curr->getPosition(), *goalCoord) - std::min(stateSpace[*goalCoord]->cost, static_cast<LPANode*>(stateSpace[*goalCoord])->rhs)) < 0.01
-			&& std::min(curr->cost, curr->rhs) < std::min(stateSpace[*goalCoord]->cost, static_cast<LPANode*>(stateSpace[*goalCoord])->rhs)))
-				break;
+			&& std::min(curr->cost, curr->rhs) < std::min(stateSpace[*goalCoord]->cost, static_cast<LPANode*>(stateSpace[*goalCoord])->rhs))
+			|| abs(stateSpace[*goalCoord]->cost - static_cast<LPANode*>(stateSpace[*goalCoord])->rhs) > 0.01)
+			{
+				path.push_back(curr->actionFromParent);
 
-			if (abs(stateSpace[*goalCoord]->cost - static_cast<LPANode*>(stateSpace[*goalCoord])->rhs) > 0.01)
+				while (curr->parent != nullptr)
+				{
+					path.push_back(curr->actionFromParent);
+					curr = static_cast<LPANode*>(curr->parent);
+				}
+
 				break;
+			}
 		}
 
 		if (curr->cost > curr->rhs)
