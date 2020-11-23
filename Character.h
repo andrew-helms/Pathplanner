@@ -15,6 +15,7 @@ class Character
 	//It will store its actions as a vector of integers (the inner vectors only pairs of ints) as well as its current location.
 	std::vector<sf::Vector2f> Actions;
 	sf::Vector2f CurrentLocation;
+	std::vector<int> GoalLocation;
 	
 	//The input for creating the character is its texture image.
 	Character(std::string ImageLocation);

@@ -20,8 +20,12 @@ std::vector<bool> Pathing(1, true); //Made a vector so we can path multiple time
 //one to false so that we can begin the next path. Added an integer to the Path function input to choose which path we're currently
 //running (so PathCount = 0 is for the first path, PathCount = 1 the second, etc.))
 //are added to it.
+//We will increment PathingCount each time we run a new path.
+int PathingCount = 0;
+std::vector<std::vector<std::vector<int > > > ActionsPerAgent;
+std::vector<Character*> Agents;
 
-void Path(std::vector<std::vector<int> > PathActions, TileMap& Map, Character& Player, std::vector<bool>& Pathing, int PathCount)
+void PathFunc(std::vector<std::vector<std::vector<int> > > PathActions, TileMap& Map, std::vector<Character*> Agents, std::vector<bool>& Pathing, int PathCount)
 {
 	//First we'll check if we're currently pathing (this is to avoid checking Pathing[PathCount] when the vector doesn't have an
 	//element at that point.
@@ -34,9 +38,46 @@ void Path(std::vector<std::vector<int> > PathActions, TileMap& Map, Character& P
 	{
 		PathCounter++; //This is done so that we can see the map before any pathing is done.
 	}
-	else if ((CurrentlyPathing)&&(PathActions.size() > 0))
+	else if (CurrentlyPathing)
 	{
-		//We get our current action, which is PathActions for at PathCounter.
+		//We'll parse through each of the pathactions, with PathActions[0] corresponding to the inputted Agents[0].
+		int CurrentAgent = 0;
+		while (CurrentAgent < PathActions.size())
+		{
+			if (!(PathCounter >= PathActions[CurrentAgent].size()))
+			{
+				std::vector<int> CurrentAction = PathActions[CurrentAgent][PathCounter];
+				Agents[CurrentAgent]->Move(CurrentAction[0], CurrentAction[1], Map);
+			}
+			CurrentAgent++;
+		}
+		PathCounter++;
+		bool FinishedPathing = true;
+		CurrentAgent = 0;
+		while (CurrentAgent < PathActions.size())
+		{
+			if(PathCounter < PathActions[CurrentAgent].size())
+			{
+				FinishedPathing = false;
+			}
+			CurrentAgent++;
+		}
+		if (FinishedPathing)
+		{
+			Pathing[PathCount] = false;
+			if (Pathing.size() == PathCount + 1)
+			{
+				Pathing.push_back(true);
+			}
+			else
+			{
+				Pathing[PathCount + 1] = true;
+			}
+			PathCounter = -1;
+			ActionsPerAgent.clear();
+			Agents.clear();
+		}
+		/*//We get our current action, which is PathActions for at PathCounter.
 		std::vector<int> CurrentAction = PathActions[PathCounter];
 		Player.Move(CurrentAction[0], CurrentAction[1], Map);
 		PathCounter++;
@@ -52,8 +93,8 @@ void Path(std::vector<std::vector<int> > PathActions, TileMap& Map, Character& P
 				Pathing[PathCount + 1] = true; //Otherwise just set the next one equal to true.
 			}
 			PathCounter = -1;
-		}
-		std::this_thread::sleep_for(1s); //Sleeping so we visually see the change.
+		}*/
+		std::this_thread::sleep_for(0.1s); //Sleeping so we visually see the change.
 	}
 };
 
@@ -72,8 +113,13 @@ int main()
 	LoadingMap.SetMapTexture("images/Blue_Square_Black_Border_16_16.png");
 	LoadingMap.InitializeMap();
 
-	//Creating the character object.
-	Character Player("images/Yellow_Square_Black_Border_16_16.png");
+	//Creating an array of character objects, this will allow us to create any from 1-3 characters so we can show
+	//the implementation of each pathing method on the map at once. We only draw them depending on
+	//whether or not we've created said character.
+	Character* TargetAgent;
+	Character AgentYellow("images/Yellow_Square_Black_Border_16_16.png");
+	Character AgentGreen("images/Green_Square_Black_Border_16_16.png");
+	Character AgentRed("images/Red_Square_Black_Border_16_16.png");
 
 	//Creating the texture for tiles that indicate the player can move to the location.
 	sf::Texture ActionTileTexture;
@@ -96,6 +142,46 @@ int main()
 
 	//Booleans to preserve button presses (so if the create button is hit the text and effects that appear preserve until the user interacts with it).
 	bool CreateButtonPressed = false;
+
+	//Creating the Set_target texture.
+	sf::Texture SetTarget;
+	SetTarget.loadFromFile("images/Set_Target_64_64.png");
+	sf::RectangleShape SetTargetTile(sf::Vector2f(64.0, 64.0));
+	SetTargetTile.setTexture(&SetTarget);
+	SetTargetTile.setPosition(sf::Vector2f(944.0, 0.0));
+	sf::RectangleShape CurrentTargetTile(sf::Vector2f(32.0, 32.0));
+	CurrentTargetTile.setPosition(944.0, 128.0);
+	sf::Texture YellowTexture;
+	YellowTexture.loadFromFile("images/Yellow_Square_Black_Border_16_16.png");
+	sf::RectangleShape AgentYellowTile(sf::Vector2f(32.0, 32.0));
+	AgentYellowTile.setPosition(976.0, 128.0);
+	AgentYellowTile.setTexture(&YellowTexture);
+	CurrentTargetTile.setTexture(&YellowTexture);
+	sf::Texture GreenTexture;
+	GreenTexture.loadFromFile("images/Green_Square_Black_Border_16_16.png");
+	sf::RectangleShape AgentGreenTile(sf::Vector2f(32.0, 32.0));
+	AgentGreenTile.setPosition(976.0, 152.0);
+	AgentGreenTile.setTexture(&GreenTexture);
+	sf::Texture RedTexture;
+	RedTexture.loadFromFile("images/Red_Square_Black_Border_16_16.png");
+	sf::RectangleShape AgentRedTile(sf::Vector2f(32.0, 32.0));
+	AgentRedTile.setPosition(976.0, 176.0);
+	AgentRedTile.setTexture(&RedTexture);
+
+	//Creating the path button
+	sf::Texture Path;
+	Path.loadFromFile("images/Path_64_64.png");
+	sf::RectangleShape PathTile(sf::Vector2f(64.0, 64.0));
+	PathTile.setTexture(&Path);
+	//Setting the Path's button position to be on the right side, below the selection of characters.
+	PathTile.setPosition(944.0, 224.0);
+
+	//Creating the path all button
+	sf::Texture PathAll;
+	PathAll.loadFromFile("images/Path_All_64_64.png");
+	sf::RectangleShape PathAllTile(sf::Vector2f(64.0, 64.0));
+	PathAllTile.setTexture(&PathAll);
+	PathAllTile.setPosition(944.0, 288.0);
 
 	//Creating the Set_character texture.
 	sf::Texture SetCharacter;
@@ -151,6 +237,17 @@ int main()
 
 	//Boolean for moving character toggle.
 	bool MovingCharacter = false;
+
+	//Creating the Set Path button
+	sf::Texture SetPath;
+	SetPath.loadFromFile("images/Set_Path_64_64.png");
+	sf::RectangleShape SetPathTile(sf::Vector2f(64.0, 64.0));
+	SetPathTile.setTexture(&SetPath);
+	//Setting the Set Path's button position to be below the move character toggle.
+	SetPathTile.setPosition(sf::Vector2f(0.0, 448.0));
+
+	//Creating a bool for set path
+	bool SettingPath = false;
 
 	//Creating the save map button
 	sf::Texture SaveMap;
@@ -244,34 +341,44 @@ int main()
 	Map.LoadMap(7);
 	//To check if there's an obstacle use Map.IsObstacle(int xLoc, int yLoc), for example I know that at (21, 5) there's an obstacle.
 	//**Note: I count from 0 here for this, think of a 2 dimensional array for the grid**
-	std::cout << Map.IsObstacle(21, 5) << std::endl;
-	Player.DoDraw = true; //Set Player.DoDraw to true so it's seen without needing to hit create character.
-	Player.SetLocationInt(5, 5);
-	std::vector<int> CurrentLoc = Player.GetLocation();
-	std::cout << CurrentLoc[0] << " " << CurrentLoc[1] << std::endl;
+	TargetAgent = &AgentYellow;
+	TargetAgent->DoDraw = true; //Set Player.DoDraw to true so it's seen without needing to hit create character.
+	TargetAgent->SetLocationInt(21, 25);
+	std::vector<int> CurrentLoc = TargetAgent->GetLocation();
 	std::this_thread::sleep_for(1s);
+	AgentGreen.DoDraw = true;
+	AgentGreen.SetLocationInt(40, 40);
+	AgentGreen.AddAction(0, 1);
+	AgentGreen.AddAction(1, 0);
+	AgentGreen.AddAction(0, -1);
+	AgentGreen.AddAction(-1, 0);
+	std::vector<int> GLoc;
+	GLoc.push_back(5);
+	GLoc.push_back(5);
+	AgentGreen.GoalLocation = GLoc;
 	//Note that Move is used in the Path() function that paths for you, if it runs into an illegal move it just doesn't do the
 	//move and continues on (I think, haven't tested that for 100% certainty)
-	Player.Move(2, 2, Map);
-	Player.Move(14, 18, Map);
-	CurrentLoc = Player.GetLocation();
-	std::cout << CurrentLoc[0] << " " << CurrentLoc[1] << std::endl;
-	Player.AddAction(0, 1);
-	Player.AddAction(1, 0);
-	Player.AddAction(0, -1);
-	Player.AddAction(-1, 0);
-	PathFinder* pathPlanner = new AStar(Player.GetActions(), Map.TileTraits);
-	std::vector<int> TestVect;
-	TestVect.push_back(5);
-	TestVect.push_back(23);
-	PathReturn path = pathPlanner->Update(Player.GetActions(), Map.TileTraits, Player.GetLocation(), TestVect);
-	std::vector<std::vector<int>> Actions = path.path;
-	int Parser = 0;
-	while (Parser < Actions.size())
-	{
-		std::cout << Actions[Parser][0] << " " << Actions[Parser][1] << std::endl;
-		Parser++;
-	}
+	TargetAgent->AddAction(0, 1);
+	TargetAgent->AddAction(1, 0);
+	TargetAgent->AddAction(0, -1);
+	TargetAgent->AddAction(-1, 0);
+	GLoc[0] = 3;
+	GLoc[1] = 2;
+	TargetAgent->GoalLocation = GLoc;
+	AgentRed.DoDraw = true;
+	AgentRed.SetLocationInt(20, 2);
+	AgentRed.AddAction(0, 1);
+	AgentRed.AddAction(1, 0);
+	AgentRed.AddAction(0, -1);
+	AgentRed.AddAction(-1, 0);
+	GLoc[0] = 40;
+	GLoc[1] = 40;
+	AgentRed.GoalLocation = GLoc;
+	//PathFinder* APathPlanner = new AStar(TargetAgent->GetActions(), Map.TileTraits);
+	//PathFinder* pathPlanner = new LPA(TargetAgent->GetActions(), Map.TileTraits);
+	//PathReturn* AStarPath = APathPlanner->Update(TargetAgent->GetActions(), Map.TileTraits, TargetAgent->GetLocation(), TestVect);
+	//PathReturn* path = pathPlanner->Update(TargetAgent->GetActions(), Map.TileTraits, TargetAgent->GetLocation(), TestVect);
+	//std::vector<std::vector<int> > Actions = AStarPath->path; //AStarPath works.
 	//I currently haven't created a way to save characters, so actions need to be added manually using Player.AddAction(int x, int y).
 	//For the path (note: see code up top for how it works: design an std::vector<std::vector <int>> of actions, for this case I'll just add the two I added.
 
@@ -282,7 +389,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1010, 1010), "CAP4621 Project", sf::Style::Titlebar | sf::Style::Close);
 	while (window.isOpen())
 	{
-		Path(Actions, Map, Player, Pathing, 0);
+		PathFunc(ActionsPerAgent, Map, Agents, Pathing, PathingCount);
 		//The function above is called to start the pathfinding, nothing should be needed to be changed just what is contained
 		//in the Actions vector.
 		//This function will set Pathing[0] to false once it's done pathing then add a true to the end of the pathing vector
@@ -414,23 +521,50 @@ int main()
 					//Creating Character > Setting character position > Adding moves to character > Adding obstacles to map > Removing target > Moving character
 					if (CreateButtonPressed)
 					{
-						Player.SetLocation(sf::Vector2f((float)xPos + 1.0, (float)yPos - 8.0));
-						//Remove all actions as this is a new character.
-						Player.Actions.clear();
-						Player.DoDraw = true;
+						if(!(AgentYellow.DoDraw))
+						{
+							AgentYellow.DoDraw = true;
+							AgentYellow.SetLocation(sf::Vector2f((float)xPos + 1.0, (float)yPos - 8.0));
+						}
+						else if (!(AgentGreen.DoDraw))
+						{
+							AgentGreen.DoDraw = true;
+							AgentGreen.SetLocation(sf::Vector2f((float)xPos + 1.0, (float)yPos - 8.0));
+						}
+						else if (!(AgentRed.DoDraw))
+						{
+							AgentRed.DoDraw = true;
+							AgentRed.SetLocation(sf::Vector2f((float)xPos + 1.0, (float)yPos - 8.0));
+						}
+						else
+						{
+							AgentYellow.DoDraw = false;
+							AgentGreen.DoDraw = false;
+							AgentRed.DoDraw = false;
+						}
 						CreateButtonPressed = false;
 					}
 					else if (SetCharacterPressed)
 					{
-						Player.SetLocation(sf::Vector2f((float)xPos + 1.0, (float)yPos - 8.0));
+						TargetAgent->SetLocation(sf::Vector2f((float)xPos + 1.0, (float)yPos - 8.0));
 						SetCharacterPressed = false;
+					}
+					else if (SettingPath)
+					{
+						int xTargetPosition = xPos / 16 - 7;
+						int yTargetPosition = yPos / 16;
+						std::vector<int> GoalLoc;
+						GoalLoc.push_back(xTargetPosition);
+						GoalLoc.push_back(yTargetPosition);
+						TargetAgent->GoalLocation = GoalLoc;
+						SettingPath = false;
 					}
 					else if (AddingMoves)
 					{
 						sf::Vector2f NewAction;
-						NewAction.x = xPos - Player.CurrentLocation.x;
-						NewAction.y = yPos - Player.CurrentLocation.y;
-						Player.Actions.push_back(NewAction);
+						NewAction.x = xPos - TargetAgent->CurrentLocation.x;
+						NewAction.y = yPos - TargetAgent->CurrentLocation.y;
+						TargetAgent->Actions.push_back(NewAction);
 						std::this_thread::sleep_for(0.2s);
 					}
 					else if (AddingObstacles)
@@ -467,14 +601,14 @@ int main()
 						//Now we'll check this tile has an action on it, if so then the player's current position plus said action
 						//should be equal to our xPos, yPos.
 						int Parser = 0;
-						while (Parser < Player.Actions.size())
+						while (Parser < TargetAgent->Actions.size())
 						{
-							int xAction = Player.CurrentLocation.x + Player.Actions[Parser].x;
-							int yAction = Player.CurrentLocation.y + Player.Actions[Parser].y;
+							int xAction = TargetAgent->CurrentLocation.x + TargetAgent->Actions[Parser].x;
+							int yAction = TargetAgent->CurrentLocation.y + TargetAgent->Actions[Parser].y;
 							if ((xPos == xAction) && (yPos == yAction))
 							{
 								//Now we know said action is the one we're targeting, so we remove it.
-								Player.Actions.erase(Player.Actions.begin() + Parser);
+								TargetAgent->Actions.erase(TargetAgent->Actions.begin() + Parser);
 							}
 							Parser++;
 						}
@@ -484,16 +618,26 @@ int main()
 					{
 						//We parse through the possible actions and check if our position is one such action.
 						int Parser = 0;
-						while (Parser < Player.Actions.size())
+						while (Parser < TargetAgent->Actions.size())
 						{
-							int xAction = Player.CurrentLocation.x + Player.Actions[Parser].x;
-							int yAction = Player.CurrentLocation.y + Player.Actions[Parser].y;
+							int xAction = TargetAgent->CurrentLocation.x + TargetAgent->Actions[Parser].x;
+							int yAction = TargetAgent->CurrentLocation.y + TargetAgent->Actions[Parser].y;
 							if ((xPos == xAction) && (yPos == yAction))
 							{
 								int xNewLoc = xPos / 16 - 7;
 								int yNewLoc = yPos / 16;
-								Player.Move(xNewLoc, yNewLoc, Map);
-								Parser = Player.Actions.size();
+								if (!(Map.TileTraits[xNewLoc][yNewLoc].size() == 0))
+								{
+									if(!(Map.TileTraits[xNewLoc][yNewLoc][0]))
+									{
+										TargetAgent->SetLocationInt(xNewLoc, yNewLoc);
+									}
+								}
+								else
+								{
+									TargetAgent->SetLocationInt(xNewLoc, yNewLoc);
+								}
+								Parser = TargetAgent->Actions.size();
 								//The sleep is in case the action we click on sends our mouse into another action.
 								std::this_thread::sleep_for(0.2s);
 							}
@@ -536,7 +680,7 @@ int main()
 					{
 						AddingObstacles = true;
 					}
-					std::vector<std::vector<int> > Testing = Player.GetActions();
+					std::vector<std::vector<int> > Testing = TargetAgent->GetActions();
 					std::this_thread::sleep_for(0.2s);
 				}
 				//These positions indicate the remove toggle button was pressed.
@@ -565,6 +709,19 @@ int main()
 					}
 					std::this_thread::sleep_for(0.2s);
 				}
+				//These positions indicate the set path button was pressed.
+				if (MousePos.x < 65 && MousePos.x >= 0 && MousePos.y < 513 && MousePos.y > 449)
+				{
+					if (SettingPath)
+					{
+						SettingPath = false;
+					}
+					else
+					{
+						SettingPath = true;
+					}
+					std::this_thread::sleep_for(0.2s);
+				}
 				//These positions indicate the save map button was pressed.
 				if (MousePos.x < 65 && MousePos.x >= 0 && MousePos.y < 636 && MousePos.y > 572)
 				{
@@ -590,11 +747,79 @@ int main()
 					AddingObstacles = false;
 					RemoveToggled = false;
 					MovingCharacter = false;
+					SettingPath = false;
 					if (LoadingMapMode)
 					{
 						std::cout << "Cancel pressed, exiting load state.";
 					}
 					LoadingMapMode = false;
+				}
+				//These positions indicate the yellow character was selected
+				if (MousePos.x < 1006 && MousePos.x >= 976 && MousePos.y > 128 && MousePos.y <= 160)
+				{
+					
+					TargetAgent = &AgentYellow;
+					CurrentTargetTile.setTexture(&YellowTexture);
+				}
+				//These positions indicate the green character was selected
+				if (MousePos.x < 1006 && MousePos.x >= 976 && MousePos.y > 152 && MousePos.y <= 184)
+				{
+					
+					TargetAgent = &AgentGreen;
+					CurrentTargetTile.setTexture(&GreenTexture);
+				}
+				//These positions indicate the red character was selected
+				if (MousePos.x < 1006 && MousePos.x >= 976 && MousePos.y > 176 && MousePos.y <= 208)
+				{
+					
+					TargetAgent = &AgentRed;
+					CurrentTargetTile.setTexture(&RedTexture);
+				}
+				//These positions indicate the path button was pressed.
+				if (MousePos.x < 1008 && MousePos.x >= 944 && MousePos.y > 224 && MousePos.y <= 288)
+				{
+					PathFinder* PathPlanner = new AStar(TargetAgent->GetActions(), Map.TileTraits);
+					PathReturn ResultPath = PathPlanner->Update(TargetAgent->GetActions(), Map.TileTraits, TargetAgent->GetLocation(), TargetAgent->GoalLocation);
+					std::vector<std::vector<int> > Actions = ResultPath.path;
+					ActionsPerAgent.push_back(Actions);
+					Agents.push_back(TargetAgent);
+					PathingCount++;
+				}
+				//These positions indicate the path all button was pressed.
+				if (MousePos.x < 1008 && MousePos.x >= 944 && MousePos.y > 288 && MousePos.y <= 352)
+				{
+					bool AtLeastOne = false;
+					if (AgentYellow.DoDraw)
+					{
+						PathFinder* PathPlanner = new AStar(AgentYellow.GetActions(), Map.TileTraits);
+						PathReturn ResultPath = PathPlanner->Update(AgentYellow.GetActions(), Map.TileTraits, AgentYellow.GetLocation(), AgentYellow.GoalLocation);
+						std::vector<std::vector<int> > Actions = ResultPath.path;
+						ActionsPerAgent.push_back(Actions);
+						Agents.push_back(&AgentYellow);
+						AtLeastOne = true;
+					}
+					if (AgentGreen.DoDraw)
+					{
+						PathFinder* PathPlanner = new AStar(AgentGreen.GetActions(), Map.TileTraits);
+						PathReturn ResultPath = PathPlanner->Update(AgentGreen.GetActions(), Map.TileTraits, AgentGreen.GetLocation(), AgentGreen.GoalLocation);
+						std::vector<std::vector<int> > Actions = ResultPath.path;
+						ActionsPerAgent.push_back(Actions);
+						Agents.push_back(&AgentGreen);
+						AtLeastOne = true;
+					}
+					if (AgentRed.DoDraw)
+					{
+						PathFinder* PathPlanner = new AStar(AgentRed.GetActions(), Map.TileTraits);
+						PathReturn ResultPath = PathPlanner->Update(AgentRed.GetActions(), Map.TileTraits, AgentRed.GetLocation(), AgentRed.GoalLocation);
+						std::vector<std::vector<int> > Actions = ResultPath.path;
+						ActionsPerAgent.push_back(Actions);
+						Agents.push_back(&AgentRed);
+						AtLeastOne = true;
+					}
+					if (AtLeastOne)
+					{
+						PathingCount++;
+					}
 				}
 			}
 		}
@@ -613,6 +838,11 @@ int main()
 			window.draw(ToggleIndicatorText);
 			//Note: This turns itself off so the text can't really be seen, for now put in console.
 			SavedMap = false;
+		}
+		else if (SettingPath)
+		{
+			ToggleIndicatorText.setString("Select goal location");
+			window.draw(ToggleIndicatorText);
 		}
 		else if (AddingMoves)
 		{
@@ -642,27 +872,179 @@ int main()
 		window.draw(ToggleObstaclesTile);
 		window.draw(RemoveToggleTile);
 		window.draw(MoveCharacterTile);
+		window.draw(SetPathTile);
 		window.draw(SaveMapTile);
 		window.draw(LoadMapTile);
 		window.draw(CancelButtonTile);
 
+		//Drawing the character select UI
+		window.draw(SetTargetTile);
+		window.draw(CurrentTargetTile);
+		window.draw(AgentYellowTile);
+		window.draw(AgentGreenTile);
+		window.draw(AgentRedTile);
+		
+		//Drawing the UI buttons on the right side.
+		window.draw(PathTile);
+		window.draw(PathAllTile);
+
 		//Drawing characters.
-		if ((Player.DoDraw)&&(!(LoadingMapMode)))
+		if ((AgentYellow.DoDraw)&&(!(LoadingMapMode)))
 		{
-			window.draw(Player.CharacterTile);
+			window.draw(AgentYellow.CharacterTile);
 			//From there we draw a lighter square for any locations the player can move to.
+			sf::RectangleShape GoalTile(sf::Vector2f(32.0, 32.0));
+			if (AgentYellow.GoalLocation.size() == 2)
+			{
+				GoalTile.setTexture(&YellowTexture);
+				int xGoalInt = AgentYellow.GoalLocation[0];
+				int yGoalInt = AgentYellow.GoalLocation[1];
+				float xGoalLoc = (xGoalInt + 7) * 16 + 1;
+				float yGoalLoc = (yGoalInt * 16) - 8;
+				GoalTile.setPosition(sf::Vector2f(xGoalLoc, yGoalLoc));
+				bool Obst = false;
+				if (!(Map.TileTraits[xGoalInt][yGoalInt].size() == 0))
+				{
+					if (Map.TileTraits[xGoalInt][yGoalInt][0])
+					{
+						Obst = true;
+					}
+				}
+				if (!(Obst))
+				{
+					window.draw(GoalTile);
+				}
+			}
 			int Parser = 0;
-			while (Parser < Player.Actions.size())
+			while (Parser < AgentYellow.Actions.size())
 			{
 				sf::RectangleShape ActionTile(sf::Vector2f(32.0, 32.0));
 				ActionTile.setTexture(&ActionTileTexture);
 				//Since each action is a vector, the location would be the player's location, plus the vector, times 16 to convert to pixels.
-				float xLoc = Player.CurrentLocation.x + Player.Actions[Parser].x + 1.0;
-				float yLoc = Player.CurrentLocation.y + Player.Actions[Parser].y - 8.0;
+				float xLoc = AgentYellow.CurrentLocation.x + AgentYellow.Actions[Parser].x + 1.0;
+				float yLoc = AgentYellow.CurrentLocation.y + AgentYellow.Actions[Parser].y - 8.0;
 				ActionTile.setPosition(sf::Vector2f(xLoc, yLoc));
 				//Also get its tile location on the minimap.
-				int xTileLoc = (Player.CurrentLocation.x + Player.Actions[Parser].x) / 16 - 7;
-				int yTileLoc = (Player.CurrentLocation.y + Player.Actions[Parser].y) / 16;
+				int xTileLoc = (AgentYellow.CurrentLocation.x + AgentYellow.Actions[Parser].x) / 16 - 7;
+				int yTileLoc = (AgentYellow.CurrentLocation.y + AgentYellow.Actions[Parser].y) / 16;
+				//Test if the action sends us to a position on the map, if not don't draw it.
+				if (!((xTileLoc < 0) || (xTileLoc > 46) || (yTileLoc > 56) || (yTileLoc < 0)))
+				{
+					//If it's on the map, also test if the location is where an obstacle is.
+					bool NoObstacle = true;
+					if (!(Map.TileTraits[xTileLoc][yTileLoc].size() == 0))
+					{
+						if (Map.TileTraits[xTileLoc][yTileLoc][0])
+						{
+							NoObstacle = false;
+						}
+					}
+					if (NoObstacle)
+					{
+						window.draw(ActionTile);
+					}
+				}
+				Parser++;
+			}
+		}
+		//Drawing agent green.
+		if ((AgentGreen.DoDraw) && (!(LoadingMapMode)))
+		{
+			window.draw(AgentGreen.CharacterTile);
+			//From there we draw a lighter square for any locations the player can move to.
+			sf::RectangleShape GoalTile(sf::Vector2f(32.0, 32.0));
+			if (AgentGreen.GoalLocation.size() == 2)
+			{
+				GoalTile.setTexture(&GreenTexture);
+				int xGoalInt = AgentGreen.GoalLocation[0];
+				int yGoalInt = AgentGreen.GoalLocation[1];
+				float xGoalLoc = (xGoalInt + 7) * 16 + 1;
+				float yGoalLoc = (yGoalInt * 16) - 8;
+				GoalTile.setPosition(sf::Vector2f(xGoalLoc, yGoalLoc));
+				bool Obst = false;
+				if (!(Map.TileTraits[xGoalInt][yGoalInt].size() == 0))
+				{
+					if (Map.TileTraits[xGoalInt][yGoalInt][0])
+					{
+						Obst = true;
+					}
+				}
+				if (!(Obst))
+				{
+					window.draw(GoalTile);
+				}
+			}
+			int Parser = 0;
+			while (Parser < AgentGreen.Actions.size())
+			{
+				sf::RectangleShape ActionTile(sf::Vector2f(32.0, 32.0));
+				ActionTile.setTexture(&ActionTileTexture);
+				//Since each action is a vector, the location would be the player's location, plus the vector, times 16 to convert to pixels.
+				float xLoc = AgentGreen.CurrentLocation.x + AgentGreen.Actions[Parser].x + 1.0;
+				float yLoc = AgentGreen.CurrentLocation.y + AgentGreen.Actions[Parser].y - 8;
+				ActionTile.setPosition(sf::Vector2f(xLoc, yLoc));
+				//Also get its tile location on the minimap.
+				int xTileLoc = (AgentGreen.CurrentLocation.x + AgentGreen.Actions[Parser].x) / 16 - 7;
+				int yTileLoc = (AgentGreen.CurrentLocation.y + AgentGreen.Actions[Parser].y) / 16;
+				//Test if the action sends us to a position on the map, if not don't draw it.
+				if (!((xTileLoc < 0) || (xTileLoc > 46) || (yTileLoc > 56) || (yTileLoc < 0)))
+				{
+					//If it's on the map, also test if the location is where an obstacle is.
+					bool NoObstacle = true;
+					if (!(Map.TileTraits[xTileLoc][yTileLoc].size() == 0))
+					{
+						if (Map.TileTraits[xTileLoc][yTileLoc][0])
+						{
+							NoObstacle = false;
+						}
+					}
+					if (NoObstacle)
+					{
+						window.draw(ActionTile);
+					}
+				}
+				Parser++;
+			}
+		}
+		//Drawing agent red.
+		if ((AgentRed.DoDraw) && (!(LoadingMapMode)))
+		{
+			window.draw(AgentRed.CharacterTile);
+			//From there we draw a lighter square for any locations the player can move to.
+			sf::RectangleShape GoalTile(sf::Vector2f(32.0, 32.0));
+			if (AgentRed.GoalLocation.size() == 2)
+			{
+				GoalTile.setTexture(&RedTexture);
+				int xGoalInt = AgentRed.GoalLocation[0];
+				int yGoalInt = AgentRed.GoalLocation[1];
+				float xGoalLoc = (xGoalInt + 7) * 16 + 1;
+				float yGoalLoc = (yGoalInt * 16) - 8;
+				GoalTile.setPosition(sf::Vector2f(xGoalLoc, yGoalLoc));
+				bool Obst = false;
+				if (!(Map.TileTraits[xGoalInt][yGoalInt].size() == 0))
+				{
+					if (Map.TileTraits[xGoalInt][yGoalInt][0])
+					{
+						Obst = true;
+					}
+				}
+				if (!(Obst))
+				{
+					window.draw(GoalTile);
+				}
+			}
+			int Parser = 0;
+			while (Parser < AgentRed.Actions.size())
+			{
+				sf::RectangleShape ActionTile(sf::Vector2f(32.0, 32.0));
+				ActionTile.setTexture(&ActionTileTexture);
+				//Since each action is a vector, the location would be the player's location, plus the vector, times 16 to convert to pixels.
+				float xLoc = AgentRed.CurrentLocation.x + AgentRed.Actions[Parser].x + 1.0;
+				float yLoc = AgentRed.CurrentLocation.y + AgentRed.Actions[Parser].y - 8.0;
+				ActionTile.setPosition(sf::Vector2f(xLoc, yLoc));
+				//Also get its tile location on the minimap.
+				int xTileLoc = (AgentRed.CurrentLocation.x + AgentRed.Actions[Parser].x) / 16 - 7;
+				int yTileLoc = (AgentRed.CurrentLocation.y + AgentRed.Actions[Parser].y) / 16;
 				//Test if the action sends us to a position on the map, if not don't draw it.
 				if (!((xTileLoc < 0) || (xTileLoc > 46) || (yTileLoc > 56) || (yTileLoc < 0)))
 				{
