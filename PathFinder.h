@@ -17,10 +17,10 @@ bool operator==(const Coordinate& lhs, const Coordinate& rhs);
 
 class Node {
 public:
-	Node(Coordinate* Position, Node* Parent, int Cost, std::vector<int> ActionFromParent);
+	Node(Coordinate* Position, Node* Parent, double Cost, std::vector<int> ActionFromParent);
 	Coordinate* getPosition();
 
-	int cost;
+	double cost;
 	std::vector<int> actionFromParent;
 	Node* parent;
 
@@ -49,7 +49,7 @@ protected:
 	int nodesExpanded;
 	double exeTime;
 
-	int Heuristic(Coordinate Start, Coordinate End);
+	double Heuristic(Coordinate Start, Coordinate End);
 };
 
 class AStar : public PathFinder {
@@ -58,15 +58,18 @@ public:
 	PathReturn* Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal);
 };
 
+class LPANode : public Node {
+public:
+	LPANode(Coordinate* Position, Node* Parent, double Cost, double RHS, std::vector<int> ActionFromParent);
+
+	double rhs;
+};
+
 class LPA : public PathFinder {
 public:
 	LPA(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles);
 	PathReturn* Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal);
-};
 
-class LPANode : public Node {
-public:
-	LPANode(Coordinate* Position, Node* Parent, int Cost, int RHS, std::vector<int> ActionFromParent);
-
-	int rhs;
+private:
+	void UpdateVertex(LPANode* node, LPANode* start, std::vector<Node*>* queue);
 };

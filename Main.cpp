@@ -260,7 +260,7 @@ int main()
 	Player.AddAction(1, 0);
 	Player.AddAction(0, -1);
 	Player.AddAction(-1, 0);
-	AStar* pathPlanner = new AStar(Player.GetActions(), Map.TileTraits);
+	PathFinder* pathPlanner = new LPA(Player.GetActions(), Map.TileTraits);
 	std::vector<int> TestVect;
 	TestVect.push_back(5);
 	TestVect.push_back(23);
