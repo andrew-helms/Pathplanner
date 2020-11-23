@@ -71,6 +71,8 @@ public:
 	PathReturn* Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal);
 
 private:
-	void UpdateVertex(LPANode* node, LPANode* start, std::vector<Node*>* queue);
+	void UpdateVertex(LPANode* node, LPANode* start);
 	double CalcKey(LPANode* node, Coordinate* goalCoord);
+	std::vector<Node*> queue;
+	std::vector<std::vector<int>> path;
 };
