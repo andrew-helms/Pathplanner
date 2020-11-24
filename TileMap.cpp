@@ -191,7 +191,7 @@ std::vector<DataNode> TileMap::LoadMap(int MapIndex)
 	//First we make sure our MapIndex exists (it should, we only call this internally, but if it doesn't we can return
 	//false to indicate that we're at the end so hitting the forward arrow loops back.
 	std::string FileName = (std::string)"SavedMaps/" + "Map" + std::to_string(MapIndex) + (std::string)".txt";
-	std::fstream MapFileIn;
+	std::ifstream MapFileIn;
 	//Our map is 47 to 57, we start at 0 and every time we pass it we increase by 1 along the 47,
 	//once we reach 47 we reset to 0 and increase 57 by one, this is needed to get the right position
 	//of the tiles.
@@ -266,14 +266,23 @@ std::vector<DataNode> TileMap::LoadMap(int MapIndex)
 		}
 		//Now that we're here xLoc is at 47, meaning we just finished the map, time to read the three agents.
 		int Parser = 0;
+		int Tester = 0;
 		while (Parser < 3)
 		{
 			DataNode CurrentAgent;
 			//First we get the next item that isn't a comma.
 			std::string CurrentInput = "";
-			while ((MapFileIn >> std::noskipws >> c) && (!(c == ',')))
+			while ((c == ',') || (Tester > 10))
 			{
+				MapFileIn >> c;
+				Tester++;
+			}
+			Tester = 0;
+			while (!(c == ','))
+			{
+				std::cout << "C VALUE " << c << std::endl;
 				CurrentInput = CurrentInput + c;
+				MapFileIn >> std::noskipws >> c;
 			}
 			//If it's a D then we draw the agent.
 			if (CurrentInput[0] == 'D')
@@ -284,6 +293,12 @@ std::vector<DataNode> TileMap::LoadMap(int MapIndex)
 			{
 				CurrentAgent.Drawn = false;
 			}
+			while ((c == ',') || (Tester > 10))
+			{
+				MapFileIn >> c;
+				Tester++;
+			}
+			Tester = 0;
 			CurrentInput = "";
 			//Now we get the x coordinate of its location.
 			while (!(c == ','))
@@ -294,29 +309,48 @@ std::vector<DataNode> TileMap::LoadMap(int MapIndex)
 			}
 			int xLoc = std::stoi(CurrentInput);
 			CurrentInput = "";
-
-			while ((MapFileIn >> std::noskipws >> c) && (!(c == ',')))
+			while ((c == ',')||(Tester > 10))
+			{
+				MapFileIn >> c;
+				Tester++;
+			}
+			Tester = 0;
+			while (!(c == ','))
 			{
 				CurrentInput = CurrentInput + c;
+				MapFileIn >> std::noskipws >> c;
 			}
 			int yLoc = std::stoi(CurrentInput);
 			CurrentInput = "";
 
 			CurrentAgent.CurrentLocation.push_back(xLoc);
 			CurrentAgent.CurrentLocation.push_back(yLoc);
-
+			while ((c == ',') || (Tester > 10))
+			{
+				MapFileIn >> c;
+				Tester++;
+			}
+			Tester = 0;
 			//Now its goal location
-			while ((MapFileIn.get(c)) && (!(c == ',')))
+			while (!(c == ','))
 			{
 				std::cout << "Printing x Goal Location: " << std::endl;
 				CurrentInput = CurrentInput + c;
+				MapFileIn >> std::noskipws >> c;
 			}
 			int xGoalLoc = std::stoi(CurrentInput);
 			CurrentInput = "";
 
-			while ((MapFileIn >> std::noskipws >> c) && (!(c == ',')))
+			while ((c == ',') || (Tester > 10))
+			{
+				MapFileIn >> c;
+				Tester++;
+			}
+			Tester = 0;
+			while (!(c == ','))
 			{
 				CurrentInput = CurrentInput + c;
+				MapFileIn >> std::noskipws >> c;
 			}
 			int yGoalLoc = std::stoi(CurrentInput);
 			CurrentInput = "";
@@ -324,28 +358,49 @@ std::vector<DataNode> TileMap::LoadMap(int MapIndex)
 			CurrentAgent.GoalLocation.push_back(xGoalLoc);
 			CurrentAgent.GoalLocation.push_back(yGoalLoc);
 
+			while ((c == ',') || (Tester > 10))
+			{
+				MapFileIn >> c;
+				Tester++;
+			}
+			Tester = 0;
 			//Now we get the number of actions.
-			while ((MapFileIn >> std::noskipws >> c) && (!(c == ',')))
+			while (!(c == ','))
 			{
 				CurrentInput = CurrentInput + c;
+				MapFileIn >> std::noskipws >> c;
 			}
 			int ActionCount = std::stoi(CurrentInput);
 			int InnerParser = 0;
 			CurrentInput = "";
 			while (InnerParser < ActionCount)
 			{
+				while ((c == ',') || (Tester > 10))
+				{
+					MapFileIn >> c;
+					Tester++;
+				}
+				Tester = 0;
 				//For each action we get the action's x coord
-				while ((MapFileIn >> std::noskipws >> c) && (!(c == ',')))
+				while (!(c == ','))
 				{
 					CurrentInput = CurrentInput + c;
+					MapFileIn >> std::noskipws >> c;
 				}
 				int xAction = std::stoi(CurrentInput);
 				std::cout << xAction << " ";
 				CurrentInput = "";
 
-				while ((MapFileIn >> std::noskipws >> c) && (!(c == ',')))
+				while ((c == ',') || (Tester > 10))
+				{
+					MapFileIn >> c;
+					Tester++;
+				}
+				Tester = 0;
+				while (!(c == ','))
 				{
 					CurrentInput = CurrentInput + c;
+					MapFileIn >> std::noskipws >> c;
 				}
 				int yAction = std::stoi(CurrentInput);
 				std::vector<int> CurrentAction;

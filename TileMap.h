@@ -23,6 +23,7 @@ class TileMap
 	//The below is for the statespace, it defaults to having only obstacles until it is whited out manually then through loading.
 	std::vector<std::vector<sf::RectangleShape> > StateVector;
 	std::vector<std::vector<std::vector<bool> > > StateTraits;
+	std::vector<std::vector<std::vector<int> > > AutoMovers;
 	//Current traits:
 	//0 == whether it's in obstacle or not.
 
