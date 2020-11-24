@@ -19,6 +19,8 @@ PathReturn AStar::Update(std::vector<std::vector<int>> actions, std::vector<std:
 		{
 			if (Obstacles[col][row].size() != 0 && obstacles[col][row].size() != 0 && Obstacles[col][row][0] != obstacles[col][row][0])
 				haveEdgesChanged = true;
+			else if ((Obstacles[col][row].size() != 0) != (obstacles[col][row].size() != 0))
+				haveEdgesChanged = true;
 		}
 	}
 
@@ -134,6 +136,20 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 		for (int row = 0; row < Obstacles[0].size(); row++)
 		{
 			if (Obstacles[col][row].size() != 0 && obstacles[col][row].size() != 0 && Obstacles[col][row][0] != obstacles[col][row][0])
+			{
+				for (int i = 0; i < actionSpace.size(); i++)
+				{
+					Coordinate newCoord(col + actionSpace[i][0] * -1, row + actionSpace[i][1] * -1);
+					if (newCoord.x >= Obstacles.size() || newCoord.x < 0 || newCoord.y >= Obstacles[0].size() || newCoord.y < 0 || Obstacles[newCoord.x][newCoord.y].size() != 0 && Obstacles[newCoord.x][newCoord.y][0])
+						continue;
+
+					if (stateSpace.count(newCoord) != 0)
+						UpdateVertex(static_cast<LPANode*>(stateSpace[newCoord]));
+				}
+
+				haveEdgesChanged = true;
+			}
+			else if ((Obstacles[col][row].size() != 0) != (obstacles[col][row].size() != 0))
 			{
 				for (int i = 0; i < actionSpace.size(); i++)
 				{
