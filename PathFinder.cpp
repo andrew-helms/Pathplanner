@@ -19,8 +19,6 @@ PathReturn AStar::Update(std::vector<std::vector<int>> actions, std::vector<std:
 		{
 			if (Obstacles[col][row].size() != 0 && obstacles[col][row].size() != 0 && Obstacles[col][row][0] != obstacles[col][row][0])
 				haveEdgesChanged = true;
-			else if ((Obstacles[col][row].size() != 0) != (obstacles[col][row].size() != 0))
-				haveEdgesChanged = true;
 		}
 	}
 
@@ -140,25 +138,11 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 				for (int i = 0; i < actionSpace.size(); i++)
 				{
 					Coordinate newCoord(col + actionSpace[i][0] * -1, row + actionSpace[i][1] * -1);
-					if (newCoord.x >= obstacles.size() || newCoord.x < 0 || newCoord.y >= obstacles[0].size() || newCoord.y < 0 || obstacles[newCoord.x][newCoord.y].size() != 0 && obstacles[newCoord.x][newCoord.y][0])
+					if (newCoord.x >= Obstacles.size() || newCoord.x < 0 || newCoord.y >= Obstacles[0].size() || newCoord.y < 0 || Obstacles[newCoord.x][newCoord.y].size() != 0 && Obstacles[newCoord.x][newCoord.y][0])
 						continue;
 
 					if (stateSpace.count(newCoord) != 0)
-						UpdateVertex(static_cast<LPANode*>(stateSpace[newCoord]), static_cast<LPANode*>(stateSpace[*startCoord]));
-				}
-
-				haveEdgesChanged = true;
-			}
-			else if ((Obstacles[col][row].size() != 0) != (obstacles[col][row].size() != 0))
-			{
-				for (int i = 0; i < actionSpace.size(); i++)
-				{
-					Coordinate newCoord(col + actionSpace[i][0] * -1, row + actionSpace[i][1] * -1);
-					if (newCoord.x >= obstacles.size() || newCoord.x < 0 || newCoord.y >= obstacles[0].size() || newCoord.y < 0 || obstacles[newCoord.x][newCoord.y].size() != 0 && obstacles[newCoord.x][newCoord.y][0])
-						continue;
-
-					if (stateSpace.count(newCoord) != 0)
-						UpdateVertex(static_cast<LPANode*>(stateSpace[newCoord]), static_cast<LPANode*>(stateSpace[*startCoord]));
+						UpdateVertex(static_cast<LPANode*>(stateSpace[newCoord]));
 				}
 
 				haveEdgesChanged = true;
@@ -181,8 +165,9 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 
 	if (firstRun)
 	{
-		stateSpace[*startCoord] = new LPANode(startCoord, nullptr, INTMAX_MAX, 0, start); //adds start as action from the parent just as a placeholder. Not used
-		queue.push_back(stateSpace[*startCoord]);
+		startNode = new LPANode(startCoord, nullptr, INTMAX_MAX, 0, start); //adds start as action from the parent just as a placeholder. Not used
+		stateSpace[*startCoord] = startNode;
+		queue.push_back(startNode);
 	}
 
 	firstRun = false;
@@ -217,7 +202,7 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 		else
 		{
 			curr->cost = INTMAX_MAX;
-			UpdateVertex(curr, static_cast<LPANode*>(stateSpace[*startCoord]));
+			UpdateVertex(curr);
 		}
 
 		for (int i = 0; i < actionSpace.size(); i++)
@@ -235,13 +220,13 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 				stateSpace[*newCoord] = child;
 				queue.push_back(child);
 
-				UpdateVertex(child, static_cast<LPANode*>(stateSpace[*startCoord]));
+				UpdateVertex(child);
 			}
 			else
 			{
 				LPANode* child = static_cast<LPANode*>(stateSpace[*newCoord]);
 
-				UpdateVertex(child, static_cast<LPANode*>(stateSpace[*startCoord]));
+				UpdateVertex(child);
 			}
 		}
 	}
@@ -277,15 +262,15 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 	return output;
 }
 
-void LPA::UpdateVertex(LPANode* node, LPANode* start)
+void LPA::UpdateVertex(LPANode* node)
 {
-	if (node != start)
+	if (node != startNode)
 	{
 		double minRHS = INTMAX_MAX;
 
 		for (int i = 0; i < actionSpace.size(); i++)
 		{
-			Coordinate newCoord(node->getPosition()->x + actionSpace[i][0] * -1, node->getPosition()->y + actionSpace[i][1] * -1);// = new Coordinate(node->getPosition()->x + actionSpace[i][0] * -1, node->getPosition()->y + actionSpace[i][1] * -1);
+			Coordinate newCoord(node->getPosition()->x + actionSpace[i][0] * -1, node->getPosition()->y + actionSpace[i][1] * -1);
 			if (newCoord.x >= obstacles.size() || newCoord.x < 0 || newCoord.y >= obstacles[0].size() || newCoord.y < 0 || obstacles[newCoord.x][newCoord.y].size() != 0 && obstacles[newCoord.x][newCoord.y][0])
 				continue;
 
