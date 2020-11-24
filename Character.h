@@ -23,9 +23,10 @@ class Character
 	std::vector<sf::Vector2f> Actions;
 	sf::Vector2f CurrentLocation;
 	std::vector<int> GoalLocation;
+	TileMap KnownMap;
 	
 	//The input for creating the character is its texture image.
-	Character(std::string ImageLocation);
+	Character(const char* ImageLocation);
 	void SetLocation(sf::Vector2f NewLocation);
 	void Move(int xPos, int yPos, TileMap& Map);
 	std::vector<std::vector<int> > GetActions(); //GetActions method returns the Actions we have but converted from their vector2fs to the integers that correlate to

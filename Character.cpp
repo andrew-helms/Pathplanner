@@ -1,10 +1,11 @@
 #include "Character.h"
 #include <iostream>
 
-Character::Character(std::string InputLocation)
+Character::Character(const char* InputLocation)
 {
 	CharacterTexture.loadFromFile(InputLocation);
 	CharacterTile.setTexture(&CharacterTexture);
+	KnownMap.InitializeMap();
 }
 
 void Character::SetLocation(sf::Vector2f NewLocation)

@@ -1,100 +1,162 @@
-﻿  AStar.cpp
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\AStar.cpp(84,13): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+﻿  PathFinder.cpp
+C:\Users\elica\Desktop\Pathplanner\PathFinder.cpp(184,83): warning C4305: 'argument': truncation from '__int64' to 'double'
+C:\Users\elica\Desktop\Pathplanner\PathFinder.cpp(219,27): warning C4305: '=': truncation from '__int64' to 'double'
+C:\Users\elica\Desktop\Pathplanner\PathFinder.cpp(234,89): warning C4305: 'argument': truncation from '__int64' to 'double'
+C:\Users\elica\Desktop\Pathplanner\PathFinder.cpp(284,29): warning C4305: 'initializing': truncation from '__int64' to 'double'
   Character.cpp
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Character.cpp(42,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Character.cpp(43,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Character.cpp(56,12): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Character.cpp(42,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Character.cpp(43,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Character.cpp(56,12): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Character.cpp(57,12): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Character.cpp(57,12): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Character.cpp(69,11): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Character.cpp(69,11): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Character.cpp(70,11): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Character.cpp(70,11): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Character.cpp(78,16): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Character.cpp(79,16): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Character.cpp(85,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Character.cpp(86,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Character.cpp(78,16): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Character.cpp(79,16): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Character.cpp(85,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Character.cpp(86,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
   Main.cpp
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(407,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(409,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(416,70): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(579,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(581,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(591,76): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(416,51): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(591,57): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(424,70): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(596,75): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(424,51): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(596,56): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(438,28): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(601,73): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(439,28): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(601,54): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(471,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(614,25): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(472,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(615,25): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(488,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(637,76): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(489,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(637,57): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(495,39): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(659,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(660,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(663,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(661,28): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(664,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(662,28): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(694,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(695,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(711,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(712,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(728,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(1058,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(1059,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(1080,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(1081,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(1084,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(1085,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(1117,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(1118,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(1139,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(1143,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(1144,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(1176,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(1177,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(1198,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(1199,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(1202,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\elica\Desktop\Pathplanner\Main.cpp(1203,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
   TileMap.cpp
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\TileMap.cpp(154,20): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\TileMap.cpp(155,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\TileMap.cpp(217,20): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\elica\Desktop\Pathplanner\TileMap.cpp(218,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
   Generating Code...
 sfml-graphics-d.lib(sfml-graphics-d-2.dll) : fatal error LNK1112: module machine type 'x86' conflicts with target machine type 'x64'

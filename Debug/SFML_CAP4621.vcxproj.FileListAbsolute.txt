@@ -2,3 +2,5 @@ C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathpla
 C:\Users\elica\Desktop\School Assignments (2020)\CAP4621\CAP4621_Project\Pathplanner\Debug\SFML_CAP4621.pdb
 D:\Documents\College\AI & Heuristics\Project\Pathplanner\Debug\SFML_CAP4621.exe
 D:\Documents\College\AI & Heuristics\Project\Pathplanner\Debug\SFML_CAP4621.pdb
+C:\Users\elica\Desktop\Pathplanner\Debug\SFML_CAP4621.exe
+C:\Users\elica\Desktop\Pathplanner\Debug\SFML_CAP4621.pdb
