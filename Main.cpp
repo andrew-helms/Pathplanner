@@ -48,6 +48,21 @@ void PathFunc(TileMap& Map, std::vector<bool>& Pathing, int PathCount)
 		{
 			if (Agents[CurrentAgent]->GetLocation()[0] != Agents[CurrentAgent]->GoalLocation[0] || Agents[CurrentAgent]->GetLocation()[1] != Agents[CurrentAgent]->GoalLocation[1])
 			{
+				int Parser = 0;
+				std::vector<int> CurrentLocation = Agents[CurrentAgent]->GetLocation();
+				while (Parser < ActionsPerAgent[CurrentAgent].size())
+				{
+					if (Map.TileVector[CurrentLocation[0]][CurrentLocation[1]].getTexture() == &Map.PathTexture)
+					{
+						Map.TileVector[CurrentLocation[0]][CurrentLocation[1]].setTexture(&Map.TileTexture);
+					}
+					std::vector<int> NewLocation;
+					NewLocation.push_back(CurrentLocation[0] + ActionsPerAgent[CurrentAgent][Parser][0]);
+					NewLocation.push_back(CurrentLocation[1] + ActionsPerAgent[CurrentAgent][Parser][1]);
+					CurrentLocation = NewLocation;
+					Parser++;
+				}
+
 				std::vector<int> CurrentAction = ActionsPerAgent[CurrentAgent][0];
 				Agents[CurrentAgent]->Move(CurrentAction[0], CurrentAction[1], Map);
 				std::vector<std::vector<std::vector<bool>>> maskedObstacles = Map.TileTraits;
@@ -70,6 +85,26 @@ void PathFunc(TileMap& Map, std::vector<bool>& Pathing, int PathCount)
 				
 				Agents[CurrentAgent]->path = Agents[CurrentAgent]->pfa->Update(Agents[CurrentAgent]->GetActions(), Agents[CurrentAgent]->KnownMap.TileTraits, Agents[CurrentAgent]->GetLocation(), Agents[CurrentAgent]->GoalLocation);
 				ActionsPerAgent[CurrentAgent] = Agents[CurrentAgent]->path.path;
+				//Coloring the path for visual purposes:
+				CurrentLocation = Agents[CurrentAgent]->GetLocation();
+				Parser = 0;
+				while (Parser < ActionsPerAgent[CurrentAgent].size())
+				{
+					std::vector<int> NewLocation;
+					NewLocation.push_back(CurrentLocation[0] + ActionsPerAgent[CurrentAgent][Parser][0]);
+					NewLocation.push_back(CurrentLocation[1] + ActionsPerAgent[CurrentAgent][Parser][1]);
+					if (Map.TileTraits[NewLocation[0]][NewLocation[1]].size() == 0)
+					{
+						Map.TileVector[NewLocation[0]][NewLocation[1]].setTexture(&Map.PathTexture);
+					}
+					else if (Map.TileTraits[NewLocation[0]][NewLocation[1]][0] == false)
+					{
+						Map.TileVector[NewLocation[0]][NewLocation[1]].setTexture(&Map.PathTexture);
+						//Do nothing otherwise it's an obstacle.
+					}
+					CurrentLocation = NewLocation;
+					Parser++;
+				}
 
 			}
 			CurrentAgent++;
@@ -111,7 +146,6 @@ void PathFunc(TileMap& Map, std::vector<bool>& Pathing, int PathCount)
 
 int main()
 {
-
 	//Creating the Tilemap.
 	TileMap Map;
 	//Loading the texture for the map tiles.
