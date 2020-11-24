@@ -22,10 +22,12 @@ std::vector<bool> Pathing(1, true); //Made a vector so we can path multiple time
 //are added to it.
 //We will increment PathingCount each time we run a new path.
 int PathingCount = 0;
+//These are the pathes for each agent, ActionsPerAgent[0] is the path for Agents[0]
 std::vector<std::vector<std::vector<int > > > ActionsPerAgent;
 std::vector<Character*> Agents;
+std::vector<Character> AgentPreserver;
 
-void PathFunc(std::vector<std::vector<std::vector<int> > > PathActions, TileMap& Map, std::vector<bool>& Pathing, int PathCount)
+void PathFunc(TileMap& Map, std::vector<bool>& Pathing, int PathCount)
 {
 	//First we'll check if we're currently pathing (this is to avoid checking Pathing[PathCount] when the vector doesn't have an
 	//element at that point.
@@ -42,11 +44,11 @@ void PathFunc(std::vector<std::vector<std::vector<int> > > PathActions, TileMap&
 	{
 		//We'll parse through each of the pathactions, with PathActions[0] corresponding to the inputted Agents[0].
 		int CurrentAgent = 0;
-		while (CurrentAgent < PathActions.size())
+		while (CurrentAgent < ActionsPerAgent.size())
 		{
-			if (!(PathCounter >= PathActions[CurrentAgent].size()))
+			if (!(PathCounter >= ActionsPerAgent[CurrentAgent].size()))
 			{
-				std::vector<int> CurrentAction = PathActions[CurrentAgent][PathCounter];
+				std::vector<int> CurrentAction = ActionsPerAgent[CurrentAgent][PathCounter];
 				Agents[CurrentAgent]->Move(CurrentAction[0], CurrentAction[1], Map);
 			}
 			CurrentAgent++;
@@ -54,9 +56,9 @@ void PathFunc(std::vector<std::vector<std::vector<int> > > PathActions, TileMap&
 		PathCounter++;
 		bool FinishedPathing = true;
 		CurrentAgent = 0;
-		while (CurrentAgent < PathActions.size())
+		while (CurrentAgent < ActionsPerAgent.size())
 		{
-			if(PathCounter < PathActions[CurrentAgent].size())
+			if(PathCounter < ActionsPerAgent[CurrentAgent].size())
 			{
 				FinishedPathing = false;
 			}
@@ -77,25 +79,7 @@ void PathFunc(std::vector<std::vector<std::vector<int> > > PathActions, TileMap&
 			ActionsPerAgent.clear();
 			Agents.clear();
 		}
-		/*//We get our current action, which is PathActions for at PathCounter.
-		std::vector<int> CurrentAction = PathActions[PathCounter];
-		Player.Move(CurrentAction[0], CurrentAction[1], Map);
-		PathCounter++;
-		if (!(PathCounter < PathActions.size()))
-		{
-			Pathing[PathCount] = false; //Set the Pathing boolean for Path PathCount (so the first Path if PathCount == 0) to false as the path is done.
-			if (Pathing.size() == PathCount + 1) //If this is the case then we need to push_back into our next path (so we can add another later).
-			{
-				Pathing.push_back(true); //Push back a true as it is our next path adn it is the one we're on.
-			}
-			else
-			{
-				Pathing[PathCount + 1] = true; //Otherwise just set the next one equal to true.
-			}
-			PathCounter = -1;
-		}*/
 		std::this_thread::sleep_for(0.1s); //Sleeping so we visually see the change.
-		std::cout << Agents.size();
 	}
 };
 
@@ -183,6 +167,15 @@ int main()
 	sf::RectangleShape PathAllTile(sf::Vector2f(64.0, 64.0));
 	PathAllTile.setTexture(&PathAll);
 	PathAllTile.setPosition(944.0, 288.0);
+
+	//Creating the state space button
+	sf::Texture StateSpace;
+	StateSpace.loadFromFile("images/State_Space_64_64.png");
+	sf::RectangleShape StateSpaceTile(sf::Vector2f(64.0, 64.0));
+	StateSpaceTile.setTexture(&StateSpace);
+	StateSpaceTile.setPosition(944.0, 352.0);
+
+	bool StateSpaceMode = false;
 
 	//Creating the Set_character texture.
 	sf::Texture SetCharacter;
@@ -339,7 +332,8 @@ int main()
 	//If you want to load a map you created using the User Interface, run the LoadMap(int MapIndex) function where your map
 	//is named EXACTLY "Map" + MapIndex in the SavedMaps folder. For example if you wanted Map6 you'd run
 	// Map.LoadMap(6), I'm going to load map six so when you run it you'll see map six.
-	Map.LoadMap(7);
+	std::vector<DataNode> Empty;
+	Empty = Map.LoadMap(7);
 	//To check if there's an obstacle use Map.IsObstacle(int xLoc, int yLoc), for example I know that at (21, 5) there's an obstacle.
 	//**Note: I count from 0 here for this, think of a 2 dimensional array for the grid**
 	TargetAgent = &AgentYellow;
@@ -411,8 +405,8 @@ int main()
 		//Clearing the window.
 		window.clear();
 
-		//Drawing the Tilemap if not in LoadingMapMode.
-		if (!(LoadingMapMode))
+		//Drawing the Tilemap if not in LoadingMapMode or StateSpaceMode.
+		if (!(LoadingMapMode||StateSpaceMode))
 		{
 			int Parser = 0;
 			while (Parser < Map.TileVector.size())
@@ -421,6 +415,20 @@ int main()
 				while (InnerParser < Map.TileVector[Parser].size())
 				{
 					window.draw(Map.TileVector[Parser][InnerParser]);
+					InnerParser++;
+				}
+				Parser++;
+			}
+		}
+		if (StateSpaceMode && !(LoadingMapMode))
+		{
+			int Parser = 0;
+			while (Parser < Map.StateVector.size())
+			{
+				int InnerParser = 0;
+				while (InnerParser < Map.StateVector[0].size())
+				{
+					window.draw(Map.StateVector[Parser][InnerParser]);
 					InnerParser++;
 				}
 				Parser++;
@@ -438,8 +446,49 @@ int main()
 			AddingObstacles = false;
 			RemoveToggled = false;
 			MovingCharacter = false;
-			bool MapLoaded = LoadingMap.LoadMap(CurrentMap);
-			if (MapLoaded)
+			std::vector<DataNode > CharData;
+			CharData = LoadingMap.LoadMap(CurrentMap);
+			if (CharData.size() != 0)
+			{
+				std::cout << "Agent yellow " << std::endl;
+				std::cout << "CurLoc: " << CharData[0].CurrentLocation[0] << " " << CharData[0].CurrentLocation[1] << std::endl;
+				std::cout << "Goal: " << CharData[0].GoalLocation[0] << " " << CharData[0].GoalLocation[1] << std::endl;
+				std::cout << "Draw:" << CharData[0].Drawn << std::endl;
+				AgentYellow.SetLocationInt(CharData[0].CurrentLocation[0], CharData[0].CurrentLocation[1]);
+				AgentYellow.GoalLocation[0] = CharData[0].GoalLocation[0];
+				AgentYellow.GoalLocation[1] = CharData[0].GoalLocation[1];
+				AgentYellow.DoDraw = CharData[0].Drawn;
+				AgentYellow.Actions.clear();
+				int ActionParser = 0;
+				while (ActionParser < CharData[0].Actions.size())
+				{
+					AgentYellow.AddAction(CharData[0].Actions[ActionParser][0], CharData[0].Actions[ActionParser][1]);
+					ActionParser++;
+				}
+				AgentGreen.SetLocationInt(CharData[1].CurrentLocation[0], CharData[1].CurrentLocation[1]);
+				AgentGreen.GoalLocation[0] = CharData[1].GoalLocation[0];
+				AgentGreen.GoalLocation[1] = CharData[1].GoalLocation[1];
+				AgentGreen.DoDraw = CharData[1].Drawn;
+				AgentGreen.Actions.clear();
+				ActionParser = 0;
+				while (ActionParser < CharData[1].Actions.size())
+				{
+					AgentGreen.AddAction(CharData[1].Actions[ActionParser][0], CharData[1].Actions[ActionParser][1]);
+					ActionParser++;
+				}
+				AgentRed.SetLocationInt(CharData[2].CurrentLocation[0], CharData[2].CurrentLocation[1]);
+				AgentRed.GoalLocation[0] = CharData[2].GoalLocation[0];
+				AgentRed.GoalLocation[1] = CharData[2].GoalLocation[1];
+				AgentRed.DoDraw = CharData[2].Drawn;
+				AgentRed.Actions.clear();
+				ActionParser = 0;
+				while (ActionParser < CharData[2].Actions.size())
+				{
+					AgentRed.AddAction(CharData[2].Actions[ActionParser][0], CharData[2].Actions[ActionParser][1]);
+					ActionParser++;
+				}
+			}
+			if (CharData.size() != 0)
 			{
 				//First we draw the new map.
 				int Parser = 0;
@@ -544,6 +593,30 @@ int main()
 							AgentRed.DoDraw = false;
 						}
 						CreateButtonPressed = false;
+					}
+					else if (StateSpaceMode)
+					{
+						sf::Vector2f MousePos;
+						MousePos.x = xPos + 1.0;
+						MousePos.y = yPos - 8.0;
+						int xLoc = xPos / 16 - 7;
+						int yLoc = yPos / 16;
+						bool AddedObstacle = false;
+						if(Map.StateTraits[xLoc][yLoc][0])
+						{
+							Map.StateTraits[xLoc][yLoc][0] = false;
+							sf::RectangleShape CurTile = Map.TileVector[xLoc][yLoc];
+							CurTile.setTexture(&Map.StateSpaceTexture);
+							Map.StateVector[xLoc][yLoc] = CurTile;
+						}
+						else
+						{
+							sf::RectangleShape ObstPlace = Map.TileVector[xLoc][yLoc];
+							ObstPlace.setTexture(&Map.ObstacleTexture);
+							Map.StateVector[xLoc][yLoc] = ObstPlace;
+							Map.StateTraits[xLoc][yLoc][0] = true;
+						}
+						std::this_thread::sleep_for(0.2s);
 					}
 					else if (SetCharacterPressed)
 					{
@@ -727,7 +800,29 @@ int main()
 				if (MousePos.x < 65 && MousePos.x >= 0 && MousePos.y < 636 && MousePos.y > 572)
 				{
 					std::cout << "Saving Map" << std::endl;
-					Map.SaveMap();
+					std::vector<DataNode> AgentList;
+					DataNode YellowNode;
+					YellowNode.Drawn = AgentYellow.DoDraw;
+					YellowNode.CurrentLocation = AgentYellow.GetLocation();
+					YellowNode.GoalLocation.push_back(AgentYellow.GoalLocation[0]);
+					YellowNode.GoalLocation.push_back(AgentYellow.GoalLocation[1]);
+					YellowNode.Actions = AgentYellow.GetActions();
+					AgentList.push_back(YellowNode);
+					DataNode GreenNode;
+					GreenNode.Drawn = AgentGreen.DoDraw;
+					GreenNode.CurrentLocation = AgentGreen.GetLocation();
+					GreenNode.GoalLocation.push_back(AgentGreen.GoalLocation[0]);
+					GreenNode.GoalLocation.push_back(AgentGreen.GoalLocation[1]);
+					GreenNode.Actions = AgentGreen.GetActions();
+					AgentList.push_back(GreenNode);
+					DataNode RedNode;
+					RedNode.Drawn = AgentRed.DoDraw;
+					RedNode.CurrentLocation = AgentRed.GetLocation();
+					RedNode.GoalLocation.push_back(AgentRed.GoalLocation[0]);
+					RedNode.GoalLocation.push_back(AgentRed.GoalLocation[1]);
+					RedNode.Actions = AgentRed.GetActions();
+					AgentList.push_back(RedNode);
+					Map.SaveMap(AgentList);
 					std::this_thread::sleep_for(0.2s);
 					SavedMap = true;
 				}
@@ -736,6 +831,10 @@ int main()
 				{
 					std::cout << "Load map pressed, entering load state." << std::endl;
 					std::this_thread::sleep_for(0.2s);
+					//Since we're entering loading map mode we store the current characters in case we cancel.
+					AgentPreserver.push_back(AgentYellow);
+					AgentPreserver.push_back(AgentGreen);
+					AgentPreserver.push_back(AgentRed);
 					LoadingMapMode = true;
 				}
 				//These positions indicate the cancel button was pressed.
@@ -752,6 +851,9 @@ int main()
 					if (LoadingMapMode)
 					{
 						std::cout << "Cancel pressed, exiting load state.";
+						AgentYellow = AgentPreserver[0];
+						AgentGreen = AgentPreserver[1];
+						AgentRed = AgentPreserver[2];
 					}
 					LoadingMapMode = false;
 				}
@@ -779,7 +881,7 @@ int main()
 				//These positions indicate the path button was pressed.
 				if (MousePos.x < 1008 && MousePos.x >= 944 && MousePos.y > 224 && MousePos.y <= 288)
 				{
-					PathFinder* PathPlanner = new AStar(TargetAgent->GetActions(), Map.TileTraits);
+					PathFinder* PathPlanner = new LPA(TargetAgent->GetActions(), Map.TileTraits);
 					PathReturn ResultPath = PathPlanner->Update(TargetAgent->GetActions(), Map.TileTraits, TargetAgent->GetLocation(), TargetAgent->GoalLocation);
 					std::vector<std::vector<int> > Actions = ResultPath.path;
 					ActionsPerAgent.push_back(Actions);
@@ -792,7 +894,7 @@ int main()
 					bool AtLeastOne = false;
 					if (AgentYellow.DoDraw)
 					{
-						PathFinder* PathPlanner = new AStar(AgentYellow.GetActions(), Map.TileTraits);
+						PathFinder* PathPlanner = new LPA(AgentYellow.GetActions(), Map.TileTraits);
 						PathReturn ResultPath = PathPlanner->Update(AgentYellow.GetActions(), Map.TileTraits, AgentYellow.GetLocation(), AgentYellow.GoalLocation);
 						std::vector<std::vector<int> > Actions = ResultPath.path;
 						ActionsPerAgent.push_back(Actions);
@@ -801,7 +903,7 @@ int main()
 					}
 					if (AgentGreen.DoDraw)
 					{
-						PathFinder* PathPlanner = new AStar(AgentGreen.GetActions(), Map.TileTraits);
+						PathFinder* PathPlanner = new LPA(AgentGreen.GetActions(), Map.TileTraits);
 						PathReturn ResultPath = PathPlanner->Update(AgentGreen.GetActions(), Map.TileTraits, AgentGreen.GetLocation(), AgentGreen.GoalLocation);
 						std::vector<std::vector<int> > Actions = ResultPath.path;
 						ActionsPerAgent.push_back(Actions);
@@ -810,7 +912,7 @@ int main()
 					}
 					if (AgentRed.DoDraw)
 					{
-						PathFinder* PathPlanner = new AStar(AgentRed.GetActions(), Map.TileTraits);
+						PathFinder* PathPlanner = new LPA(AgentRed.GetActions(), Map.TileTraits);
 						PathReturn ResultPath = PathPlanner->Update(AgentRed.GetActions(), Map.TileTraits, AgentRed.GetLocation(), AgentRed.GoalLocation);
 						std::vector<std::vector<int> > Actions = ResultPath.path;
 						ActionsPerAgent.push_back(Actions);
@@ -822,6 +924,20 @@ int main()
 						PathingCount++;
 					}
 				}
+				//These positions indicate the State Space button was pressed.
+				if (MousePos.x < 1008 && MousePos.x >= 944 && MousePos.y > 352 && MousePos.y <= 416)
+				{
+					if (StateSpaceMode)
+					{
+						StateSpaceMode = false;
+					}
+					else
+					{
+						StateSpaceMode = true;
+					}
+					std::this_thread::sleep_for(0.2s);
+				}
+				
 			}
 		}
 
@@ -888,9 +1004,10 @@ int main()
 		//Drawing the UI buttons on the right side.
 		window.draw(PathTile);
 		window.draw(PathAllTile);
+		window.draw(StateSpaceTile);
 
 		//Drawing characters.
-		if ((AgentYellow.DoDraw)&&(!(LoadingMapMode)))
+		if ((AgentYellow.DoDraw))
 		{
 			window.draw(AgentYellow.CharacterTile);
 			//From there we draw a lighter square for any locations the player can move to.
@@ -949,7 +1066,7 @@ int main()
 			}
 		}
 		//Drawing agent green.
-		if ((AgentGreen.DoDraw) && (!(LoadingMapMode)))
+		if ((AgentGreen.DoDraw))
 		{
 			window.draw(AgentGreen.CharacterTile);
 			//From there we draw a lighter square for any locations the player can move to.
@@ -1008,7 +1125,7 @@ int main()
 			}
 		}
 		//Drawing agent red.
-		if ((AgentRed.DoDraw) && (!(LoadingMapMode)))
+		if ((AgentRed.DoDraw))
 		{
 			window.draw(AgentRed.CharacterTile);
 			//From there we draw a lighter square for any locations the player can move to.

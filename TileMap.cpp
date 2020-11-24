@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <stdlib.h>
 
 TileMap::TileMap()
 {
@@ -11,28 +12,46 @@ TileMap::TileMap()
 
 void TileMap::InitializeMap()
 {
-	//Creating the tilemap tiles [it's a 47 by 57 of size 16 by 16 squares]
+	ObstacleTexture.loadFromFile("images/Rock_Obstacle_16_16.png");
+	StateSpaceTexture.loadFromFile("images/LightBlue_Square_Black_Border_16_16.png");
+	//Creating the tilemap tiles [it's a 47 by 57 of size 16 by 16 squares]. The states space map defaults as all obstacles.
+	StateVector.clear();
+	StateTraits.clear();
 	TileVector.clear();
 	TileTraits.clear();
 	int Parser = 0;
 	while (Parser < 47)
 	{
+		std::vector<sf::RectangleShape> StateSpaceRow;
+		std::vector<std::vector<bool > > StateSpaceTraitsRow;
 		std::vector<sf::RectangleShape> CurrentRow;
 		std::vector<std::vector<bool > > TraitsRow;
 		int InnerParser = 0;
 		while (InnerParser < 57)
 		{
 			sf::RectangleShape Tile(sf::Vector2f(32.0, 32.0));
-			sf::Vector2f Position(16.0f * (Parser)+113, 16.0f * (InnerParser)-8.0f);
+			sf::Vector2f Position(16.0f * (Parser)+112, 16.0f * (InnerParser)-8.0f);
 			Tile.setPosition(Position);
 			Tile.setTexture(&TileTexture);
 			CurrentRow.push_back(Tile);
 			std::vector<bool> Traits;
 			TraitsRow.push_back(Traits);
+
+			sf::RectangleShape Obstacle(sf::Vector2f(32.0, 32.0));
+			Obstacle.setTexture(&ObstacleTexture);
+			Obstacle.setPosition(Position);
+			StateSpaceRow.push_back(Obstacle);
+			std::vector<bool> StateSpaceTraitsObst;
+			StateSpaceTraitsObst.push_back(true);
+			StateSpaceTraitsRow.push_back(StateSpaceTraitsObst);
+
 			InnerParser++;
 		}
 		TileVector.push_back(CurrentRow);
 		TileTraits.push_back(TraitsRow);
+
+		StateVector.push_back(StateSpaceRow);
+		StateTraits.push_back(StateSpaceTraitsRow);
 		Parser++;
 	}
 }
@@ -64,7 +83,7 @@ void TileMap::ResetTile(int xPos, int yPos)
 	TileTraits[xPos][yPos].clear();
 }
 
-void TileMap::SaveMap()
+void TileMap::SaveMap(std::vector<DataNode> Agents)
 {
 	//All maps are going to be named "Map + i" where i is an integer 1-[infinity], so we can find out how many maps there are
 	//by opening each and testing if we opened anything.
@@ -108,11 +127,20 @@ void TileMap::SaveMap()
 			}
 			if (NoObstacle)
 			{
-				//If NoObstacle put "1," as we only have the blue square tile atm.
-				MapFileOut << "1,";
+				//Now we check if there's an obstacle in the state space or not.
+				if (StateTraits[Parser][InnerParser][0])
+				{
+					MapFileOut << "1,";
+				}
+				//If there's no obstacle in either, we'll put a two.
+				else
+				{
+					MapFileOut << "2,";
+				}
 			}
 			else
 			{
+				//If there is an obnstacle here, there is one in the state space and out.
 				//If there is an obstacle put "o1," as we only have the rock obstacle atm.
 				MapFileOut << "o1,";
 			}
@@ -120,10 +148,45 @@ void TileMap::SaveMap()
 		}
 		Parser++;
 	}
+	//Now that we've saved the map we'll save the character's data. We'll do each sequence in the order of the character
+	//(Yellow, Green, Red).
+	Parser = 0;
+	std::cout << Agents.size() << " This is the size of the agent node you passed in." << std::endl;
+	while (Parser < Agents.size())
+	{
+		//First whether they're drawn:
+		if (Agents[Parser].Drawn)
+		{
+			MapFileOut << "D,";
+		}
+		else
+		{
+			MapFileOut << "N,";
+		}
+		//Then their location:
+		MapFileOut << std::to_string(Agents[Parser].CurrentLocation[0]) + ',';
+		MapFileOut << std::to_string(Agents[Parser].CurrentLocation[1]) + ',';
+		//Then their goal location:
+		MapFileOut << std::to_string(Agents[Parser].GoalLocation[0]) + ',';
+		MapFileOut << std::to_string(Agents[Parser].GoalLocation[1]) + ',';
+		std::vector<std::vector<int> > CurActions = Agents[Parser].Actions;
+		//Their number of actions
+		MapFileOut << std::to_string(CurActions.size()) + ',';
+		//Their actions
+		int InnerParser = 0;
+		while (InnerParser < CurActions.size())
+		{
+			MapFileOut << std::to_string(CurActions[InnerParser][0]) + ',';
+			MapFileOut << std::to_string(CurActions[InnerParser][1]) + ',';
+			InnerParser++;
+		}
+		Parser++;
+	}
 }
 
-bool TileMap::LoadMap(int MapIndex)
+std::vector<DataNode> TileMap::LoadMap(int MapIndex)
 {
+	std::vector<DataNode> ReturnData;
 	InitializeMap();
 	//First we make sure our MapIndex exists (it should, we only call this internally, but if it doesn't we can return
 	//false to indicate that we're at the end so hitting the forward arrow loops back.
@@ -170,14 +233,28 @@ bool TileMap::LoadMap(int MapIndex)
 				SetTrait(xLoc, yLoc, 0, true);
 				
 			}
-			else
+			else if (CurrentInput[0] == '1')
 			{
+				//Here we have obstacle in state space but not in the normal realm.
 				//If there wasn't an o there wasn't an obstacle there so there's an ordinary tile.
 				sf::RectangleShape Tile(sf::Vector2f(32.0, 32.0));
 				//No need to load this one it's loaded from setMapTexture.
 				Tile.setTexture(&TileTexture);
 				Tile.setPosition(sf::Vector2f(xPosition, yPosition));
 				TileVector[xLoc][yLoc] = Tile;
+			}
+			else
+			{
+				//No obstacle in either space.
+				sf::RectangleShape Tile(sf::Vector2f(32.0, 32.0));
+				sf::RectangleShape StateTile(sf::Vector2f(32.0, 32.0));
+				Tile.setTexture(&TileTexture);
+				StateTile.setTexture(&StateSpaceTexture);
+				Tile.setPosition(sf::Vector2f(xPosition, yPosition));
+				StateTile.setPosition(sf::Vector2f(xPosition, yPosition));
+				TileVector[xLoc][yLoc] = Tile;
+				StateVector[xLoc][yLoc] = StateTile;
+				StateTraits[xLoc][yLoc][0] = false;
 			}
 			//As we've finished an input we increment xLoc and check if it reached 47.
 			yLoc++;
@@ -187,11 +264,106 @@ bool TileMap::LoadMap(int MapIndex)
 				yLoc = 0;
 			}
 		}
-		return true;
+		//Now that we're here xLoc is at 47, meaning we just finished the map, time to read the three agents.
+		int Parser = 0;
+		while (Parser < 3)
+		{
+			DataNode CurrentAgent;
+			//First we get the next item that isn't a comma.
+			std::string CurrentInput = "";
+			while ((MapFileIn >> std::noskipws >> c) && (!(c == ',')))
+			{
+				CurrentInput = CurrentInput + c;
+			}
+			//If it's a D then we draw the agent.
+			if (CurrentInput[0] == 'D')
+			{
+				CurrentAgent.Drawn = true;
+			}
+			else
+			{
+				CurrentAgent.Drawn = false;
+			}
+			CurrentInput = "";
+			//Now we get the x coordinate of its location.
+			while (!(c == ','))
+			{
+				std::cout << c << std::endl;
+				CurrentInput = CurrentInput + c;
+				MapFileIn >> std::noskipws >> c;
+			}
+			int xLoc = std::stoi(CurrentInput);
+			CurrentInput = "";
+
+			while ((MapFileIn >> std::noskipws >> c) && (!(c == ',')))
+			{
+				CurrentInput = CurrentInput + c;
+			}
+			int yLoc = std::stoi(CurrentInput);
+			CurrentInput = "";
+
+			CurrentAgent.CurrentLocation.push_back(xLoc);
+			CurrentAgent.CurrentLocation.push_back(yLoc);
+
+			//Now its goal location
+			while ((MapFileIn.get(c)) && (!(c == ',')))
+			{
+				std::cout << "Printing x Goal Location: " << std::endl;
+				CurrentInput = CurrentInput + c;
+			}
+			int xGoalLoc = std::stoi(CurrentInput);
+			CurrentInput = "";
+
+			while ((MapFileIn >> std::noskipws >> c) && (!(c == ',')))
+			{
+				CurrentInput = CurrentInput + c;
+			}
+			int yGoalLoc = std::stoi(CurrentInput);
+			CurrentInput = "";
+
+			CurrentAgent.GoalLocation.push_back(xGoalLoc);
+			CurrentAgent.GoalLocation.push_back(yGoalLoc);
+
+			//Now we get the number of actions.
+			while ((MapFileIn >> std::noskipws >> c) && (!(c == ',')))
+			{
+				CurrentInput = CurrentInput + c;
+			}
+			int ActionCount = std::stoi(CurrentInput);
+			int InnerParser = 0;
+			CurrentInput = "";
+			while (InnerParser < ActionCount)
+			{
+				//For each action we get the action's x coord
+				while ((MapFileIn >> std::noskipws >> c) && (!(c == ',')))
+				{
+					CurrentInput = CurrentInput + c;
+				}
+				int xAction = std::stoi(CurrentInput);
+				std::cout << xAction << " ";
+				CurrentInput = "";
+
+				while ((MapFileIn >> std::noskipws >> c) && (!(c == ',')))
+				{
+					CurrentInput = CurrentInput + c;
+				}
+				int yAction = std::stoi(CurrentInput);
+				std::vector<int> CurrentAction;
+				std::cout << yAction << std::endl;
+				CurrentAction.push_back(xAction); CurrentAction.push_back(yAction);
+				CurrentAgent.Actions.push_back(CurrentAction);
+				CurrentInput = "";
+
+				InnerParser++;
+			}
+			ReturnData.push_back(CurrentAgent);
+			Parser++;
+		}
+		return ReturnData;
 	}
 	else
 	{
-		return false;
+		return ReturnData;
 	}
 }
 
