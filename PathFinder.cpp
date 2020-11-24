@@ -19,7 +19,7 @@ PathReturn AStar::Update(std::vector<std::vector<int>> actions, std::vector<std:
 		{
 			if (Obstacles[col][row].size() != 0 && obstacles[col][row].size() != 0 && Obstacles[col][row][0] != obstacles[col][row][0])
 				haveEdgesChanged = true;
-			else if ((Obstacles[col][row].size() != 0) != (obstacles[col][row].size() != 0))
+			else if ((Obstacles[col][row].size() == 0 && obstacles[col][row].size() != 0 && obstacles[col][row][0]) || (Obstacles[col][row].size() != 0 && Obstacles[col][row][0] && obstacles[col][row].size() == 0))
 				haveEdgesChanged = true;
 		}
 	}
@@ -149,7 +149,7 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 
 				haveEdgesChanged = true;
 			}
-			else if ((Obstacles[col][row].size() != 0) != (obstacles[col][row].size() != 0))
+			else if ((Obstacles[col][row].size() == 0 && obstacles[col][row].size() != 0 && obstacles[col][row][0]) || (Obstacles[col][row].size() != 0 && Obstacles[col][row][0] && obstacles[col][row].size() == 0))
 			{
 				for (int i = 0; i < actionSpace.size(); i++)
 				{
@@ -214,36 +214,64 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 		}
 
 		if (curr->cost > curr->rhs)
+		{
 			curr->cost = curr->rhs;
+
+			for (int i = 0; i < actionSpace.size(); i++)
+			{
+				Coordinate* newCoord = new Coordinate(curr->getPosition()->x + actionSpace[i][0], curr->getPosition()->y + actionSpace[i][1]);
+				if (newCoord->x >= obstacles.size() || newCoord->x < 0 || newCoord->y >= obstacles[0].size() || newCoord->y < 0 || obstacles[newCoord->x][newCoord->y].size() != 0 && obstacles[newCoord->x][newCoord->y][0])
+				{
+					delete newCoord;
+					continue;
+				}
+
+				if (stateSpace.count(*newCoord) == 0)
+				{
+					LPANode* child = new LPANode(newCoord, curr, INTMAX_MAX, INTMAX_MAX, actionSpace[i]);
+					stateSpace[*newCoord] = child;
+					queue.push_back(child);
+
+					UpdateVertex(child);
+				}
+				else
+				{
+					LPANode* child = static_cast<LPANode*>(stateSpace[*newCoord]);
+
+					UpdateVertex(child);
+				}
+			}
+		}
 		else
 		{
 			curr->cost = INTMAX_MAX;
+
+			for (int i = 0; i < actionSpace.size(); i++)
+			{
+				Coordinate* newCoord = new Coordinate(curr->getPosition()->x + actionSpace[i][0], curr->getPosition()->y + actionSpace[i][1]);
+				if (newCoord->x >= obstacles.size() || newCoord->x < 0 || newCoord->y >= obstacles[0].size() || newCoord->y < 0 || obstacles[newCoord->x][newCoord->y].size() != 0 && obstacles[newCoord->x][newCoord->y][0])
+				{
+					delete newCoord;
+					continue;
+				}
+
+				if (stateSpace.count(*newCoord) == 0)
+				{
+					LPANode* child = new LPANode(newCoord, curr, INTMAX_MAX, INTMAX_MAX, actionSpace[i]);
+					stateSpace[*newCoord] = child;
+					queue.push_back(child);
+
+					UpdateVertex(child);
+				}
+				else
+				{
+					LPANode* child = static_cast<LPANode*>(stateSpace[*newCoord]);
+
+					UpdateVertex(child);
+				}
+			}
+
 			UpdateVertex(curr);
-		}
-
-		for (int i = 0; i < actionSpace.size(); i++)
-		{
-			Coordinate* newCoord = new Coordinate(curr->getPosition()->x + actionSpace[i][0], curr->getPosition()->y + actionSpace[i][1]);
-			if (newCoord->x >= obstacles.size() || newCoord->x < 0 || newCoord->y >= obstacles[0].size() || newCoord->y < 0 || obstacles[newCoord->x][newCoord->y].size() != 0 && obstacles[newCoord->x][newCoord->y][0])
-			{
-				delete newCoord;
-				continue;
-			}
-
-			if (stateSpace.count(*newCoord) == 0)
-			{
-				LPANode* child = new LPANode(newCoord, curr, INTMAX_MAX, INTMAX_MAX, actionSpace[i]);
-				stateSpace[*newCoord] = child;
-				queue.push_back(child);
-
-				UpdateVertex(child);
-			}
-			else
-			{
-				LPANode* child = static_cast<LPANode*>(stateSpace[*newCoord]);
-
-				UpdateVertex(child);
-			}
 		}
 	}
 	
