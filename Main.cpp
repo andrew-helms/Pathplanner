@@ -27,6 +27,11 @@ std::vector<std::vector<std::vector<int > > > ActionsPerAgent;
 std::vector<Character*> Agents;
 std::vector<Character> AgentPreserver;
 
+//Booleans for changing maps during loading them (makes it more responsive)
+bool PressedLeft = false;
+bool PressedRight = false;
+bool ChosenMap = false;
+
 void PathFunc(TileMap& Map, std::vector<bool>& Pathing, int PathCount)
 {
 	//First we'll check if we're currently pathing (this is to avoid checking Pathing[PathCount] when the vector doesn't have an
@@ -577,6 +582,27 @@ int main()
 				//If the map failed to load we don't have a saved map at CurrentMap's value so we switch back to one (the start).
 				CurrentMap = 1;
 			}
+			if (PressedRight)
+			{
+				CurrentMap++;
+				std::this_thread::sleep_for(0.01s);
+				PressedRight = false;
+			}
+			if (PressedLeft)
+			{
+				CurrentMap--;
+				std::this_thread::sleep_for(0.01s);
+				PressedLeft = false;
+			}
+			if (ChosenMap)
+			{
+				//If we select the map we remove our old map and set it to what we loaded in.
+				Map = LoadingMap;
+				LoadingMapMode = false;
+				CurrentMap = 1;
+				std::this_thread::sleep_for(0.01s);
+				ChosenMap = false;
+			}
 			//Drawing the buttons.
 			window.draw(RightArrowTile);
 			window.draw(LeftArrowTile);
@@ -595,23 +621,18 @@ int main()
 						if (MousePos.x < 664 && MousePos.x >= 600 && MousePos.y < 976 && MousePos.y > 912)
 						{
 							//Increment CurrentMap to go to the next map.
-							CurrentMap++;
-							std::this_thread::sleep_for(0.2s);
+							PressedRight = true;
+
 						}
 						//These positions indicate the left arrow was pressed.
 						if (MousePos.x < 408 && MousePos.x >= 344 && MousePos.y < 976 && MousePos.y > 912)
 						{
-							CurrentMap--;
-							std::this_thread::sleep_for(0.2s);
+							PressedLeft = true;
 						}
 						//These positions indicate the select map button was pressed.
 						if (MousePos.x < 536 && MousePos.x >= 472 && MousePos.y < 976 && MousePos.y > 912)
 						{
-							//If we select the map we remove our old map and set it to what we loaded in.
-							Map = LoadingMap;
-							LoadingMapMode = false;
-							CurrentMap = 1;
-							std::this_thread::sleep_for(0.2s);
+							ChosenMap = true;
 						}
 					}
 				}
