@@ -1,94 +1,143 @@
 ﻿  Main.cpp
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(29,21): warning C4018: '>': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(43,21): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(270,16): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(310,18): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(313,24): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(338,19): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(341,25): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(408,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(410,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(417,70): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(35,21): warning C4018: '>': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(47,23): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(65,23): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(75,22): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(423,18): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(426,24): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(437,18): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(440,24): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(474,25): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(485,25): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(496,25): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(506,19): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(509,25): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(576,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(578,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(588,76): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(417,51): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(588,57): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(425,70): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(593,75): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(425,51): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(593,56): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(439,28): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(598,73): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(440,28): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(598,54): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(470,21): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(472,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(611,25): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(473,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(612,25): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(487,21): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(489,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(634,76): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(490,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(634,57): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(655,18): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(660,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(661,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(664,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(658,28): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(665,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(659,28): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-  PathFinder.cpp
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(26,21): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(44,21): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(47,20): warning C4018: '>=': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(47,74): warning C4018: '>=': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(105,82): warning C4305: 'argument': truncation from '__int64' to 'double'
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(114,21): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(127,27): warning C4305: '=': truncation from '__int64' to 'double'
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(131,21): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(134,20): warning C4018: '>=': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(134,74): warning C4018: '>=': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(142,89): warning C4305: 'argument': truncation from '__int64' to 'double'
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(177,29): warning C4305: 'initializing': truncation from '__int64' to 'double'
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(179,21): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(182,20): warning C4018: '>=': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(182,74): warning C4018: '>=': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(188,73): warning C4305: 'argument': truncation from '__int64' to 'double'
-  Generating Code...
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(689,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(691,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(692,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(706,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(708,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(709,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(1031,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(1032,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(1048,18): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(1053,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(1054,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(1057,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(1058,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(1090,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(1091,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(1107,18): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(1112,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(1116,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(1117,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(1149,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(1150,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(1166,18): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(1171,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(1172,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(1175,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\Main.cpp(1176,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
   SFML_CAP4621.vcxproj -> D:\Documents\College\AI & Heuristics\Project\Pathplanner\Debug\SFML_CAP4621.exe

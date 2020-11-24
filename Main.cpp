@@ -46,10 +46,12 @@ void PathFunc(TileMap& Map, std::vector<bool>& Pathing, int PathCount)
 		int CurrentAgent = 0;
 		while (CurrentAgent < ActionsPerAgent.size())
 		{
-			if (!(PathCounter >= ActionsPerAgent[CurrentAgent].size()))
+			if (Agents[CurrentAgent]->GetLocation()[0] != Agents[CurrentAgent]->GoalLocation[0] || Agents[CurrentAgent]->GetLocation()[1] != Agents[CurrentAgent]->GoalLocation[1])
 			{
-				std::vector<int> CurrentAction = ActionsPerAgent[CurrentAgent][PathCounter];
+				std::vector<int> CurrentAction = ActionsPerAgent[CurrentAgent][0];
 				Agents[CurrentAgent]->Move(CurrentAction[0], CurrentAction[1], Map);
+				Agents[CurrentAgent]->path = Agents[CurrentAgent]->pfa->Update(Agents[CurrentAgent]->GetActions(), Map.TileTraits, Agents[CurrentAgent]->GetLocation(), Agents[CurrentAgent]->GoalLocation);
+				ActionsPerAgent[CurrentAgent] = Agents[CurrentAgent]->path.path;
 			}
 			CurrentAgent++;
 		}
@@ -58,7 +60,7 @@ void PathFunc(TileMap& Map, std::vector<bool>& Pathing, int PathCount)
 		CurrentAgent = 0;
 		while (CurrentAgent < ActionsPerAgent.size())
 		{
-			if(PathCounter < ActionsPerAgent[CurrentAgent].size())
+			if(Agents[CurrentAgent]->GetLocation()[0] != Agents[CurrentAgent]->GoalLocation[0] || Agents[CurrentAgent]->GetLocation()[1] != Agents[CurrentAgent]->GoalLocation[1])
 			{
 				FinishedPathing = false;
 			}
@@ -66,6 +68,11 @@ void PathFunc(TileMap& Map, std::vector<bool>& Pathing, int PathCount)
 		}
 		if (FinishedPathing)
 		{
+			for (int i = 0; i < ActionsPerAgent.size(); i++)
+			{
+				std::cout << "Agent " << i << "'s path data: Nodes Expanded = " << Agents[i]->path.nodesExpanded << ", Execution Time = " << Agents[i]->path.exeTime << std::endl;
+			}
+
 			Pathing[PathCount] = false;
 			if (Pathing.size() == PathCount + 1)
 			{
@@ -384,7 +391,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1010, 1010), "CAP4621 Project", sf::Style::Titlebar | sf::Style::Close);
 	while (window.isOpen())
 	{
-		PathFunc(ActionsPerAgent, Map, Pathing, PathingCount);
+		PathFunc(Map, Pathing, PathingCount);
 		//The function above is called to start the pathfinding, nothing should be needed to be changed just what is contained
 		//in the Actions vector.
 		//This function will set Pathing[0] to false once it's done pathing then add a true to the end of the pathing vector
@@ -894,8 +901,8 @@ int main()
 					bool AtLeastOne = false;
 					if (AgentYellow.DoDraw)
 					{
-						PathFinder* PathPlanner = new LPA(AgentYellow.GetActions(), Map.TileTraits);
-						PathReturn ResultPath = PathPlanner->Update(AgentYellow.GetActions(), Map.TileTraits, AgentYellow.GetLocation(), AgentYellow.GoalLocation);
+						AgentYellow.pfa = new LPA(AgentYellow.GetActions(), Map.TileTraits);
+						PathReturn ResultPath = AgentYellow.pfa->Update(AgentYellow.GetActions(), Map.TileTraits, AgentYellow.GetLocation(), AgentYellow.GoalLocation);
 						std::vector<std::vector<int> > Actions = ResultPath.path;
 						ActionsPerAgent.push_back(Actions);
 						Agents.push_back(&AgentYellow);
@@ -903,8 +910,8 @@ int main()
 					}
 					if (AgentGreen.DoDraw)
 					{
-						PathFinder* PathPlanner = new LPA(AgentGreen.GetActions(), Map.TileTraits);
-						PathReturn ResultPath = PathPlanner->Update(AgentGreen.GetActions(), Map.TileTraits, AgentGreen.GetLocation(), AgentGreen.GoalLocation);
+						AgentGreen.pfa = new LPA(AgentGreen.GetActions(), Map.TileTraits);
+						PathReturn ResultPath = AgentGreen.pfa->Update(AgentGreen.GetActions(), Map.TileTraits, AgentGreen.GetLocation(), AgentGreen.GoalLocation);
 						std::vector<std::vector<int> > Actions = ResultPath.path;
 						ActionsPerAgent.push_back(Actions);
 						Agents.push_back(&AgentGreen);
@@ -912,8 +919,8 @@ int main()
 					}
 					if (AgentRed.DoDraw)
 					{
-						PathFinder* PathPlanner = new LPA(AgentRed.GetActions(), Map.TileTraits);
-						PathReturn ResultPath = PathPlanner->Update(AgentRed.GetActions(), Map.TileTraits, AgentRed.GetLocation(), AgentRed.GoalLocation);
+						AgentRed.pfa = new LPA(AgentRed.GetActions(), Map.TileTraits);
+						PathReturn ResultPath = AgentRed.pfa->Update(AgentRed.GetActions(), Map.TileTraits, AgentRed.GetLocation(), AgentRed.GoalLocation);
 						std::vector<std::vector<int> > Actions = ResultPath.path;
 						ActionsPerAgent.push_back(Actions);
 						Agents.push_back(&AgentRed);

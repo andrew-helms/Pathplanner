@@ -32,6 +32,8 @@ PathReturn AStar::Update(std::vector<std::vector<int>> actions, std::vector<std:
 
 		output.exeTime = exeTime;
 
+		output.path.erase(output.path.begin());
+
 		return output;
 	}
 
@@ -60,7 +62,7 @@ PathReturn AStar::Update(std::vector<std::vector<int>> actions, std::vector<std:
 
 		if (*curr->getPosition() == *goalCoord)
 		{
-			path.push_back(curr->actionFromParent);
+			//path.push_back(curr->actionFromParent);
 			
 			while (curr->parent != nullptr)
 			{
@@ -172,6 +174,8 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 
 		output.exeTime = exeTime;
 
+		output.path.erase(output.path.begin());
+
 		return output;
 	}
 
@@ -248,7 +252,7 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 	{
 		Node* curr = stateSpace[*goalCoord];
 
-		path.push_back(curr->actionFromParent);
+		//path.push_back(curr->actionFromParent);
 
 		while (curr->parent != nullptr)
 		{

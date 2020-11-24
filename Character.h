@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include "TileMap.h"
+#include "PathFinder.h"
 
 class Character
 {
@@ -12,6 +13,12 @@ class Character
 	sf::Texture CharacterTexture;
 	//Boolean to check if we're currently drawing this character.
 	bool DoDraw = false;
+	//Sight Radius
+	int radius;
+	//PathFinder
+	PathFinder* pfa;
+	//PathReturn to store nodes expanded and execution time
+	PathReturn path;
 	//It will store its actions as a vector of integers (the inner vectors only pairs of ints) as well as its current location.
 	std::vector<sf::Vector2f> Actions;
 	sf::Vector2f CurrentLocation;
