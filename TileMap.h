@@ -15,7 +15,9 @@ class TileMap
 {
 	public:
 
-	sf::Texture PathTexture; //Texture for the path
+	sf::Texture PathTextureYellow; //Textures for the path
+	sf::Texture PathTextureGreen; //Textures for the path
+	sf::Texture PathTextureRed; //Textures for the path
 	sf::Texture TileTexture; //Texture for the tile map.
 	sf::Texture ObstacleTexture; //Texture for the obstacles.
 	sf::Texture StateSpaceTexture;

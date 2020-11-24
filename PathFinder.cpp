@@ -1,12 +1,13 @@
 #include "PathFinder.h"
 #include <iostream>
+#include <chrono>
 
 AStar::AStar(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles) : PathFinder(actions, Obstacles)
 {}
 
 PathReturn AStar::Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal)
 {
-	time_t startTime = time(NULL);
+	auto startTime = std::chrono::steady_clock::now();
 
 	Coordinate* startCoord = new Coordinate(start[0], start[1]);
 	Coordinate* goalCoord = new Coordinate(goal[0], goal[1]);
@@ -26,9 +27,9 @@ PathReturn AStar::Update(std::vector<std::vector<int>> actions, std::vector<std:
 
 	if (!firstRun && !haveEdgesChanged)
 	{
-		time_t endTime = time(NULL);
+		auto endTime = std::chrono::steady_clock::now();
 
-		exeTime += double(endTime - startTime);
+		exeTime += std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
 
 		output.exeTime = exeTime;
 
@@ -110,9 +111,9 @@ PathReturn AStar::Update(std::vector<std::vector<int>> actions, std::vector<std:
 		path.pop_back();
 	}
 
-	time_t endTime = time(NULL);
+	auto endTime = std::chrono::steady_clock::now();
 
-	exeTime += double(endTime - startTime);
+	exeTime += exeTime += std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
 
 	output = PathReturn(outputPath, nodesExpanded, exeTime);
 
@@ -124,7 +125,7 @@ LPA::LPA(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vec
 
 PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal)
 {
-	time_t startTime = time(NULL);
+	auto startTime = std::chrono::steady_clock::now();
 
 	Coordinate* startCoord = new Coordinate(start[0], start[1]);
 	Coordinate* goalCoord = new Coordinate(goal[0], goal[1]);
@@ -168,9 +169,9 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 
 	if (!firstRun && !haveEdgesChanged)
 	{
-		time_t endTime = time(NULL);
+		auto endTime = std::chrono::steady_clock::now();
 
-		exeTime += double(endTime - startTime);
+		exeTime += exeTime += std::chrono::duration_cast<std::chrono::seconds>(endTime - startTime).count();
 
 		output.exeTime = exeTime;
 
@@ -301,18 +302,18 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 		path.pop_back();
 	}
 
-	time_t endTime = time(NULL);
+	auto endTime = std::chrono::steady_clock::now();
 
-	exeTime += double(endTime - startTime);
+	exeTime += exeTime += std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
 
 	output = PathReturn(outputPath, nodesExpanded, exeTime);
 
 	for (int i = 0; i < outputPath.size(); i++)
 	{
-		std::cout << outputPath[i][0] << " " << outputPath[i][1] << std::endl;
+		//std::cout << outputPath[i][0] << " " << outputPath[i][1] << std::endl;
 	}
 
-	std::cout << std::endl;
+	//std::cout << std::endl;
 
 	return output;
 }

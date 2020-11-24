@@ -24,6 +24,7 @@ class Character
 	sf::Vector2f CurrentLocation;
 	std::vector<int> GoalLocation;
 	TileMap KnownMap;
+	int AgentType;
 	
 	//The input for creating the character is its texture image.
 	Character(const char* ImageLocation);

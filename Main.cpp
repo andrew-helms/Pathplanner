@@ -27,6 +27,10 @@ std::vector<std::vector<std::vector<int > > > ActionsPerAgent;
 std::vector<Character*> Agents;
 std::vector<Character> AgentPreserver;
 
+//Map for character PoV
+TileMap CharacterPOV;
+bool SeeCharacterPOV = false;
+
 //Booleans for changing maps during loading them (makes it more responsive)
 bool PressedLeft = false;
 bool PressedRight = false;
@@ -57,9 +61,56 @@ void PathFunc(TileMap& Map, std::vector<bool>& Pathing, int PathCount)
 				std::vector<int> CurrentLocation = Agents[CurrentAgent]->GetLocation();
 				while (Parser < ActionsPerAgent[CurrentAgent].size())
 				{
-					if (Map.TileVector[CurrentLocation[0]][CurrentLocation[1]].getTexture() == &Map.PathTexture)
+					if (SeeCharacterPOV)
 					{
-						Map.TileVector[CurrentLocation[0]][CurrentLocation[1]].setTexture(&Map.TileTexture);
+						if (CharacterPOV.TileVector[CurrentLocation[0]][CurrentLocation[1]].getTexture() == &Map.PathTextureYellow)
+						{
+							if (CharacterPOV.TileTraits[CurrentLocation[0]][CurrentLocation[1]].size() == 0)
+							{
+								CharacterPOV.TileVector[CurrentLocation[0]][CurrentLocation[1]].setTexture(&Map.TileTexture);
+							}
+							else
+							{
+								CharacterPOV.TileVector[CurrentLocation[0]][CurrentLocation[1]].setTexture(&Map.ObstacleTexture);
+							}
+						}
+						if (CharacterPOV.TileVector[CurrentLocation[0]][CurrentLocation[1]].getTexture() == &Map.PathTextureGreen)
+						{
+							if (CharacterPOV.TileTraits[CurrentLocation[0]][CurrentLocation[1]].size() == 0)
+							{
+								CharacterPOV.TileVector[CurrentLocation[0]][CurrentLocation[1]].setTexture(&Map.TileTexture);
+							}
+							else
+							{
+								CharacterPOV.TileVector[CurrentLocation[0]][CurrentLocation[1]].setTexture(&Map.ObstacleTexture);
+							}
+						}
+						if (CharacterPOV.TileVector[CurrentLocation[0]][CurrentLocation[1]].getTexture() == &Map.PathTextureRed)
+						{
+							if (CharacterPOV.TileTraits[CurrentLocation[0]][CurrentLocation[1]].size() == 0)
+							{
+								CharacterPOV.TileVector[CurrentLocation[0]][CurrentLocation[1]].setTexture(&Map.TileTexture);
+							}
+							else
+							{
+								CharacterPOV.TileVector[CurrentLocation[0]][CurrentLocation[1]].setTexture(&Map.ObstacleTexture);
+							}
+						}
+					}
+					else
+					{
+						if (Map.TileVector[CurrentLocation[0]][CurrentLocation[1]].getTexture() == &Map.PathTextureYellow)
+						{
+							Map.TileVector[CurrentLocation[0]][CurrentLocation[1]].setTexture(&Map.TileTexture);
+						}
+						if (Map.TileVector[CurrentLocation[0]][CurrentLocation[1]].getTexture() == &Map.PathTextureGreen)
+						{
+							Map.TileVector[CurrentLocation[0]][CurrentLocation[1]].setTexture(&Map.TileTexture);
+						}
+						if (Map.TileVector[CurrentLocation[0]][CurrentLocation[1]].getTexture() == &Map.PathTextureRed)
+						{
+							Map.TileVector[CurrentLocation[0]][CurrentLocation[1]].setTexture(&Map.TileTexture);
+						}
 					}
 					std::vector<int> NewLocation;
 					NewLocation.push_back(CurrentLocation[0] + ActionsPerAgent[CurrentAgent][Parser][0]);
@@ -68,9 +119,9 @@ void PathFunc(TileMap& Map, std::vector<bool>& Pathing, int PathCount)
 					Parser++;
 				}
 
+				std::vector<std::vector<std::vector<bool>>> maskedObstacles = Map.TileTraits;
 				std::vector<int> CurrentAction = ActionsPerAgent[CurrentAgent][0];
 				Agents[CurrentAgent]->Move(CurrentAction[0], CurrentAction[1], Map);
-				std::vector<std::vector<std::vector<bool>>> maskedObstacles = Map.TileTraits;
 				for (int col = 0; col < maskedObstacles.size(); col++)
 					for (int row = 0; row < maskedObstacles[0].size(); row++)
 						if (maskedObstacles[col][row].size() != 0 && abs(col - Agents[CurrentAgent]->GetLocation()[0]) <= Agents[CurrentAgent]->radius && abs(row - Agents[CurrentAgent]->GetLocation()[1]) <= Agents[CurrentAgent]->radius)
@@ -80,12 +131,17 @@ void PathFunc(TileMap& Map, std::vector<bool>& Pathing, int PathCount)
 								if (Agents[CurrentAgent]->KnownMap.TileTraits[col][row].size() == 0)
 								{
 									Agents[CurrentAgent]->KnownMap.TileTraits[col][row].push_back(true);
+									CharacterPOV.TileTraits[col][row].push_back(true);
+									CharacterPOV.TileVector[col][row].setTexture(&CharacterPOV.ObstacleTexture);
 								}
 								else
 								{
 									Agents[CurrentAgent]->KnownMap.TileTraits[col][row][0] = true;
+									CharacterPOV.TileTraits[col][row].push_back(true);
+									CharacterPOV.TileVector[col][row].setTexture(&CharacterPOV.ObstacleTexture);
 								}
 							}
+							//If there isn't an obstacle in the location, net CharacterPOV to color the area to show the character's radius.
 						}
 				
 				Agents[CurrentAgent]->path = Agents[CurrentAgent]->pfa->Update(Agents[CurrentAgent]->GetActions(), Agents[CurrentAgent]->KnownMap.TileTraits, Agents[CurrentAgent]->GetLocation(), Agents[CurrentAgent]->GoalLocation);
@@ -98,19 +154,80 @@ void PathFunc(TileMap& Map, std::vector<bool>& Pathing, int PathCount)
 					std::vector<int> NewLocation;
 					NewLocation.push_back(CurrentLocation[0] + ActionsPerAgent[CurrentAgent][Parser][0]);
 					NewLocation.push_back(CurrentLocation[1] + ActionsPerAgent[CurrentAgent][Parser][1]);
+					if (SeeCharacterPOV)
+					{
+						if (CharacterPOV.TileTraits[NewLocation[0]][NewLocation[1]].size() == 0)
+						{
+							if (Agents[CurrentAgent]->AgentType == 1)
+							{
+								CharacterPOV.TileVector[NewLocation[0]][NewLocation[1]].setTexture(&Map.PathTextureYellow);
+							}
+							else if (Agents[CurrentAgent]->AgentType == 2)
+							{
+								CharacterPOV.TileVector[NewLocation[0]][NewLocation[1]].setTexture(&Map.PathTextureGreen);
+							}
+							else if (Agents[CurrentAgent]->AgentType == 3)
+							{
+								CharacterPOV.TileVector[NewLocation[0]][NewLocation[1]].setTexture(&Map.PathTextureRed);
+							}
+						}
+						else if (CharacterPOV.TileTraits[NewLocation[0]][NewLocation[1]][0] == false)
+						{
+							if (Agents[CurrentAgent]->AgentType == 1)
+							{
+								CharacterPOV.TileVector[NewLocation[0]][NewLocation[1]].setTexture(&Map.PathTextureYellow);
+							}
+							else if (Agents[CurrentAgent]->AgentType == 2)
+							{
+								CharacterPOV.TileVector[NewLocation[0]][NewLocation[1]].setTexture(&Map.PathTextureGreen);
+							}
+							else if (Agents[CurrentAgent]->AgentType == 3)
+							{
+								CharacterPOV.TileVector[NewLocation[0]][NewLocation[1]].setTexture(&Map.PathTextureRed);
+							}
+							//Do nothing otherwise it's an obstacle.
+						}
+					}
 					if (Map.TileTraits[NewLocation[0]][NewLocation[1]].size() == 0)
 					{
-						Map.TileVector[NewLocation[0]][NewLocation[1]].setTexture(&Map.PathTexture);
+						if(!(SeeCharacterPOV))
+						{
+							if (Agents[CurrentAgent]->AgentType == 1)
+							{
+								Map.TileVector[NewLocation[0]][NewLocation[1]].setTexture(&Map.PathTextureYellow);
+							}
+							else if (Agents[CurrentAgent]->AgentType == 2)
+							{
+								Map.TileVector[NewLocation[0]][NewLocation[1]].setTexture(&Map.PathTextureGreen);
+							}
+							else if (Agents[CurrentAgent]->AgentType == 3)
+							{
+								Map.TileVector[NewLocation[0]][NewLocation[1]].setTexture(&Map.PathTextureRed);
+							}
+						}
 					}
 					else if (Map.TileTraits[NewLocation[0]][NewLocation[1]][0] == false)
 					{
-						Map.TileVector[NewLocation[0]][NewLocation[1]].setTexture(&Map.PathTexture);
+						if(!(SeeCharacterPOV))
+						{
+							if (Agents[CurrentAgent]->AgentType == 1)
+							{
+								Map.TileVector[NewLocation[0]][NewLocation[1]].setTexture(&Map.PathTextureYellow);
+							}
+							else if (Agents[CurrentAgent]->AgentType == 2)
+							{
+								Map.TileVector[NewLocation[0]][NewLocation[1]].setTexture(&Map.PathTextureGreen);
+							}
+							else if (Agents[CurrentAgent]->AgentType == 3)
+							{
+								Map.TileVector[NewLocation[0]][NewLocation[1]].setTexture(&Map.PathTextureRed);
+							}
+						}
 						//Do nothing otherwise it's an obstacle.
 					}
 					CurrentLocation = NewLocation;
 					Parser++;
 				}
-
 			}
 			CurrentAgent++;
 		}
@@ -127,9 +244,22 @@ void PathFunc(TileMap& Map, std::vector<bool>& Pathing, int PathCount)
 		}
 		if (FinishedPathing)
 		{
+			//Reset CharacterPOV when finished pathing.
+			CharacterPOV.InitializeMap();
 			for (int i = 0; i < ActionsPerAgent.size(); i++)
 			{
-				std::cout << "Agent " << i << "'s path data: Nodes Expanded = " << Agents[i]->path.nodesExpanded << ", Execution Time = " << Agents[i]->path.exeTime << std::endl;
+				if (i == 0)
+				{
+					std::cout << "Agent Yellow's path data: Nodes Expanded = " << Agents[i]->path.nodesExpanded << ", Execution Time = " << Agents[i]->path.exeTime << std::endl;
+				}
+				else if (i == 1)
+				{
+					std::cout << "Agent Green's path data: Nodes Expanded = " << Agents[i]->path.nodesExpanded << ", Execution Time = " << Agents[i]->path.exeTime << std::endl;
+				}
+				else if (i == 2)
+				{
+					std::cout << "Agent Red's path data: Nodes Expanded = " << Agents[i]->path.nodesExpanded << ", Execution Time = " << Agents[i]->path.exeTime << std::endl;
+				}
 			}
 
 			Pathing[PathCount] = false;
@@ -151,6 +281,9 @@ void PathFunc(TileMap& Map, std::vector<bool>& Pathing, int PathCount)
 
 int main()
 {
+	//Initializing characterPOV
+	CharacterPOV.InitializeMap();
+
 	//Creating the Tilemap.
 	TileMap Map;
 	//Loading the texture for the map tiles.
@@ -168,8 +301,11 @@ int main()
 	//whether or not we've created said character.
 	Character* TargetAgent;
 	Character AgentYellow("images/Yellow_Square_Black_Border_16_16.png");
+	AgentYellow.AgentType = 1;
 	Character AgentGreen("images/Green_Square_Black_Border_16_16.png");
+	AgentGreen.AgentType = 2;
 	Character AgentRed("images/Red_Square_Black_Border_16_16.png");
+	AgentRed.AgentType = 3;
 
 	//Creating the texture for tiles that indicate the player can move to the location.
 	sf::Texture ActionTileTexture;
@@ -249,6 +385,14 @@ int main()
 	AutoPatherTile.setTexture(&AutoPatherTexture);
 	AutoPatherTile.setPosition(944.0, 416.0);
 	/*Auto pather code section here over*/
+
+	//Creating the Char POV button
+	sf::Texture CharPOVTexture;
+	CharPOVTexture.loadFromFile("images/Char_POV_64_64.png");
+	sf::RectangleShape CharPOVTile(sf::Vector2f(64.0, 64.0));
+	CharPOVTile.setTexture(&CharPOVTexture);
+	CharPOVTile.setPosition(944.0, 480.0);
+
 
 	//Creating the Set_character texture.
 	sf::Texture SetCharacter;
@@ -406,15 +550,10 @@ int main()
 	//is named EXACTLY "Map" + MapIndex in the SavedMaps folder. For example if you wanted Map6 you'd run
 	// Map.LoadMap(6), I'm going to load map six so when you run it you'll see map six.
 	std::vector<DataNode> Empty;
-	Empty = Map.LoadMap(7);
-	//To check if there's an obstacle use Map.IsObstacle(int xLoc, int yLoc), for example I know that at (21, 5) there's an obstacle.
-	//**Note: I count from 0 here for this, think of a 2 dimensional array for the grid**
 	TargetAgent = &AgentYellow;
 	TargetAgent->DoDraw = true; //Set Player.DoDraw to true so it's seen without needing to hit create character.
 	TargetAgent->SetLocationInt(21, 25);
 	std::vector<int> CurrentLoc = TargetAgent->GetLocation();
-	std::this_thread::sleep_for(1s);
-	AgentGreen.DoDraw = true;
 	AgentGreen.SetLocationInt(40, 40);
 	AgentGreen.AddAction(0, 1);
 	AgentGreen.AddAction(1, 0);
@@ -424,8 +563,6 @@ int main()
 	GLoc.push_back(5);
 	GLoc.push_back(5);
 	AgentGreen.GoalLocation = GLoc;
-	//Note that Move is used in the Path() function that paths for you, if it runs into an illegal move it just doesn't do the
-	//move and continues on (I think, haven't tested that for 100% certainty)
 	TargetAgent->AddAction(0, 1);
 	TargetAgent->AddAction(1, 0);
 	TargetAgent->AddAction(0, -1);
@@ -433,7 +570,6 @@ int main()
 	GLoc[0] = 3;
 	GLoc[1] = 2;
 	TargetAgent->GoalLocation = GLoc;
-	AgentRed.DoDraw = true;
 	AgentRed.SetLocationInt(20, 2);
 	AgentRed.AddAction(0, 1);
 	AgentRed.AddAction(1, 0);
@@ -442,6 +578,44 @@ int main()
 	GLoc[0] = 40;
 	GLoc[1] = 40;
 	AgentRed.GoalLocation = GLoc;
+	Empty = Map.LoadMap(7);
+	if (Empty.size() != 0)
+	{
+		AgentYellow.SetLocationInt(Empty[0].CurrentLocation[0], Empty[0].CurrentLocation[1]);
+		AgentYellow.GoalLocation[0] = Empty[0].GoalLocation[0];
+		AgentYellow.GoalLocation[1] = Empty[0].GoalLocation[1];
+		AgentYellow.DoDraw = Empty[0].Drawn;
+		AgentYellow.Actions.clear();
+		int ActionParser = 0;
+		while (ActionParser < Empty[0].Actions.size())
+		{
+			AgentYellow.AddAction(Empty[0].Actions[ActionParser][0], Empty[0].Actions[ActionParser][1]);
+			ActionParser++;
+		}
+		AgentGreen.SetLocationInt(Empty[1].CurrentLocation[0], Empty[1].CurrentLocation[1]);
+		AgentGreen.GoalLocation[0] = Empty[1].GoalLocation[0];
+		AgentGreen.GoalLocation[1] = Empty[1].GoalLocation[1];
+		AgentGreen.DoDraw = Empty[1].Drawn;
+		AgentGreen.Actions.clear();
+		ActionParser = 0;
+		while (ActionParser < Empty[1].Actions.size())
+		{
+			AgentGreen.AddAction(Empty[1].Actions[ActionParser][0], Empty[1].Actions[ActionParser][1]);
+			ActionParser++;
+		}
+		AgentRed.SetLocationInt(Empty[2].CurrentLocation[0], Empty[2].CurrentLocation[1]);
+		AgentRed.GoalLocation[0] = Empty[2].GoalLocation[0];
+		AgentRed.GoalLocation[1] = Empty[2].GoalLocation[1];
+		AgentRed.DoDraw = Empty[2].Drawn;
+		AgentRed.Actions.clear();
+		ActionParser = 0;
+		while (ActionParser < Empty[2].Actions.size())
+		{
+			AgentRed.AddAction(Empty[2].Actions[ActionParser][0], Empty[2].Actions[ActionParser][1]);
+			ActionParser++;
+		}
+	}
+
 	//PathFinder* APathPlanner = new AStar(TargetAgent->GetActions(), Map.TileTraits);
 	//PathFinder* pathPlanner = new LPA(TargetAgent->GetActions(), Map.TileTraits);
 	//PathReturn* AStarPath = APathPlanner->Update(TargetAgent->GetActions(), Map.TileTraits, TargetAgent->GetLocation(), TestVect);
@@ -479,7 +653,7 @@ int main()
 		window.clear();
 
 		//Drawing the Tilemap if not in LoadingMapMode or StateSpaceMode.
-		if (!(LoadingMapMode||StateSpaceMode))
+		if (!(LoadingMapMode||StateSpaceMode||SeeCharacterPOV))
 		{
 			int Parser = 0;
 			while (Parser < Map.TileVector.size())
@@ -488,6 +662,20 @@ int main()
 				while (InnerParser < Map.TileVector[Parser].size())
 				{
 					window.draw(Map.TileVector[Parser][InnerParser]);
+					InnerParser++;
+				}
+				Parser++;
+			}
+		}
+		if (SeeCharacterPOV && !(StateSpaceMode) && !(LoadingMapMode))
+		{
+			int Parser = 0;
+			while (Parser < CharacterPOV.TileVector.size())
+			{
+				int InnerParser = 0;
+				while (InnerParser < CharacterPOV.TileVector[Parser].size())
+				{
+					window.draw(CharacterPOV.TileVector[Parser][InnerParser]);
 					InnerParser++;
 				}
 				Parser++;
@@ -523,10 +711,6 @@ int main()
 			CharData = LoadingMap.LoadMap(CurrentMap);
 			if (CharData.size() != 0)
 			{
-				std::cout << "Agent yellow " << std::endl;
-				std::cout << "CurLoc: " << CharData[0].CurrentLocation[0] << " " << CharData[0].CurrentLocation[1] << std::endl;
-				std::cout << "Goal: " << CharData[0].GoalLocation[0] << " " << CharData[0].GoalLocation[1] << std::endl;
-				std::cout << "Draw:" << CharData[0].Drawn << std::endl;
 				AgentYellow.SetLocationInt(CharData[0].CurrentLocation[0], CharData[0].CurrentLocation[1]);
 				AgentYellow.GoalLocation[0] = CharData[0].GoalLocation[0];
 				AgentYellow.GoalLocation[1] = CharData[0].GoalLocation[1];
@@ -978,7 +1162,17 @@ int main()
 							if (maskedObstacles[col][row].size() != 0 && abs(col - TargetAgent->GetLocation()[0]) > TargetAgent->radius && abs(row - TargetAgent->GetLocation()[1]) > TargetAgent->radius)
 								maskedObstacles[col][row][0] = false;
 
-					TargetAgent->pfa = new LPA(TargetAgent->GetActions(), Map.TileTraits);
+					//Yellow will be AStar, Green LPAStar.
+					if (TargetAgent->AgentType == 1)
+					{
+						TargetAgent->pfa = new AStar(TargetAgent->GetActions(), Map.TileTraits);
+					}
+					if (TargetAgent->AgentType == 2)
+					{
+						TargetAgent->pfa = new LPA(TargetAgent->GetActions(), Map.TileTraits);
+						//Atm target radius for LPA is set to 300 due to a bug of lower radius screwing it over.
+						TargetAgent->radius = 300;
+					}
 					PathReturn ResultPath = TargetAgent->pfa->Update(TargetAgent->GetActions(), maskedObstacles, TargetAgent->GetLocation(), TargetAgent->GoalLocation);
 					std::vector<std::vector<int> > Actions = ResultPath.path;
 					ActionsPerAgent.push_back(Actions);
@@ -991,7 +1185,7 @@ int main()
 					bool AtLeastOne = false;
 					if (AgentYellow.DoDraw)
 					{
-						AgentYellow.radius = 3;
+						AgentYellow.radius = 300;
 
 						std::vector<std::vector<std::vector<bool>>> maskedObstacles = Map.TileTraits;
 						for (int col = 0; col < maskedObstacles.size(); col++)
@@ -1008,7 +1202,7 @@ int main()
 					}
 					if (AgentGreen.DoDraw)
 					{
-						AgentGreen.radius = 3;
+						AgentGreen.radius = 300;
 
 						std::vector<std::vector<std::vector<bool>>> maskedObstacles = Map.TileTraits;
 						for (int col = 0; col < maskedObstacles.size(); col++)
@@ -1025,7 +1219,7 @@ int main()
 					}
 					if (AgentRed.DoDraw)
 					{
-						AgentRed.radius = 3;
+						AgentRed.radius = 300;
 
 						std::vector<std::vector<std::vector<bool>>> maskedObstacles = Map.TileTraits;
 						for (int col = 0; col < maskedObstacles.size(); col++)
@@ -1058,7 +1252,19 @@ int main()
 					}
 					std::this_thread::sleep_for(0.2s);
 				}
-				
+				//These positions indicate the CharPOV button was pressed
+				if (MousePos.x < 1008 && MousePos.x >= 944 && MousePos.y > 480 && MousePos.y <= 544)
+				{
+					if (SeeCharacterPOV)
+					{
+						SeeCharacterPOV = false;
+					}
+					else
+					{
+						SeeCharacterPOV = true;
+					}
+					std::this_thread::sleep_for(0.2s);
+				}
 			}
 		}
 
@@ -1102,6 +1308,11 @@ int main()
 			ToggleIndicatorText.setString("Currently moving character");
 			window.draw(ToggleIndicatorText);
 		}
+		else if (SeeCharacterPOV)
+		{
+			ToggleIndicatorText.setString("Viewing Character POV");
+			window.draw(ToggleIndicatorText);
+		}
 
 		//Drawing UI (the buttons)--drawn in the order they appear top down.
 		window.draw(CreateButtonTile);
@@ -1129,6 +1340,7 @@ int main()
 		/*Drawing auto pather*/
 		window.draw(AutoPatherTile);
 		/*Auto pather code here over*/
+		window.draw(CharPOVTile);
 
 		//Drawing characters.
 		if ((AgentYellow.DoDraw))

@@ -12,9 +12,12 @@ TileMap::TileMap()
 
 void TileMap::InitializeMap()
 {
-	PathTexture.loadFromFile("images/White_Square_Black_Border_16_16.png");
+	PathTextureYellow.loadFromFile("images/WhiteYellow_Square_Black_Border_16_16.png");
+	PathTextureGreen.loadFromFile("images/WhiteGreen_Square_Black_Border_16_16.png");
+	PathTextureRed.loadFromFile("images/WhiteRed_Square_Black_Border_16_16.png");
 	ObstacleTexture.loadFromFile("images/Rock_Obstacle_16_16.png");
 	StateSpaceTexture.loadFromFile("images/LightBlue_Square_Black_Border_16_16.png");
+	TileTexture.loadFromFile("images/Blue_Square_Black_Border_16_16.png");
 	//Creating the tilemap tiles [it's a 47 by 57 of size 16 by 16 squares]. The states space map defaults as all obstacles.
 	StateVector.clear();
 	StateTraits.clear();
@@ -152,7 +155,6 @@ void TileMap::SaveMap(std::vector<DataNode> Agents)
 	//Now that we've saved the map we'll save the character's data. We'll do each sequence in the order of the character
 	//(Yellow, Green, Red).
 	Parser = 0;
-	std::cout << Agents.size() << " This is the size of the agent node you passed in." << std::endl;
 	while (Parser < Agents.size())
 	{
 		//First whether they're drawn:
@@ -281,7 +283,6 @@ std::vector<DataNode> TileMap::LoadMap(int MapIndex)
 			Tester = 0;
 			while (!(c == ','))
 			{
-				std::cout << "C VALUE " << c << std::endl;
 				CurrentInput = CurrentInput + c;
 				MapFileIn >> std::noskipws >> c;
 			}
@@ -304,7 +305,6 @@ std::vector<DataNode> TileMap::LoadMap(int MapIndex)
 			//Now we get the x coordinate of its location.
 			while (!(c == ','))
 			{
-				std::cout << c << std::endl;
 				CurrentInput = CurrentInput + c;
 				MapFileIn >> std::noskipws >> c;
 			}
@@ -335,7 +335,6 @@ std::vector<DataNode> TileMap::LoadMap(int MapIndex)
 			//Now its goal location
 			while (!(c == ','))
 			{
-				std::cout << "Printing x Goal Location: " << std::endl;
 				CurrentInput = CurrentInput + c;
 				MapFileIn >> std::noskipws >> c;
 			}
@@ -389,7 +388,6 @@ std::vector<DataNode> TileMap::LoadMap(int MapIndex)
 					MapFileIn >> std::noskipws >> c;
 				}
 				int xAction = std::stoi(CurrentInput);
-				std::cout << xAction << " ";
 				CurrentInput = "";
 
 				while ((c == ',') || (Tester > 10))
@@ -405,7 +403,6 @@ std::vector<DataNode> TileMap::LoadMap(int MapIndex)
 				}
 				int yAction = std::stoi(CurrentInput);
 				std::vector<int> CurrentAction;
-				std::cout << yAction << std::endl;
 				CurrentAction.push_back(xAction); CurrentAction.push_back(yAction);
 				CurrentAgent.Actions.push_back(CurrentAction);
 				CurrentInput = "";
