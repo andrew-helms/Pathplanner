@@ -254,7 +254,7 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 
 		//path.push_back(curr->actionFromParent);
 
-		while (curr->parent != nullptr)
+		while (curr->parent != nullptr && !(*curr->getPosition() == *startCoord))
 		{
 			path.push_back(curr->actionFromParent);
 			curr = curr->parent;

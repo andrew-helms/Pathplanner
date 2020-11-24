@@ -50,7 +50,14 @@ void PathFunc(TileMap& Map, std::vector<bool>& Pathing, int PathCount)
 			{
 				std::vector<int> CurrentAction = ActionsPerAgent[CurrentAgent][0];
 				Agents[CurrentAgent]->Move(CurrentAction[0], CurrentAction[1], Map);
-				Agents[CurrentAgent]->path = Agents[CurrentAgent]->pfa->Update(Agents[CurrentAgent]->GetActions(), Map.TileTraits, Agents[CurrentAgent]->GetLocation(), Agents[CurrentAgent]->GoalLocation);
+
+				std::vector<std::vector<std::vector<bool>>> maskedObstacles = Map.TileTraits;
+				for (int col = 0; col < maskedObstacles.size(); col++)
+					for (int row = 0; row < maskedObstacles[0].size(); row++)
+						if (maskedObstacles[col][row].size() != 0 && abs(col - Agents[CurrentAgent]->GetLocation()[0]) > Agents[CurrentAgent]->radius && abs(row - Agents[CurrentAgent]->GetLocation()[1]) > Agents[CurrentAgent]->radius)
+							maskedObstacles[col][row][0] = false;
+
+				Agents[CurrentAgent]->path = Agents[CurrentAgent]->pfa->Update(Agents[CurrentAgent]->GetActions(), maskedObstacles, Agents[CurrentAgent]->GetLocation(), Agents[CurrentAgent]->GoalLocation);
 				ActionsPerAgent[CurrentAgent] = Agents[CurrentAgent]->path.path;
 			}
 			CurrentAgent++;
@@ -901,8 +908,16 @@ int main()
 					bool AtLeastOne = false;
 					if (AgentYellow.DoDraw)
 					{
+						AgentYellow.radius = 3;
+
+						std::vector<std::vector<std::vector<bool>>> maskedObstacles = Map.TileTraits;
+						for (int col = 0; col < maskedObstacles.size(); col++)
+							for (int row = 0; row < maskedObstacles[0].size(); row++)
+								if (maskedObstacles[col][row].size() != 0 && abs(col - AgentYellow.GetLocation()[0]) > AgentYellow.radius && abs(row - AgentYellow.GetLocation()[1]) > AgentYellow.radius)
+									maskedObstacles[col][row][0] = false;
+
 						AgentYellow.pfa = new LPA(AgentYellow.GetActions(), Map.TileTraits);
-						PathReturn ResultPath = AgentYellow.pfa->Update(AgentYellow.GetActions(), Map.TileTraits, AgentYellow.GetLocation(), AgentYellow.GoalLocation);
+						PathReturn ResultPath = AgentYellow.pfa->Update(AgentYellow.GetActions(), maskedObstacles, AgentYellow.GetLocation(), AgentYellow.GoalLocation);
 						std::vector<std::vector<int> > Actions = ResultPath.path;
 						ActionsPerAgent.push_back(Actions);
 						Agents.push_back(&AgentYellow);
@@ -910,8 +925,16 @@ int main()
 					}
 					if (AgentGreen.DoDraw)
 					{
+						AgentGreen.radius = 3;
+
+						std::vector<std::vector<std::vector<bool>>> maskedObstacles = Map.TileTraits;
+						for (int col = 0; col < maskedObstacles.size(); col++)
+							for (int row = 0; row < maskedObstacles[0].size(); row++)
+								if (maskedObstacles[col][row].size() != 0 && abs(col - AgentGreen.GetLocation()[0]) > AgentGreen.radius && abs(row - AgentGreen.GetLocation()[1]) > AgentGreen.radius)
+									maskedObstacles[col][row][0] = false;
+
 						AgentGreen.pfa = new LPA(AgentGreen.GetActions(), Map.TileTraits);
-						PathReturn ResultPath = AgentGreen.pfa->Update(AgentGreen.GetActions(), Map.TileTraits, AgentGreen.GetLocation(), AgentGreen.GoalLocation);
+						PathReturn ResultPath = AgentGreen.pfa->Update(AgentGreen.GetActions(), maskedObstacles, AgentGreen.GetLocation(), AgentGreen.GoalLocation);
 						std::vector<std::vector<int> > Actions = ResultPath.path;
 						ActionsPerAgent.push_back(Actions);
 						Agents.push_back(&AgentGreen);
@@ -919,8 +942,16 @@ int main()
 					}
 					if (AgentRed.DoDraw)
 					{
+						AgentRed.radius = 3;
+
+						std::vector<std::vector<std::vector<bool>>> maskedObstacles = Map.TileTraits;
+						for (int col = 0; col < maskedObstacles.size(); col++)
+							for (int row = 0; row < maskedObstacles[0].size(); row++)
+								if (maskedObstacles[col][row].size() != 0 && abs(col - AgentRed.GetLocation()[0]) > AgentRed.radius && abs(row - AgentRed.GetLocation()[1]) > AgentRed.radius)
+									maskedObstacles[col][row][0] = false;
+
 						AgentRed.pfa = new LPA(AgentRed.GetActions(), Map.TileTraits);
-						PathReturn ResultPath = AgentRed.pfa->Update(AgentRed.GetActions(), Map.TileTraits, AgentRed.GetLocation(), AgentRed.GoalLocation);
+						PathReturn ResultPath = AgentRed.pfa->Update(AgentRed.GetActions(), maskedObstacles, AgentRed.GetLocation(), AgentRed.GoalLocation);
 						std::vector<std::vector<int> > Actions = ResultPath.path;
 						ActionsPerAgent.push_back(Actions);
 						Agents.push_back(&AgentRed);
