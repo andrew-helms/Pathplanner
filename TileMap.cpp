@@ -12,6 +12,7 @@ TileMap::TileMap()
 
 void TileMap::InitializeMap()
 {
+	PathTexture.loadFromFile("images/White_Square_Black_Border_16_16.png");
 	ObstacleTexture.loadFromFile("images/Rock_Obstacle_16_16.png");
 	StateSpaceTexture.loadFromFile("images/LightBlue_Square_Black_Border_16_16.png");
 	//Creating the tilemap tiles [it's a 47 by 57 of size 16 by 16 squares]. The states space map defaults as all obstacles.
