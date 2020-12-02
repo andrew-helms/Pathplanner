@@ -1200,7 +1200,7 @@ int main()
 					}
 					if (AgentGreen.DoDraw)
 					{
-						AgentGreen.radius = 3;
+						AgentGreen.radius = 10;
 
 						std::vector<std::vector<std::vector<bool>>> maskedObstacles = Map.TileTraits;
 						for (int col = 0; col < maskedObstacles.size(); col++)

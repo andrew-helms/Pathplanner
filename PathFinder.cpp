@@ -189,11 +189,15 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 
 		nodesExpanded++;
 	}
+	else
+	{
+		startNode = static_cast<LPANode*>(stateSpace[*startCoord]);
+		startNode->cost = INTMAX_MAX;
+		startNode->rhs = 0;
 
-	startNode = static_cast<LPANode*>(stateSpace[*startCoord]);
-	startNode->cost = INTMAX_MAX;
-	startNode->rhs = 0;
-	UpdateVertex(startNode, Obstacles);
+		UpdateVertex(startNode, Obstacles);
+	}
+
 
 	firstRun = false;
 
