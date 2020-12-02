@@ -189,15 +189,11 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 
 		nodesExpanded++;
 	}
-	else
-	{
-		startNode = static_cast<LPANode*>(stateSpace[*startCoord]);
-		startNode->cost = INTMAX_MAX;
-		startNode->rhs = 0;
 
-		UpdateVertex(startNode, Obstacles);
-	}
-
+	startNode = static_cast<LPANode*>(stateSpace[*startCoord]);
+	startNode->cost = INTMAX_MAX;
+	startNode->rhs = 0;
+	UpdateVertex(startNode, Obstacles);
 
 	firstRun = false;
 
@@ -349,9 +345,12 @@ void LPA::UpdateVertex(LPANode* node, std::vector<std::vector<std::vector<bool>>
 
 				if (parent->cost + Heuristic(*parent->getPosition(), *node->getPosition()) < minRHS)
 				{
-					node->parent = parent;
-					node->actionFromParent = actionSpace[i];
-					minRHS = parent->cost + Heuristic(*parent->getPosition(), *node->getPosition());
+					if (!(parent->parent == node))
+					{
+						node->parent = parent;
+						node->actionFromParent = actionSpace[i];
+						minRHS = parent->cost + Heuristic(*parent->getPosition(), *node->getPosition());
+					}
 				}
 			}			
 		}
