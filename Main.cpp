@@ -1170,8 +1170,6 @@ int main()
 					if (TargetAgent->AgentType == 2)
 					{
 						TargetAgent->pfa = new LPA(TargetAgent->GetActions(), maskedObstacles);
-						//Atm target radius for LPA is set to 300 due to a bug of lower radius screwing it over.
-						TargetAgent->radius = 3;
 					}
 					PathReturn ResultPath = TargetAgent->pfa->Update(TargetAgent->GetActions(), maskedObstacles, TargetAgent->GetLocation(), TargetAgent->GoalLocation);
 					std::vector<std::vector<int> > Actions = ResultPath.path;
@@ -1185,7 +1183,7 @@ int main()
 					bool AtLeastOne = false;
 					if (AgentYellow.DoDraw)
 					{
-						AgentYellow.radius = 10;
+						AgentYellow.radius = 3;
 
 						std::vector<std::vector<std::vector<bool>>> maskedObstacles = Map.TileTraits;
 						for (int col = 0; col < maskedObstacles.size(); col++)
@@ -1193,7 +1191,7 @@ int main()
 								if (maskedObstacles[col][row].size() != 0 && (abs(col - AgentYellow.GetLocation()[0]) > AgentYellow.radius || abs(row - AgentYellow.GetLocation()[1]) > AgentYellow.radius))
 									maskedObstacles[col][row][0] = false;
 
-						AgentYellow.pfa = new LPA(AgentYellow.GetActions(), maskedObstacles);
+						AgentYellow.pfa = new AStar(AgentYellow.GetActions(), maskedObstacles);
 						PathReturn ResultPath = AgentYellow.pfa->Update(AgentYellow.GetActions(), maskedObstacles, AgentYellow.GetLocation(), AgentYellow.GoalLocation);
 						std::vector<std::vector<int> > Actions = ResultPath.path;
 						ActionsPerAgent.push_back(Actions);
@@ -1202,7 +1200,7 @@ int main()
 					}
 					if (AgentGreen.DoDraw)
 					{
-						AgentGreen.radius = 10;
+						AgentGreen.radius = 3;
 
 						std::vector<std::vector<std::vector<bool>>> maskedObstacles = Map.TileTraits;
 						for (int col = 0; col < maskedObstacles.size(); col++)
@@ -1219,7 +1217,7 @@ int main()
 					}
 					if (AgentRed.DoDraw)
 					{
-						AgentRed.radius = 10;
+						AgentRed.radius = 3;
 
 						std::vector<std::vector<std::vector<bool>>> maskedObstacles = Map.TileTraits;
 						for (int col = 0; col < maskedObstacles.size(); col++)

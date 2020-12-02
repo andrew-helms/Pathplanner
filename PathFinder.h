@@ -53,6 +53,7 @@ protected:
 	bool firstRun;
 
 	double Heuristic(Coordinate Start, Coordinate End);
+	void DeconstructStateSpace();
 };
 
 class AStar : public PathFinder {
@@ -75,7 +76,7 @@ public:
 
 private:
 	void UpdateVertex(LPANode* node, std::vector<std::vector<std::vector<bool>>>& Obstacles);
-	double CalcKey(LPANode* node, Coordinate* goalCoord);
+	bool CalcKey(LPANode* node, Coordinate* goalCoord, LPANode* rhs);
 	std::vector<Node*> queue;
 	LPANode* startNode;
 };

@@ -43,7 +43,6 @@ PathReturn AStar::Update(std::vector<std::vector<int>> actions, std::vector<std:
 	actionSpace = actions;
 	obstacles = Obstacles;
 
-	stateSpace.clear();
 	std::vector<std::vector<int>> path;
 	stateSpace[*startCoord] = new Node(startCoord, nullptr, 0, start); //adds start as action from the parent just as a placeholder. Not used
 	std::vector<Node*> queue;
@@ -117,6 +116,8 @@ PathReturn AStar::Update(std::vector<std::vector<int>> actions, std::vector<std:
 
 	output = PathReturn(outputPath, nodesExpanded, exeTime);
 
+	DeconstructStateSpace();
+
 	return output;
 }
 
@@ -189,6 +190,11 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 		nodesExpanded++;
 	}
 
+	startNode = static_cast<LPANode*>(stateSpace[*startCoord]);
+	startNode->cost = INTMAX_MAX;
+	startNode->rhs = 0;
+	UpdateVertex(startNode, Obstacles);
+
 	firstRun = false;
 
 	actionSpace = actions;
@@ -199,9 +205,7 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 		int minNode = 0;
 
 		for (int i = 0; i < queue.size(); i++)
-			if (std::min(queue[i]->cost, static_cast<LPANode*>(queue[i])->rhs) + Heuristic(*queue[i]->getPosition(), *goalCoord) < std::min(queue[minNode]->cost, static_cast<LPANode*>(queue[minNode])->rhs) + Heuristic(*queue[minNode]->getPosition(), *goalCoord)
-			|| (fabs(std::min(queue[i]->cost, static_cast<LPANode*>(queue[i])->rhs) + Heuristic(*queue[i]->getPosition(), *goalCoord) - std::min(queue[minNode]->cost, static_cast<LPANode*>(queue[minNode])->rhs) + Heuristic(*queue[minNode]->getPosition(), *goalCoord)) < 0.00001
-			&& std::min(queue[i]->cost, static_cast<LPANode*>(queue[i])->rhs) < std::min(queue[minNode]->cost, static_cast<LPANode*>(queue[minNode])->rhs)))
+			if (CalcKey(static_cast<LPANode*>(queue[i]), goalCoord, static_cast<LPANode*>(queue[minNode])))
 				minNode = i; 
 
 		LPANode* curr = static_cast<LPANode*>(queue[minNode]);
@@ -209,13 +213,11 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 
 		if (stateSpace.count(*goalCoord) != 0)
 		{
-			if ((std::min(curr->cost, curr->rhs) + Heuristic(*curr->getPosition(), *goalCoord) >= std::min(stateSpace[*goalCoord]->cost, static_cast<LPANode*>(stateSpace[*goalCoord])->rhs)
-				|| (fabs(std::min(curr->cost, curr->rhs) + Heuristic(*curr->getPosition(), *goalCoord) - std::min(stateSpace[*goalCoord]->cost, static_cast<LPANode*>(stateSpace[*goalCoord])->rhs)) < 0.000001
-					&& std::min(curr->cost, curr->rhs) >= std::min(stateSpace[*goalCoord]->cost, static_cast<LPANode*>(stateSpace[*goalCoord])->rhs)))
-				&& fabs(stateSpace[*goalCoord]->cost - static_cast<LPANode*>(stateSpace[*goalCoord])->rhs) < 0.000001)
+			if (!(CalcKey(curr, goalCoord, static_cast<LPANode*>(stateSpace[*goalCoord])) || fabs(stateSpace[*goalCoord]->cost - static_cast<LPANode*>(stateSpace[*goalCoord])->rhs) > 0.000001))
 			{
 				double grhs = static_cast<LPANode*>(stateSpace[*goalCoord])->rhs;
 				double diff = fabs(stateSpace[*goalCoord]->cost - static_cast<LPANode*>(stateSpace[*goalCoord])->rhs);
+				double currh = Heuristic(*curr->getPosition(), *goalCoord);
 				break;
 			}
 		}
@@ -284,8 +286,6 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 
 			UpdateVertex(curr, obstacles);
 		}
-
-		std::cout << queue.size() << std::endl;
 	}
 	
 	std::vector<std::vector<int>> path;
@@ -363,9 +363,12 @@ void LPA::UpdateVertex(LPANode* node, std::vector<std::vector<std::vector<bool>>
 		queue.push_back(node);
 }
 
-double LPA::CalcKey(LPANode* node, Coordinate* goalCoord)
+bool LPA::CalcKey(LPANode* node, Coordinate* goalCoord, LPANode* rhs) //true if key(node) < key(rhs)
 {
-	return std::min(std::min(node->cost, node->rhs) + Heuristic(*node->getPosition(), *goalCoord), std::min(node->cost, node->rhs));
+	bool aStarKey = (std::min(node->cost, node->rhs) + Heuristic(*node->getPosition(), *goalCoord) < std::min(rhs->cost, rhs->rhs) + Heuristic(*rhs->getPosition(), *goalCoord));
+	bool tie = fabs(std::min(node->cost, node->rhs) + Heuristic(*node->getPosition(), *goalCoord) - std::min(rhs->cost, rhs->rhs) + Heuristic(*rhs->getPosition(), *goalCoord)) < 0.00001;
+	bool dijkstraKey = (std::min(node->cost, node->rhs) < std::min(rhs->cost, rhs->rhs));
+	return aStarKey || (tie && dijkstraKey);
 }
 
 Node::Node(Coordinate* Position, Node* Parent, double Cost, std::vector<int> ActionFromParent)
@@ -421,4 +424,15 @@ PathFinder::PathFinder(std::vector<std::vector<int>> actions, std::vector<std::v
 double PathFinder::Heuristic(Coordinate Start, Coordinate End)
 {
 	return sqrt(pow(Start.x - End.x, 2) + pow(Start.y - End.y, 2));
+}
+
+void PathFinder::DeconstructStateSpace()
+{
+	for (std::map<Coordinate, Node*>::iterator it = stateSpace.begin(); it != stateSpace.end(); it++)
+	{
+		Node* temp = it->second;
+		delete temp;
+	}
+
+	stateSpace.clear();
 }
