@@ -113,7 +113,7 @@ PathReturn AStar::Update(std::vector<std::vector<int>> actions, std::vector<std:
 
 	auto endTime = std::chrono::steady_clock::now();
 
-	exeTime += exeTime += std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
+	exeTime += std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
 
 	output = PathReturn(outputPath, nodesExpanded, exeTime);
 
@@ -140,12 +140,12 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 			{
 				for (int i = 0; i < actionSpace.size(); i++)
 				{
-					Coordinate newCoord(col + actionSpace[i][0] * -1, row + actionSpace[i][1] * -1);
+					Coordinate newCoord(col + actionSpace[i][0] * 1, row + actionSpace[i][1] * 1);
 					if (newCoord.x >= Obstacles.size() || newCoord.x < 0 || newCoord.y >= Obstacles[0].size() || newCoord.y < 0 || Obstacles[newCoord.x][newCoord.y].size() != 0 && Obstacles[newCoord.x][newCoord.y][0])
 						continue;
 
 					if (stateSpace.count(newCoord) != 0)
-						UpdateVertex(static_cast<LPANode*>(stateSpace[newCoord]));
+						UpdateVertex(static_cast<LPANode*>(stateSpace[newCoord]), Obstacles);
 				}
 
 				haveEdgesChanged = true;
@@ -154,12 +154,12 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 			{
 				for (int i = 0; i < actionSpace.size(); i++)
 				{
-					Coordinate newCoord(col + actionSpace[i][0] * -1, row + actionSpace[i][1] * -1);
+					Coordinate newCoord(col + actionSpace[i][0] * 1, row + actionSpace[i][1] * 1);
 					if (newCoord.x >= Obstacles.size() || newCoord.x < 0 || newCoord.y >= Obstacles[0].size() || newCoord.y < 0 || Obstacles[newCoord.x][newCoord.y].size() != 0 && Obstacles[newCoord.x][newCoord.y][0])
 						continue;
 
 					if (stateSpace.count(newCoord) != 0)
-						UpdateVertex(static_cast<LPANode*>(stateSpace[newCoord]));						
+						UpdateVertex(static_cast<LPANode*>(stateSpace[newCoord]), Obstacles);
 				}
 
 				haveEdgesChanged = true;
@@ -171,7 +171,7 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 	{
 		auto endTime = std::chrono::steady_clock::now();
 
-		exeTime += exeTime += std::chrono::duration_cast<std::chrono::seconds>(endTime - startTime).count();
+		exeTime += std::chrono::duration_cast<std::chrono::seconds>(endTime - startTime).count();
 
 		output.exeTime = exeTime;
 
@@ -200,7 +200,7 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 
 		for (int i = 0; i < queue.size(); i++)
 			if (std::min(queue[i]->cost, static_cast<LPANode*>(queue[i])->rhs) + Heuristic(*queue[i]->getPosition(), *goalCoord) < std::min(queue[minNode]->cost, static_cast<LPANode*>(queue[minNode])->rhs) + Heuristic(*queue[minNode]->getPosition(), *goalCoord)
-			|| (abs(std::min(queue[i]->cost, static_cast<LPANode*>(queue[i])->rhs) + Heuristic(*queue[i]->getPosition(), *goalCoord) - std::min(queue[minNode]->cost, static_cast<LPANode*>(queue[minNode])->rhs) + Heuristic(*queue[minNode]->getPosition(), *goalCoord)) < 0.001
+			|| (fabs(std::min(queue[i]->cost, static_cast<LPANode*>(queue[i])->rhs) + Heuristic(*queue[i]->getPosition(), *goalCoord) - std::min(queue[minNode]->cost, static_cast<LPANode*>(queue[minNode])->rhs) + Heuristic(*queue[minNode]->getPosition(), *goalCoord)) < 0.00001
 			&& std::min(queue[i]->cost, static_cast<LPANode*>(queue[i])->rhs) < std::min(queue[minNode]->cost, static_cast<LPANode*>(queue[minNode])->rhs)))
 				minNode = i; 
 
@@ -209,11 +209,15 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 
 		if (stateSpace.count(*goalCoord) != 0)
 		{
-			if (std::min(curr->cost, curr->rhs) + Heuristic(*curr->getPosition(), *goalCoord) >= std::min(stateSpace[*goalCoord]->cost, static_cast<LPANode*>(stateSpace[*goalCoord])->rhs)
-			|| (abs(std::min(curr->cost, curr->rhs) + Heuristic(*curr->getPosition(), *goalCoord) - std::min(stateSpace[*goalCoord]->cost, static_cast<LPANode*>(stateSpace[*goalCoord])->rhs)) < 0.001
-			&& std::min(curr->cost, curr->rhs) >= std::min(stateSpace[*goalCoord]->cost, static_cast<LPANode*>(stateSpace[*goalCoord])->rhs))
-			&& abs(stateSpace[*goalCoord]->cost - static_cast<LPANode*>(stateSpace[*goalCoord])->rhs) < 0.001)
+			if ((std::min(curr->cost, curr->rhs) + Heuristic(*curr->getPosition(), *goalCoord) >= std::min(stateSpace[*goalCoord]->cost, static_cast<LPANode*>(stateSpace[*goalCoord])->rhs)
+				|| (fabs(std::min(curr->cost, curr->rhs) + Heuristic(*curr->getPosition(), *goalCoord) - std::min(stateSpace[*goalCoord]->cost, static_cast<LPANode*>(stateSpace[*goalCoord])->rhs)) < 0.000001
+					&& std::min(curr->cost, curr->rhs) >= std::min(stateSpace[*goalCoord]->cost, static_cast<LPANode*>(stateSpace[*goalCoord])->rhs)))
+				&& fabs(stateSpace[*goalCoord]->cost - static_cast<LPANode*>(stateSpace[*goalCoord])->rhs) < 0.000001)
+			{
+				double grhs = static_cast<LPANode*>(stateSpace[*goalCoord])->rhs;
+				double diff = fabs(stateSpace[*goalCoord]->cost - static_cast<LPANode*>(stateSpace[*goalCoord])->rhs);
 				break;
+			}
 		}
 
 		if (curr->cost > curr->rhs)
@@ -233,17 +237,18 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 				{
 					LPANode* child = new LPANode(newCoord, curr, INTMAX_MAX, INTMAX_MAX, actionSpace[i]);
 					stateSpace[*newCoord] = child;
-					queue.push_back(child);
 
 					nodesExpanded++;
 
-					UpdateVertex(child);
+					UpdateVertex(child, obstacles);
 				}
 				else
 				{
 					LPANode* child = static_cast<LPANode*>(stateSpace[*newCoord]);
 
-					UpdateVertex(child);
+					UpdateVertex(child, obstacles);
+
+					delete newCoord;
 				}
 			}
 		}
@@ -264,20 +269,23 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 				{
 					LPANode* child = new LPANode(newCoord, curr, INTMAX_MAX, INTMAX_MAX, actionSpace[i]);
 					stateSpace[*newCoord] = child;
-					queue.push_back(child);
 
-					UpdateVertex(child);
+					UpdateVertex(child, obstacles);
 				}
 				else
 				{
 					LPANode* child = static_cast<LPANode*>(stateSpace[*newCoord]);
 
-					UpdateVertex(child);
+					UpdateVertex(child, obstacles);
+
+					delete newCoord;
 				}
 			}
 
-			UpdateVertex(curr);
+			UpdateVertex(curr, obstacles);
 		}
+
+		std::cout << queue.size() << std::endl;
 	}
 	
 	std::vector<std::vector<int>> path;
@@ -304,7 +312,7 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 
 	auto endTime = std::chrono::steady_clock::now();
 
-	exeTime += exeTime += std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
+	exeTime += std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
 
 	output = PathReturn(outputPath, nodesExpanded, exeTime);
 
@@ -318,7 +326,7 @@ PathReturn LPA::Update(std::vector<std::vector<int>> actions, std::vector<std::v
 	return output;
 }
 
-void LPA::UpdateVertex(LPANode* node)
+void LPA::UpdateVertex(LPANode* node, std::vector<std::vector<std::vector<bool>>>& Obstacles)
 {
 	if (node != startNode)
 	{
@@ -328,7 +336,7 @@ void LPA::UpdateVertex(LPANode* node)
 		for (int i = 0; i < actionSpace.size(); i++)
 		{
 			Coordinate newCoord(node->getPosition()->x + actionSpace[i][0] * -1, node->getPosition()->y + actionSpace[i][1] * -1);
-			if (newCoord.x >= obstacles.size() || newCoord.x < 0 || newCoord.y >= obstacles[0].size() || newCoord.y < 0 || obstacles[newCoord.x][newCoord.y].size() != 0 && obstacles[newCoord.x][newCoord.y][0])
+			if (newCoord.x >= Obstacles.size() || newCoord.x < 0 || newCoord.y >= Obstacles[0].size() || newCoord.y < 0 || Obstacles[newCoord.x][newCoord.y].size() != 0 && Obstacles[newCoord.x][newCoord.y][0])
 				continue;
 
 			if (stateSpace.count(newCoord) != 0)
@@ -351,7 +359,7 @@ void LPA::UpdateVertex(LPANode* node)
 	if (index != queue.end())
 		queue.erase(index);
 
-	if (abs(node->cost - node->rhs) > 0.001) //if they aren't equal
+	if (fabs(node->cost - node->rhs) > 0.000001) //if they aren't equal
 		queue.push_back(node);
 }
 

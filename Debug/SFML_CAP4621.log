@@ -1,160 +1,32 @@
-﻿  Main.cpp
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(44,21): warning C4018: '>': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(56,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(62,19): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(125,27): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(126,28): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(152,19): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(237,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(249,22): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(590,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(601,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(612,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(659,18): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(662,24): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(673,18): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(676,24): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(687,18): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(690,24): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(720,25): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(731,25): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(742,25): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(752,19): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(755,25): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(838,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(840,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(850,76): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(850,57): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(855,75): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(855,56): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(860,73): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(860,54): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(873,25): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(874,25): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(896,76): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(896,57): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(920,28): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(921,28): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(951,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(953,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(954,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(968,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(970,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(971,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1160,28): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1161,29): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1191,29): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1192,30): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1208,29): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1209,30): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1225,29): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1226,30): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1356,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1357,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1373,18): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1378,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1379,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1382,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1383,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1415,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1416,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1432,18): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1437,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1441,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1442,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1474,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1475,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1491,18): warning C4018: '<': signed/unsigned mismatch
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1496,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1497,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1500,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\elica\Desktop\Pathplanner\Main.cpp(1501,18): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-  SFML_CAP4621.vcxproj -> C:\Users\elica\Desktop\Pathplanner\Debug\SFML_CAP4621.exe
+﻿  PathFinder.cpp
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(17,24): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(19,25): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(57,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(75,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(78,20): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(78,74): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(135,24): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(137,25): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(141,23): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(144,21): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(144,73): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(155,23): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(158,21): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(158,73): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(185,69): warning C4305: 'argument': truncation from '__int64' to 'double'
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(201,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(227,22): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(230,21): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(230,75): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(238,90): warning C4305: 'argument': truncation from '__int64' to 'double'
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(257,27): warning C4305: '=': truncation from '__int64' to 'double'
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(259,22): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(262,21): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(262,75): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(270,90): warning C4305: 'argument': truncation from '__int64' to 'double'
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(319,20): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(333,29): warning C4305: 'initializing': truncation from '__int64' to 'double'
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(336,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(339,19): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(339,71): warning C4018: '>=': signed/unsigned mismatch
+  SFML_CAP4621.vcxproj -> D:\Documents\College\AI & Heuristics\Project\Pathplanner\Debug\SFML_CAP4621.exe

@@ -1159,19 +1159,19 @@ int main()
 					std::vector<std::vector<std::vector<bool>>> maskedObstacles = Map.TileTraits;
 					for (int col = 0; col < maskedObstacles.size(); col++)
 						for (int row = 0; row < maskedObstacles[0].size(); row++)
-							if (maskedObstacles[col][row].size() != 0 && abs(col - TargetAgent->GetLocation()[0]) > TargetAgent->radius && abs(row - TargetAgent->GetLocation()[1]) > TargetAgent->radius)
+							if (maskedObstacles[col][row].size() != 0 && (abs(col - TargetAgent->GetLocation()[0]) > TargetAgent->radius || abs(row - TargetAgent->GetLocation()[1]) > TargetAgent->radius))
 								maskedObstacles[col][row][0] = false;
 
 					//Yellow will be AStar, Green LPAStar.
 					if (TargetAgent->AgentType == 1)
 					{
-						TargetAgent->pfa = new AStar(TargetAgent->GetActions(), Map.TileTraits);
+						TargetAgent->pfa = new AStar(TargetAgent->GetActions(), maskedObstacles);
 					}
 					if (TargetAgent->AgentType == 2)
 					{
-						TargetAgent->pfa = new LPA(TargetAgent->GetActions(), Map.TileTraits);
+						TargetAgent->pfa = new LPA(TargetAgent->GetActions(), maskedObstacles);
 						//Atm target radius for LPA is set to 300 due to a bug of lower radius screwing it over.
-						TargetAgent->radius = 300;
+						TargetAgent->radius = 3;
 					}
 					PathReturn ResultPath = TargetAgent->pfa->Update(TargetAgent->GetActions(), maskedObstacles, TargetAgent->GetLocation(), TargetAgent->GoalLocation);
 					std::vector<std::vector<int> > Actions = ResultPath.path;
@@ -1185,15 +1185,15 @@ int main()
 					bool AtLeastOne = false;
 					if (AgentYellow.DoDraw)
 					{
-						AgentYellow.radius = 300;
+						AgentYellow.radius = 10;
 
 						std::vector<std::vector<std::vector<bool>>> maskedObstacles = Map.TileTraits;
 						for (int col = 0; col < maskedObstacles.size(); col++)
 							for (int row = 0; row < maskedObstacles[0].size(); row++)
-								if (maskedObstacles[col][row].size() != 0 && abs(col - AgentYellow.GetLocation()[0]) > AgentYellow.radius && abs(row - AgentYellow.GetLocation()[1]) > AgentYellow.radius)
+								if (maskedObstacles[col][row].size() != 0 && (abs(col - AgentYellow.GetLocation()[0]) > AgentYellow.radius || abs(row - AgentYellow.GetLocation()[1]) > AgentYellow.radius))
 									maskedObstacles[col][row][0] = false;
 
-						AgentYellow.pfa = new LPA(AgentYellow.GetActions(), Map.TileTraits);
+						AgentYellow.pfa = new LPA(AgentYellow.GetActions(), maskedObstacles);
 						PathReturn ResultPath = AgentYellow.pfa->Update(AgentYellow.GetActions(), maskedObstacles, AgentYellow.GetLocation(), AgentYellow.GoalLocation);
 						std::vector<std::vector<int> > Actions = ResultPath.path;
 						ActionsPerAgent.push_back(Actions);
@@ -1202,15 +1202,15 @@ int main()
 					}
 					if (AgentGreen.DoDraw)
 					{
-						AgentGreen.radius = 300;
+						AgentGreen.radius = 10;
 
 						std::vector<std::vector<std::vector<bool>>> maskedObstacles = Map.TileTraits;
 						for (int col = 0; col < maskedObstacles.size(); col++)
 							for (int row = 0; row < maskedObstacles[0].size(); row++)
-								if (maskedObstacles[col][row].size() != 0 && abs(col - AgentGreen.GetLocation()[0]) > AgentGreen.radius && abs(row - AgentGreen.GetLocation()[1]) > AgentGreen.radius)
+								if (maskedObstacles[col][row].size() != 0 && (abs(col - AgentYellow.GetLocation()[0]) > AgentYellow.radius || abs(row - AgentYellow.GetLocation()[1]) > AgentYellow.radius))
 									maskedObstacles[col][row][0] = false;
 
-						AgentGreen.pfa = new LPA(AgentGreen.GetActions(), Map.TileTraits);
+						AgentGreen.pfa = new LPA(AgentGreen.GetActions(), maskedObstacles);
 						PathReturn ResultPath = AgentGreen.pfa->Update(AgentGreen.GetActions(), maskedObstacles, AgentGreen.GetLocation(), AgentGreen.GoalLocation);
 						std::vector<std::vector<int> > Actions = ResultPath.path;
 						ActionsPerAgent.push_back(Actions);
@@ -1219,15 +1219,15 @@ int main()
 					}
 					if (AgentRed.DoDraw)
 					{
-						AgentRed.radius = 300;
+						AgentRed.radius = 10;
 
 						std::vector<std::vector<std::vector<bool>>> maskedObstacles = Map.TileTraits;
 						for (int col = 0; col < maskedObstacles.size(); col++)
 							for (int row = 0; row < maskedObstacles[0].size(); row++)
-								if (maskedObstacles[col][row].size() != 0 && abs(col - AgentRed.GetLocation()[0]) > AgentRed.radius && abs(row - AgentRed.GetLocation()[1]) > AgentRed.radius)
+								if (maskedObstacles[col][row].size() != 0 && (abs(col - AgentYellow.GetLocation()[0]) > AgentYellow.radius || abs(row - AgentYellow.GetLocation()[1]) > AgentYellow.radius))
 									maskedObstacles[col][row][0] = false;
 
-						AgentRed.pfa = new LPA(AgentRed.GetActions(), Map.TileTraits);
+						AgentRed.pfa = new LPA(AgentRed.GetActions(), maskedObstacles);
 						PathReturn ResultPath = AgentRed.pfa->Update(AgentRed.GetActions(), maskedObstacles, AgentRed.GetLocation(), AgentRed.GoalLocation);
 						std::vector<std::vector<int> > Actions = ResultPath.path;
 						ActionsPerAgent.push_back(Actions);
