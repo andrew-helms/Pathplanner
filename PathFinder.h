@@ -80,3 +80,21 @@ private:
 	std::vector<Node*> queue;
 	LPANode* startNode;
 };
+
+class DStarNode : public Node {
+public:
+	DStarNode(Coordinate* Position, Node* Parent, double Cost, double RHS, std::vector<int> ActionFromParent);
+
+	double rhs;
+};
+
+class DStar : public PathFinder {
+public:
+	DStar(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles);
+	PathReturn Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal);
+
+private:
+	void UpdateVertex(DStarNode* node, std::vector<std::vector<std::vector<bool>>>& Obstacles);
+	bool CalcKey(DStarNode* node, Coordinate* startCoord, DStarNode* rhs);
+	std::vector<DStarNode*> queue;
+};

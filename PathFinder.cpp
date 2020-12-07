@@ -374,13 +374,353 @@ bool LPA::CalcKey(LPANode* node, Coordinate* goalCoord, LPANode* rhs) //true if 
 	return aStarKey || (tie && dijkstraKey);
 }
 
-Node::Node(Coordinate* Position, Node* Parent, double Cost, std::vector<int> ActionFromParent)
+DStar::DStar(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles) : PathFinder(actions, Obstacles)
+{}
+
+PathReturn DStar::Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal)
 {
-	position = Position;
-	parent = Parent;
-	cost = Cost;
-	actionFromParent = ActionFromParent;
+	auto startTime = std::chrono::steady_clock::now();
+
+	Coordinate* startCoord = new Coordinate(start[0], start[1]);
+	Coordinate* goalCoord = new Coordinate(goal[0], goal[1]);
+
+	bool haveEdgesChanged = false;
+
+	for (int col = 0; col < Obstacles.size(); col++)
+	{
+		for (int row = 0; row < Obstacles[0].size(); row++)
+		{
+			if (Obstacles[col][row].size() != 0 && obstacles[col][row].size() != 0 && Obstacles[col][row][0] != obstacles[col][row][0])
+			{
+				Coordinate currPos(col, row);
+
+				if (stateSpace.count(currPos) != 0)
+				{
+					for (int i = 0; i < actionSpace.size(); i++)
+					{
+						Coordinate newCoord(col + actionSpace[i][0] * 1, row + actionSpace[i][1] * 1);
+						if (newCoord.x >= Obstacles.size() || newCoord.x < 0 || newCoord.y >= Obstacles[0].size() || newCoord.y < 0 || Obstacles[newCoord.x][newCoord.y].size() != 0 && Obstacles[newCoord.x][newCoord.y][0])
+							continue;
+
+						if (stateSpace.count(newCoord) != 0)
+						{
+							if (obstacles[col][row][0] && !(currPos == *goalCoord))
+								static_cast<DStarNode*>(stateSpace[newCoord])->rhs = std::min(static_cast<DStarNode*>(stateSpace[newCoord])->rhs, Heuristic(currPos, newCoord) + stateSpace[currPos]->cost);
+							else if (fabs(static_cast<DStarNode*>(stateSpace[newCoord])->rhs - ((int)(!obstacles[row][col][0]) + stateSpace[currPos]->cost)) < 0.00001)
+							{
+								double minCost = INTMAX_MAX;
+
+								for (int j = 0; j < actionSpace.size(); j++)
+								{
+									Coordinate childCoord(col + actionSpace[i][0], row + actionSpace[i][1]);
+
+									if (stateSpace.count(childCoord) != 0)
+									{
+										minCost = std::min(minCost, Heuristic(childCoord, newCoord) + stateSpace[childCoord]->cost);
+									}
+								}
+
+								static_cast<DStarNode*>(stateSpace[newCoord])->rhs = minCost;
+							}
+
+							UpdateVertex(static_cast<DStarNode*>(stateSpace[newCoord]), Obstacles);
+						}
+					}
+				}
+
+				haveEdgesChanged = true;
+			}
+			else if ((Obstacles[col][row].size() == 0 && obstacles[col][row].size() != 0 && obstacles[col][row][0]) || (Obstacles[col][row].size() != 0 && Obstacles[col][row][0] && obstacles[col][row].size() == 0))
+			{
+				Coordinate currPos(col, row);
+
+				if (stateSpace.count(currPos) != 0)
+				{
+					for (int i = 0; i < actionSpace.size(); i++)
+					{
+						Coordinate newCoord(col + actionSpace[i][0] * 1, row + actionSpace[i][1] * 1);
+						if (newCoord.x >= Obstacles.size() || newCoord.x < 0 || newCoord.y >= Obstacles[0].size() || newCoord.y < 0 || Obstacles[newCoord.x][newCoord.y].size() != 0 && Obstacles[newCoord.x][newCoord.y][0])
+							continue;
+
+						if (stateSpace.count(newCoord) != 0)
+						{
+							if (obstacles[col][row][0] && !(currPos == *goalCoord))
+								static_cast<DStarNode*>(stateSpace[currPos])->rhs = std::min(static_cast<DStarNode*>(stateSpace[currPos])->rhs, Heuristic(currPos, newCoord) + stateSpace[newCoord]->cost);
+							else if (fabs(static_cast<DStarNode*>(stateSpace[newCoord])->rhs - ((int)(!obstacles[row][col][0]) + stateSpace[currPos]->cost)) < 0.00001)
+							{
+								double minCost = INTMAX_MAX;
+
+								for (int j = 0; j < actionSpace.size(); j++)
+								{
+									Coordinate childCoord(col + actionSpace[i][0], row + actionSpace[i][1]);
+
+									if (stateSpace.count(childCoord) != 0)
+									{
+										minCost = std::min(minCost, Heuristic(childCoord, newCoord) + stateSpace[childCoord]->cost);
+									}
+								}
+
+								static_cast<DStarNode*>(stateSpace[newCoord])->rhs = minCost;
+							}
+
+							UpdateVertex(static_cast<DStarNode*>(stateSpace[newCoord]), Obstacles);
+						}
+					}
+				}
+
+				haveEdgesChanged = true;
+			}
+		}
+	}
+
+	if (!firstRun && !haveEdgesChanged)
+	{
+		auto endTime = std::chrono::steady_clock::now();
+
+		exeTime += std::chrono::duration_cast<std::chrono::seconds>(endTime - startTime).count();
+
+		output.exeTime = exeTime;
+
+		output.path.erase(output.path.begin());
+
+		return output;
+	}
+
+	if (firstRun)
+	{
+		stateSpace[*goalCoord] = new DStarNode(goalCoord, nullptr, INTMAX_MAX, 0, start); //adds start as action from the parent just as a placeholder. Not used;
+		queue.push_back(static_cast<DStarNode*>(stateSpace[*goalCoord]));
+
+		nodesExpanded++;
+	}
+
+	firstRun = false;
+
+	actionSpace = actions;
+	obstacles = Obstacles;
+
+	while (!queue.empty())
+	{
+		int minNode = 0;
+
+		for (int i = 0; i < queue.size(); i++)
+			if (CalcKey(queue[i], startCoord, queue[minNode]))
+				minNode = i;
+
+		DStarNode* curr = queue[minNode];
+		queue.erase(queue.begin() + minNode);
+
+		if (stateSpace.count(*startCoord) != 0)
+		{
+			if (!(CalcKey(curr, startCoord, static_cast<DStarNode*>(stateSpace[*startCoord])) || stateSpace[*startCoord]->cost < static_cast<DStarNode*>(stateSpace[*startCoord])->rhs))
+			{
+				/*double grhs = static_cast<DStarNode*>(stateSpace[*startCoord])->rhs;
+				double diff = fabs(stateSpace[*startCoord]->cost - static_cast<DStarNode*>(stateSpace[*startCoord])->rhs);
+				double currh = Heuristic(*curr->getPosition(), *startCoord);*/
+				break;
+			}
+		}
+
+		if (curr->cost > curr->rhs)
+		{
+			curr->cost = curr->rhs;
+
+			std::vector<DStarNode*>::iterator index = std::find(queue.begin(), queue.end(), curr);
+			if (index != queue.end())
+				queue.erase(index);
+
+			for (int i = 0; i < actionSpace.size(); i++)
+			{
+				std::vector<int> invAct;
+				invAct.push_back(actionSpace[i][0] * -1);
+				invAct.push_back(actionSpace[i][1] * -1);
+
+				Coordinate* newCoord = new Coordinate(curr->getPosition()->x + invAct[0], curr->getPosition()->y + invAct[1]);
+				if (newCoord->x >= Obstacles.size() || newCoord->x < 0 || newCoord->y >= Obstacles[0].size() || newCoord->y < 0 || Obstacles[newCoord->x][newCoord->y].size() != 0 && Obstacles[newCoord->x][newCoord->y][0])
+					continue;
+
+				if (stateSpace.count(*newCoord) != 0)
+				{
+					DStarNode* parent = static_cast<DStarNode*>(stateSpace[*newCoord]);
+
+					if (!(*newCoord == *goalCoord))
+						parent->rhs = std::min(parent->rhs, Heuristic(*newCoord, *curr->getPosition()) + curr->cost);
+
+					UpdateVertex(parent, obstacles);
+
+					delete newCoord;
+				}
+				else
+				{
+					DStarNode* parent = new DStarNode(newCoord, curr, INTMAX_MAX, INTMAX_MAX, invAct);
+					stateSpace[*newCoord] = parent;
+
+					nodesExpanded++;
+
+					if (!(*newCoord == *goalCoord))
+						parent->rhs = std::min(parent->rhs, Heuristic(*newCoord, *curr->getPosition()) + curr->cost);
+
+					UpdateVertex(parent, obstacles);
+				}
+			}
+		}
+		else
+		{
+			double oldCost = curr->cost;
+			curr->cost = INTMAX_MAX;
+
+			if (curr->rhs == oldCost && !(*curr->getPosition() == *goalCoord))
+			{
+				int minCost = INTMAX_MAX;
+				//DStarNode* parent = nullptr;
+
+				for (int j = 0; j < actionSpace.size(); j++)
+				{
+					Coordinate childCoord = Coordinate(curr->getPosition()->x + actionSpace[j][0], curr->getPosition()->y + actionSpace[j][1]);
+					if (childCoord.x >= Obstacles.size() || childCoord.x < 0 || childCoord.y >= Obstacles[0].size() || childCoord.y < 0 || Obstacles[childCoord.x][childCoord.y].size() != 0 && Obstacles[childCoord.x][childCoord.y][0])
+						continue;
+
+					if (stateSpace.count(childCoord) != 0)
+					{
+						Node* child = stateSpace[childCoord];
+						int childCost = Heuristic(*curr->getPosition(), *child->getPosition()) + child->cost;
+
+						if (childCost < minCost)
+						{
+							minCost = childCost;
+							//parent = static_cast<DStarNode*>(child);
+						}
+					}
+				}
+				
+				curr->rhs = minCost;
+				//curr->parent = parent;
+			}
+
+			UpdateVertex(curr, obstacles);
+
+			for (int i = 0; i < actionSpace.size(); i++)
+			{
+				std::vector<int> invAct;
+				invAct.push_back(actionSpace[i][0] * -1);
+				invAct.push_back(actionSpace[i][1] * -1);
+
+				Coordinate* newCoord = new Coordinate(curr->getPosition()->x + invAct[0], curr->getPosition()->y + invAct[1]);
+				if (newCoord->x >= Obstacles.size() || newCoord->x < 0 || newCoord->y >= Obstacles[0].size() || newCoord->y < 0 || Obstacles[newCoord->x][newCoord->y].size() != 0 && Obstacles[newCoord->x][newCoord->y][0])
+					continue;
+
+				if (stateSpace.count(*newCoord) != 0)
+				{
+					DStarNode* parent = static_cast<DStarNode*>(stateSpace[*newCoord]);
+
+					if (!(*newCoord == *goalCoord) && parent->rhs == (Heuristic(*newCoord, *curr->getPosition()) + oldCost))
+					{
+						int minCost = INTMAX_MAX;
+						//DStarNode* parent = nullptr;
+
+						for (int j = 0; j < actionSpace.size(); j++)
+						{
+							Coordinate childCoord = Coordinate(curr->getPosition()->x + actionSpace[j][0], curr->getPosition()->y + actionSpace[j][1]);
+							if (childCoord.x >= Obstacles.size() || childCoord.x < 0 || childCoord.y >= Obstacles[0].size() || childCoord.y < 0 || Obstacles[childCoord.x][childCoord.y].size() != 0 && Obstacles[childCoord.x][childCoord.y][0])
+								continue;
+
+							if (stateSpace.count(childCoord) != 0)
+							{
+								Node* child = stateSpace[childCoord];
+								int childCost = Heuristic(*curr->getPosition(), *child->getPosition()) + child->cost;
+
+								if (childCost < minCost)
+								{
+									minCost = childCost;
+									//parent = static_cast<DStarNode*>(child);
+								}
+							}
+						}
+
+						curr->rhs = minCost;
+						//curr->parent = parent;
+					}
+
+					UpdateVertex(parent, obstacles);
+
+					delete newCoord;
+				}
+				else
+				{
+					DStarNode* parent = new DStarNode(newCoord, curr, INTMAX_MAX, INTMAX_MAX, invAct);
+					stateSpace[*newCoord] = parent;
+
+					nodesExpanded++;
+
+					UpdateVertex(parent, obstacles);
+				}
+			}
+		}
+	}
+
+	DStarNode* curr = static_cast<DStarNode*>(stateSpace[*startCoord]);
+	std::vector<std::vector<int>> path;
+
+	while (!(*curr->getPosition() == *goalCoord))
+	{
+		double minCost = INTMAX_MAX;
+		std::vector<int> bestAction;
+		DStarNode* child = nullptr;
+
+		for (int j = 0; j < actionSpace.size(); j++)
+		{
+			Coordinate childCoord = Coordinate(curr->getPosition()->x + actionSpace[j][0], curr->getPosition()->y + actionSpace[j][1]);
+
+			if (stateSpace.count(childCoord) != 0 && (Heuristic(*curr->getPosition(), childCoord) + stateSpace[childCoord]->cost) < minCost)
+			{
+				minCost = Heuristic(*curr->getPosition(), childCoord) + stateSpace[childCoord]->cost;
+				bestAction = actionSpace[j];
+				child = static_cast<DStarNode*>(stateSpace[childCoord]);
+			}
+		}
+
+		path.push_back(bestAction);
+		if (child != nullptr)
+			curr = child;
+		else
+			break;
+	}
+
+	auto endTime = std::chrono::steady_clock::now();
+
+	exeTime += std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
+
+	output = PathReturn(path, nodesExpanded, exeTime);
+
+	return output;
 }
+
+void DStar::UpdateVertex(DStarNode* node, std::vector<std::vector<std::vector<bool>>>& Obstacles)
+{
+	std::vector<DStarNode*>::iterator index = std::find(queue.begin(), queue.end(), node);
+	std::vector<DStarNode*>::iterator end = queue.end();
+		
+	if ((index == end) && (fabs((double)(node->cost - node->rhs)) > 0.0001))
+	{
+		queue.push_back(node);
+	}
+	
+	if (!(index == end) && (fabs((double)(node->cost - node->rhs)) < 0.0001))
+	{
+		queue.erase(index);
+	}
+}
+
+bool DStar::CalcKey(DStarNode* node, Coordinate* startCoord, DStarNode* rhs)
+{
+	bool aStarKey = (std::min(node->cost, node->rhs) + Heuristic(*node->getPosition(), *startCoord) < std::min(rhs->cost, rhs->rhs) + Heuristic(*rhs->getPosition(), *startCoord));
+	bool tie = fabs(std::min(node->cost, node->rhs) + Heuristic(*node->getPosition(), *startCoord) - std::min(rhs->cost, rhs->rhs) + Heuristic(*rhs->getPosition(), *startCoord)) < 0.00001;
+	bool dijkstraKey = (std::min(node->cost, node->rhs) < std::min(rhs->cost, rhs->rhs));
+	return aStarKey || (tie && dijkstraKey);
+}
+
+Node::Node(Coordinate* Position, Node* Parent, double Cost, std::vector<int> ActionFromParent) : position(Position), parent(Parent), cost(Cost), actionFromParent(ActionFromParent)
+{}
 
 Coordinate* Node::getPosition()
 {
@@ -388,15 +728,13 @@ Coordinate* Node::getPosition()
 }
 
 LPANode::LPANode(Coordinate* Position, Node* Parent, double Cost, double RHS, std::vector<int> ActionFromParent) : Node(Position, Parent, Cost, ActionFromParent), rhs(RHS)
-{
-	rhs = RHS;
-}
+{}
 
-Coordinate::Coordinate(int X, int Y)
-{
-	x = X;
-	y = Y;
-}
+DStarNode::DStarNode(Coordinate* Position, Node* Parent, double Cost, double RHS, std::vector<int> ActionFromParent) : Node(Position, Parent, Cost, ActionFromParent), rhs(RHS)
+{}
+
+Coordinate::Coordinate(int X, int Y) : x(X), y(Y)
+{}
 
 bool operator==(const Coordinate& lhs, const Coordinate& rhs)
 {
@@ -408,18 +746,11 @@ bool operator<(const Coordinate& lhs, const Coordinate& rhs)
 	return lhs.x < rhs.x || (lhs.x == rhs.x && lhs.y < rhs.y);
 }
 
-PathReturn::PathReturn(std::vector<std::vector<int>> Path, int NodesExpanded, double ExeTime)
-{
-	path = Path;
-	nodesExpanded = NodesExpanded;
-	exeTime = ExeTime;
-}
+PathReturn::PathReturn(std::vector<std::vector<int>> Path, int NodesExpanded, double ExeTime) : path(Path), nodesExpanded(NodesExpanded), exeTime(ExeTime)
+{}
 
-PathReturn::PathReturn()
-{
-	nodesExpanded = 0;
-	exeTime = 0;
-}
+PathReturn::PathReturn() : nodesExpanded(0), exeTime(0)
+{}
 
 PathFinder::PathFinder(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles) : obstacles(Obstacles), actionSpace(actions), nodesExpanded(0), exeTime(0), firstRun(true)
 {}
