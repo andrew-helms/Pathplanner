@@ -250,15 +250,48 @@ void PathFunc(TileMap& Map, std::vector<bool>& Pathing, int PathCount)
 			{
 				if (i == 0)
 				{
-					std::cout << "Agent Yellow's path data: Nodes Expanded = " << Agents[i]->path.nodesExpanded << ", Execution Time = " << Agents[i]->path.exeTime << std::endl;
+					if (Agents[i]->AgentType == 1)
+					{
+						std::cout << "Agent Yellow's path data: Nodes Expanded = " << Agents[i]->path.nodesExpanded << ", Execution Time = " << Agents[i]->path.exeTime << std::endl;
+					}
+					else if (Agents[i]->AgentType == 2)
+					{
+						std::cout << "Agent Green's path data: Nodes Expanded = " << Agents[i]->path.nodesExpanded << ", Execution Time = " << Agents[i]->path.exeTime << std::endl;
+					}
+					else if (Agents[i]->AgentType == 3)
+					{
+						std::cout << "Agent Red's path data: Nodes Expanded = " << Agents[i]->path.nodesExpanded << ", Execution Time = " << Agents[i]->path.exeTime << std::endl;
+					}
 				}
 				else if (i == 1)
 				{
-					std::cout << "Agent Green's path data: Nodes Expanded = " << Agents[i]->path.nodesExpanded << ", Execution Time = " << Agents[i]->path.exeTime << std::endl;
+					if (Agents[i]->AgentType == 1)
+					{
+						std::cout << "Agent Yellow's path data: Nodes Expanded = " << Agents[i]->path.nodesExpanded << ", Execution Time = " << Agents[i]->path.exeTime << std::endl;
+					}
+					else if (Agents[i]->AgentType == 2)
+					{
+						std::cout << "Agent Green's path data: Nodes Expanded = " << Agents[i]->path.nodesExpanded << ", Execution Time = " << Agents[i]->path.exeTime << std::endl;
+					}
+					else if (Agents[i]->AgentType == 3)
+					{
+						std::cout << "Agent Red's path data: Nodes Expanded = " << Agents[i]->path.nodesExpanded << ", Execution Time = " << Agents[i]->path.exeTime << std::endl;
+					}
 				}
 				else if (i == 2)
 				{
-					std::cout << "Agent Red's path data: Nodes Expanded = " << Agents[i]->path.nodesExpanded << ", Execution Time = " << Agents[i]->path.exeTime << std::endl;
+					if (Agents[i]->AgentType == 1)
+					{
+						std::cout << "Agent Yellow's path data: Nodes Expanded = " << Agents[i]->path.nodesExpanded << ", Execution Time = " << Agents[i]->path.exeTime << std::endl;
+					}
+					else if (Agents[i]->AgentType == 2)
+					{
+						std::cout << "Agent Green's path data: Nodes Expanded = " << Agents[i]->path.nodesExpanded << ", Execution Time = " << Agents[i]->path.exeTime << std::endl;
+					}
+					else if (Agents[i]->AgentType == 3)
+					{
+						std::cout << "Agent Red's path data: Nodes Expanded = " << Agents[i]->path.nodesExpanded << ", Execution Time = " << Agents[i]->path.exeTime << std::endl;
+					}
 				}
 			}
 
@@ -1162,7 +1195,7 @@ int main()
 							if (maskedObstacles[col][row].size() != 0 && (abs(col - TargetAgent->GetLocation()[0]) > TargetAgent->radius || abs(row - TargetAgent->GetLocation()[1]) > TargetAgent->radius))
 								maskedObstacles[col][row][0] = false;
 
-					//Yellow will be AStar, Green LPAStar.
+					//Yellow will be AStar, Green LPAStar, red DStar Lite
 					if (TargetAgent->AgentType == 1)
 					{
 						TargetAgent->pfa = new AStar(TargetAgent->GetActions(), maskedObstacles);
@@ -1170,6 +1203,10 @@ int main()
 					if (TargetAgent->AgentType == 2)
 					{
 						TargetAgent->pfa = new LPA(TargetAgent->GetActions(), maskedObstacles);
+					}
+					if (TargetAgent->AgentType == 3)
+					{
+						TargetAgent->pfa = new DStar(TargetAgent->GetActions(), maskedObstacles);
 					}
 					PathReturn ResultPath = TargetAgent->pfa->Update(TargetAgent->GetActions(), maskedObstacles, TargetAgent->GetLocation(), TargetAgent->GoalLocation);
 					std::vector<std::vector<int> > Actions = ResultPath.path;
@@ -1191,7 +1228,7 @@ int main()
 								if (maskedObstacles[col][row].size() != 0 && (abs(col - AgentYellow.GetLocation()[0]) > AgentYellow.radius || abs(row - AgentYellow.GetLocation()[1]) > AgentYellow.radius))
 									maskedObstacles[col][row][0] = false;
 
-						AgentYellow.pfa = new DStar(AgentYellow.GetActions(), maskedObstacles);
+						AgentYellow.pfa = new AStar(AgentYellow.GetActions(), maskedObstacles);
 						PathReturn ResultPath = AgentYellow.pfa->Update(AgentYellow.GetActions(), maskedObstacles, AgentYellow.GetLocation(), AgentYellow.GoalLocation);
 						std::vector<std::vector<int> > Actions = ResultPath.path;
 						ActionsPerAgent.push_back(Actions);
@@ -1225,7 +1262,7 @@ int main()
 								if (maskedObstacles[col][row].size() != 0 && (abs(col - AgentYellow.GetLocation()[0]) > AgentYellow.radius || abs(row - AgentYellow.GetLocation()[1]) > AgentYellow.radius))
 									maskedObstacles[col][row][0] = false;
 
-						AgentRed.pfa = new AStar(AgentRed.GetActions(), maskedObstacles);
+						AgentRed.pfa = new DStar(AgentRed.GetActions(), maskedObstacles);
 						PathReturn ResultPath = AgentRed.pfa->Update(AgentRed.GetActions(), maskedObstacles, AgentRed.GetLocation(), AgentRed.GoalLocation);
 						std::vector<std::vector<int> > Actions = ResultPath.path;
 						ActionsPerAgent.push_back(Actions);

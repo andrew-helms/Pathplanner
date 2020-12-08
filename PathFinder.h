@@ -83,18 +83,22 @@ private:
 
 class DStarNode : public Node {
 public:
-	DStarNode(Coordinate* Position, Node* Parent, double Cost, double RHS, std::vector<int> ActionFromParent);
+	DStarNode(Coordinate* Position, Node* Parent, double Cost, double RHS, double KeyTop, double KeyBottom, std::vector<int> ActionFromParent);
 
 	double rhs;
+	double KeyTop;
+	double KeyBottom;
 };
 
 class DStar : public PathFinder {
 public:
 	DStar(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles);
 	PathReturn Update(std::vector<std::vector<int>> actions, std::vector<std::vector<std::vector<bool>>> Obstacles, std::vector<int> start, std::vector<int> goal);
+	std::vector<std::vector<int>> Route;
 
 private:
-	void UpdateVertex(DStarNode* node, std::vector<std::vector<std::vector<bool>>>& Obstacles);
+	void UpdateVertex(DStarNode* node, std::vector<std::vector<std::vector<bool>>>& Obstacles, Coordinate* startCoord);
 	bool CalcKey(DStarNode* node, Coordinate* startCoord, DStarNode* rhs);
 	std::vector<DStarNode*> queue;
+	int Km = 0;
 };
