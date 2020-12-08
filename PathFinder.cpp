@@ -414,6 +414,8 @@ PathReturn DStar::Update(std::vector<std::vector<int>> actions, std::vector<std:
 								for (int j = 0; j < actionSpace.size(); j++)
 								{
 									Coordinate childCoord(col + actionSpace[j][0], row + actionSpace[j][1]);
+									if (childCoord.x >= Obstacles.size() || childCoord.x < 0 || childCoord.y >= Obstacles[0].size() || childCoord.y < 0 || Obstacles[childCoord.x][childCoord.y].size() != 0 && Obstacles[childCoord.x][childCoord.y][0])
+										continue;
 
 									if (stateSpace.count(childCoord) != 0)
 									{
@@ -455,6 +457,8 @@ PathReturn DStar::Update(std::vector<std::vector<int>> actions, std::vector<std:
 								for (int j = 0; j < actionSpace.size(); j++)
 								{
 									Coordinate childCoord(col + actionSpace[j][0], row + actionSpace[j][1]);
+									if (childCoord.x >= Obstacles.size() || childCoord.x < 0 || childCoord.y >= Obstacles[0].size() || childCoord.y < 0 || Obstacles[childCoord.x][childCoord.y].size() != 0 && Obstacles[childCoord.x][childCoord.y][0])
+										continue;
 
 									if (stateSpace.count(childCoord) != 0)
 									{

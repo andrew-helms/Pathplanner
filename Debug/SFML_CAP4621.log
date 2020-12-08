@@ -37,36 +37,40 @@ D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(402,22):
 D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(402,74): warning C4018: '>=': signed/unsigned mismatch
 D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(412,36): warning C4305: 'initializing': truncation from '__int64' to 'double'
 D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(414,27): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(440,24): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(443,22): warning C4018: '>=': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(443,74): warning C4018: '>=': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(453,36): warning C4305: 'initializing': truncation from '__int64' to 'double'
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(455,27): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(493,83): warning C4305: 'argument': truncation from '__int64' to 'double'
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(508,21): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(534,22): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(541,21): warning C4018: '>=': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(541,75): warning C4018: '>=': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(557,87): warning C4305: 'argument': truncation from '__int64' to 'double'
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(572,27): warning C4305: '=': truncation from '__int64' to 'double'
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(576,29): warning C4305: 'initializing': truncation from '__int64' to 'int'
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(576,19): warning C4309: 'initializing': truncation of constant value
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(579,23): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(582,23): warning C4018: '>=': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(582,79): warning C4018: '>=': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(588,21): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(604,22): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(611,21): warning C4018: '>=': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(611,75): warning C4018: '>=': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(620,31): warning C4305: 'initializing': truncation from '__int64' to 'int'
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(620,21): warning C4309: 'initializing': truncation of constant value
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(623,25): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(626,25): warning C4018: '>=': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(626,81): warning C4018: '>=': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(632,23): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(652,87): warning C4305: 'argument': truncation from '__int64' to 'double'
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(668,30): warning C4305: 'initializing': truncation from '__int64' to 'double'
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(672,21): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(675,21): warning C4018: '>=': signed/unsigned mismatch
-D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(675,77): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(417,27): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(417,83): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(442,24): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(445,22): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(445,74): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(455,36): warning C4305: 'initializing': truncation from '__int64' to 'double'
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(457,27): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(460,27): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(460,83): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(497,83): warning C4305: 'argument': truncation from '__int64' to 'double'
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(512,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(538,22): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(545,21): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(545,75): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(561,87): warning C4305: 'argument': truncation from '__int64' to 'double'
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(576,27): warning C4305: '=': truncation from '__int64' to 'double'
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(580,29): warning C4305: 'initializing': truncation from '__int64' to 'int'
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(580,19): warning C4309: 'initializing': truncation of constant value
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(583,23): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(586,23): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(586,79): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(592,21): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(608,22): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(615,21): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(615,75): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(624,31): warning C4305: 'initializing': truncation from '__int64' to 'int'
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(624,21): warning C4309: 'initializing': truncation of constant value
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(627,25): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(630,25): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(630,81): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(636,23): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(656,87): warning C4305: 'argument': truncation from '__int64' to 'double'
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(672,30): warning C4305: 'initializing': truncation from '__int64' to 'double'
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(676,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(679,21): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(679,77): warning C4018: '>=': signed/unsigned mismatch
   SFML_CAP4621.vcxproj -> D:\Documents\College\AI & Heuristics\Project\Pathplanner\Debug\SFML_CAP4621.exe
