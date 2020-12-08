@@ -406,7 +406,7 @@ PathReturn DStar::Update(std::vector<std::vector<int>> actions, std::vector<std:
 						{
 							if (obstacles[col][row][0] && !(currPos == *goalCoord))
 								static_cast<DStarNode*>(stateSpace[newCoord])->rhs = std::min(static_cast<DStarNode*>(stateSpace[newCoord])->rhs, Heuristic(currPos, newCoord) + stateSpace[currPos]->cost);
-							else if (fabs(static_cast<DStarNode*>(stateSpace[newCoord])->rhs - ((int)(!obstacles[row][col][0]) + stateSpace[currPos]->cost)) < 0.00001)
+							else if (fabs(static_cast<DStarNode*>(stateSpace[newCoord])->rhs - ((int)(!obstacles[col][row][0]) + stateSpace[currPos]->cost)) < 0.00001)
 							{
 								double minCost = INTMAX_MAX;
 
@@ -446,7 +446,7 @@ PathReturn DStar::Update(std::vector<std::vector<int>> actions, std::vector<std:
 						{
 							if (obstacles[col][row][0] && !(currPos == *goalCoord))
 								static_cast<DStarNode*>(stateSpace[currPos])->rhs = std::min(static_cast<DStarNode*>(stateSpace[currPos])->rhs, Heuristic(currPos, newCoord) + stateSpace[newCoord]->cost);
-							else if (fabs(static_cast<DStarNode*>(stateSpace[newCoord])->rhs - ((int)(!obstacles[row][col][0]) + stateSpace[currPos]->cost)) < 0.00001)
+							else if (fabs(static_cast<DStarNode*>(stateSpace[newCoord])->rhs - ((int)(!obstacles[col][row][0]) + stateSpace[currPos]->cost)) < 0.00001)
 							{
 								double minCost = INTMAX_MAX;
 
