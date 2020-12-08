@@ -1191,7 +1191,7 @@ int main()
 								if (maskedObstacles[col][row].size() != 0 && (abs(col - AgentYellow.GetLocation()[0]) > AgentYellow.radius || abs(row - AgentYellow.GetLocation()[1]) > AgentYellow.radius))
 									maskedObstacles[col][row][0] = false;
 
-						AgentYellow.pfa = new AStar(AgentYellow.GetActions(), maskedObstacles);
+						AgentYellow.pfa = new DStar(AgentYellow.GetActions(), maskedObstacles);
 						PathReturn ResultPath = AgentYellow.pfa->Update(AgentYellow.GetActions(), maskedObstacles, AgentYellow.GetLocation(), AgentYellow.GoalLocation);
 						std::vector<std::vector<int> > Actions = ResultPath.path;
 						ActionsPerAgent.push_back(Actions);
@@ -1225,7 +1225,7 @@ int main()
 								if (maskedObstacles[col][row].size() != 0 && (abs(col - AgentYellow.GetLocation()[0]) > AgentYellow.radius || abs(row - AgentYellow.GetLocation()[1]) > AgentYellow.radius))
 									maskedObstacles[col][row][0] = false;
 
-						AgentRed.pfa = new DStar(AgentRed.GetActions(), maskedObstacles);
+						AgentRed.pfa = new AStar(AgentRed.GetActions(), maskedObstacles);
 						PathReturn ResultPath = AgentRed.pfa->Update(AgentRed.GetActions(), maskedObstacles, AgentRed.GetLocation(), AgentRed.GoalLocation);
 						std::vector<std::vector<int> > Actions = ResultPath.path;
 						ActionsPerAgent.push_back(Actions);
