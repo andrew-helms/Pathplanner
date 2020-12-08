@@ -67,4 +67,6 @@ D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(632,23):
 D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(652,87): warning C4305: 'argument': truncation from '__int64' to 'double'
 D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(668,30): warning C4305: 'initializing': truncation from '__int64' to 'double'
 D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(672,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(675,21): warning C4018: '>=': signed/unsigned mismatch
+D:\Documents\College\AI & Heuristics\Project\Pathplanner\PathFinder.cpp(675,77): warning C4018: '>=': signed/unsigned mismatch
   SFML_CAP4621.vcxproj -> D:\Documents\College\AI & Heuristics\Project\Pathplanner\Debug\SFML_CAP4621.exe
